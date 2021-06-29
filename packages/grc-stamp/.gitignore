@@ -1,0 +1,9 @@
+.idea/
+node_modules
+npm-debug.log
+mongodb-data/*
+src/tmp/*
+.history
+dist
+config.json
+.node-persist
