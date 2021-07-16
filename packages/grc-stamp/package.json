@@ -28,7 +28,6 @@
   "devDependencies": {
     "@types/nconf": "^0.10.0",
     "@types/node": "^15.6.0",
-    "@types/sequelize": "^4.28.9",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
@@ -38,11 +37,13 @@
     "eslint-plugin-import": "^2.23.3",
     "nodemon": "^2.0.7",
     "npm-run-all": "^4.1.5",
+    "prisma": "^2.26.0",
     "rimraf": "^3.0.2",
     "ts-node": "^10.0.0",
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "@prisma/client": "^2.26.0",
     "async-mqtt": "^2.6.1",
     "axios": "^0.21.1",
     "colors": "^1.4.0",
@@ -51,7 +52,6 @@
     "moment": "^2.29.1",
     "mysql2": "^2.2.5",
     "nconf": "^0.11.2",
-    "sequelize": "^6.6.2",
     "uuid": "^8.3.2",
     "validator": "^13.6.0",
     "winston": "^3.3.3"

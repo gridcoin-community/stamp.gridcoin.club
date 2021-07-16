@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model stamps {
+  id              BigInt      @id @default(autoincrement()) @db.UnsignedBigInt
+  protocol        String      @db.VarChar(16)
+  type            StampsType
+  hash            String      @db.VarChar(256)
+  block           BigInt?     @db.UnsignedBigInt
+  tx              String?     @db.VarChar(64)
+  raw_transaction String?     @db.Text
+  time            Int?        @db.UnsignedInt
+  created_at      DateTime?   @db.Timestamp(0)
+  updated_at      DateTime?   @db.Timestamp(0)
+
+  @@index([block], name: "stamps_block_index")
+  @@index([hash], name: "stamps_hash_index")
+}
+
+enum StampsType {
+  sha256
+  ipfs
+}

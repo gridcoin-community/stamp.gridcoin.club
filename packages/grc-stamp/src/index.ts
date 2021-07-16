@@ -1,11 +1,9 @@
 import crypto from 'crypto';
-import { getDb } from './lib/sql';
 import { connect } from './lib/gridcoin';
 import { StampService } from './Services/StampService';
 
 async function initConnections() {
   await Promise.all([
-    getDb(),
     connect(),
   ]);
 }

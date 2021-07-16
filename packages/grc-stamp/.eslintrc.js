@@ -25,6 +25,8 @@ module.exports = {
     'no-await-in-loop': 0,
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
+    'no-useless-constructor': 0,
+    '@typescript-eslint/no-useless-constructor': ['error'],
   },
   overrides: [
     {
