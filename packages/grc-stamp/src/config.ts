@@ -3,16 +3,16 @@ import path from 'path';
 // import packageJson from '../package.json';
 
 interface Config {
-  MYSQL_HOST: string;
-  MYSQL_LOGIN: string;
-  MYSQL_PASSWORD: string;
-  MYSQL_DB: string;
+  DATABASE_URL: string;
+  REDIS_HOST: string;
+  REDIS_PORT: string;
   GRC_RPC_USER: string;
   GRC_RPC_PASSWORD: string;
   GRC_RPC_HOST: string;
   GRC_RPC_PORT: number;
   isProduction: boolean;
   isTesting: boolean;
+  START_BLOCK: number;
 }
 
 /**
@@ -32,15 +32,15 @@ nconf
   .argv()
   // 2. Environment variables
   .env([
-    'MYSQL_HOST',
-    'MYSQL_LOGIN',
-    'MYSQL_PASSWORD',
-    'MYSQL_DB',
+    'DATABASE_URL',
+    'REDIS_HOST',
+    'REDIS_PORT',
     'CHECK_INTERVAL_SECONDS',
     'GRC_RPC_USER',
     'GRC_RPC_PASSWORD',
     'GRC_RPC_HOST',
     'GRC_RPC_PORT',
+    'START_BLOCK',
   ])
   // 3. Config file
   .file({
@@ -54,18 +54,17 @@ nconf
     MYSQL_DB: 'grc',
     isTesting: process.env.NODE_ENV === 'testing',
     isProduction: process.env.NODE_ENV === 'production',
+    START_BLOCK: 1581759,
   });
 
 // Check required settings
 checkConfig([
-  'MYSQL_HOST',
-  'MYSQL_LOGIN',
-  'MYSQL_PASSWORD',
-  'MYSQL_DB',
+  'DATABASE_URL',
   'GRC_RPC_USER',
   'GRC_RPC_PASSWORD',
   'GRC_RPC_HOST',
   'GRC_RPC_PORT',
+  'START_BLOCK',
 ]);
 
 export const config = Object.freeze(nconf.get()) as Config;
