@@ -10,8 +10,7 @@ export const rpc = new GridcoinRPC({
 
 export async function connect(): Promise<void> {
   try {
-    const result = await rpc.testConnection();
-    console.log(JSON.stringify(result));
+    await rpc.getWalletInfo();
   } catch (err) {
     console.log(err);
     throw new Error(err.message);

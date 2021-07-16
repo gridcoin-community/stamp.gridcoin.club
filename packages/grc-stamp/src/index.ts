@@ -10,15 +10,15 @@ async function initConnections() {
 
 async function main() {
   await initConnections();
-  const ss = new StampService();
-  // ss.createStamp();
-  const hash = `${Math.random() * 100000000000000}`;
-  const sha = crypto.createHash('sha256');
-  sha.update(hash);
-  const shaman = sha.digest('hex');
-  // 9999
-  // ss.createStamp(shaman);
-  ss.publishStamp();
+  const stampService = new StampService();
+  // // ss.createStamp();
+  // const hash = `${Math.random() * 100000000000000}`;
+  // const sha = crypto.createHash('sha256');
+  // sha.update(hash);
+  // const shaman = sha.digest('hex');
+  // // 9999
+  // // ss.createStamp(shaman);
+  // ss.publishStamp();
 }
 
 main();
