@@ -14,6 +14,7 @@ interface Config {
   isTesting: boolean;
   START_BLOCK: number;
   BLOCK_GROUPS: number;
+  SCRAPER_TIMEOUT: number;
 }
 
 /**
@@ -55,8 +56,10 @@ nconf
     MYSQL_DB: 'grc',
     isTesting: process.env.NODE_ENV === 'testing',
     isProduction: process.env.NODE_ENV === 'production',
-    START_BLOCK: 1581759,
-    BLOCK_GROUPS: 1,
+    START_BLOCK: 1581758,
+    BLOCK_GROUPS: 200,
+    // Run scraper once per minute by default
+    SCRAPER_TIMEOUT: 60000,
   });
 
 // Check required settings

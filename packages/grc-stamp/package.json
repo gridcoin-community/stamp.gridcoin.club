@@ -45,7 +45,6 @@
   },
   "dependencies": {
     "@prisma/client": "^2.26.0",
-    "async-mqtt": "^2.6.1",
     "axios": "^0.21.1",
     "colors": "^1.4.0",
     "gridcoin-rpc": "^3.0.2",

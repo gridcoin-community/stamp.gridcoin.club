@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { config } from './config';
 import { connect } from './lib/gridcoin';
 import { Scraper } from './Services/Scraper';
 import { StampService } from './Services/StampService';
@@ -13,9 +14,10 @@ async function initConnections(): Promise<void> {
 async function main(): Promise<void> {
   await initConnections();
 
-  const stampService = new StampService();
+  // const stampService = new StampService();
   const scraper = new Scraper();
-  scraper.scrape();
+  // run scraper once per minute
+  setInterval(() => scraper.scrape(), config.SCRAPER_TIMEOUT);
   // // ss.createStamp();
   // const hash = `${Math.random() * 100000000000000}`;
   // const sha = crypto.createHash('sha256');
