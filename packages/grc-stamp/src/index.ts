@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { connect } from './lib/gridcoin';
+import { Scraper } from './Services/Scraper';
 import { StampService } from './Services/StampService';
 
 async function initConnections(): Promise<void> {
@@ -13,6 +14,8 @@ async function main(): Promise<void> {
   await initConnections();
 
   const stampService = new StampService();
+  const scraper = new Scraper();
+  scraper.scrape();
   // // ss.createStamp();
   // const hash = `${Math.random() * 100000000000000}`;
   // const sha = crypto.createHash('sha256');

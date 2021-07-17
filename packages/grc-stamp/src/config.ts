@@ -13,6 +13,7 @@ interface Config {
   isProduction: boolean;
   isTesting: boolean;
   START_BLOCK: number;
+  BLOCK_GROUPS: number;
 }
 
 /**
@@ -55,6 +56,7 @@ nconf
     isTesting: process.env.NODE_ENV === 'testing',
     isProduction: process.env.NODE_ENV === 'production',
     START_BLOCK: 1581759,
+    BLOCK_GROUPS: 1,
   });
 
 // Check required settings
@@ -65,6 +67,7 @@ checkConfig([
   'GRC_RPC_HOST',
   'GRC_RPC_PORT',
   'START_BLOCK',
+  'BLOCK_GROUPS',
 ]);
 
 export const config = Object.freeze(nconf.get()) as Config;
