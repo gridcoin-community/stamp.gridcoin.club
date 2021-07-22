@@ -1,5 +1,7 @@
 import { PrismaClient, StampsType } from '@prisma/client';
-import { MINIMUM, PREFIX, PROTOCOL } from '../constants';
+import {
+  MINIMUM, PREFIX, PROTOCOL, MIN_FEE,
+} from '../constants';
 import { rpc } from '../lib/gridcoin';
 
 export class StampService {
@@ -49,6 +51,7 @@ export class StampService {
     console.log(string.length);
     // maximum 160 characters (80 bytes)
 
+    await rpc.setTXfee(MIN_FEE);
     const tx = await rpc.burn(MINIMUM, string);
     console.log({ tx });
     if (tx) {

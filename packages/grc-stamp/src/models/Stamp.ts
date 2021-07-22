@@ -18,7 +18,7 @@ export class Stamp {
 
   constructor(private prisma = new PrismaClient()) {}
 
-  public async saveOrUpdate() {
+  public async saveOrUpdate(): Promise<any> {
     // Try to find existing one
     const result = await this.prisma.stamps.findFirst({
       where: {

@@ -17,7 +17,8 @@
     "start:dev": "nodemon dist/index.js",
     "test:lint": "eslint .",
     "test:app": "NODE_ENV=testing mocha --recursive --colors tests/src/**/*.spec.js",
-    "test": "npm run test:app && npm run test:lint"
+    "test": "npm run test:app && npm run test:lint",
+    "prisma": "npx prisma generate"
   },
   "repository": {
     "type": "git",
