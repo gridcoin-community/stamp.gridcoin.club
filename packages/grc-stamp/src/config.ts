@@ -61,7 +61,7 @@ nconf
     // START_BLOCK: 1629037,
     BLOCK_GROUPS: 500,
     // Run scraper once per minute by default
-    SCRAPER_TIMEOUT: 15000,
+    SCRAPER_TIMEOUT: 60000,
     PUBLISH_TIMEOUT: 2 * 60 * 1000,
     // PUBLISH_TIMEOUT: 20 * 1000,
   });
