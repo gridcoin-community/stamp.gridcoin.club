@@ -5,17 +5,9 @@ import morgan from 'morgan';
 import { config } from './config';
 import { ErrorModel } from './models/Error';
 import { statusRouter } from './routes/status';
+import { stampsRouter } from './routes/stamps';
 import packageJson from '../package.json';
-// const { makesRouter } = require('./routes/makes');
-// const models = require('./routes/models');
-// const vehicles = require('./routes/vehicles');
-// const { categoriesRouter } = require('./routes/categories');
-// const { baseRouter } = require('./routes/base');
-// const { trimsRouter } = require('./routes/trims');
-// const { enginesRouter } = require('./routes/engines');
-// const { partsRouter } = require('./routes/parts');
 
-// const logger = logmodule(module, config);
 const app = express();
 
 // Set up port
@@ -57,19 +49,7 @@ app.use((req, res, next) => {
  * just the usual status call for this service
  */
 app.use('/status', statusRouter);
-
-/**
- * URL path: /makes
- */
-// app.use('/makes', makesRouter);
-// app.use('/years', yearsRouter);
-// app.use('/models', models);
-// app.use('/vehicles', vehicles);
-// app.use('/parts', partsRouter);
-// app.use('/base', baseRouter);
-// app.use('/trims', trimsRouter);
-// app.use('/engines', enginesRouter);
-// app.use('/categories', categoriesRouter);
+app.use('/stamps', stampsRouter);
 
 // Not found error handling
 /* eslint-disable no-unused-vars */
