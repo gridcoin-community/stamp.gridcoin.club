@@ -1,5 +1,6 @@
 import HttpStatus from 'http-status-codes';
 import { Request, Response } from 'express';
+import { stamps } from '@prisma/client';
 import { StampPresenter } from '../presenters/stamp.presenter';
 // import { PresenterInterface } from '../presenters/types';
 import { StampsRepository } from '../repositories/StampsRepository';
@@ -18,10 +19,15 @@ export class StampsController extends Controller {
 
   public async listStamps(): Promise<void> {
     try {
-      const results = await this.repository.listStamps();
+      const opts = {
+        pagination: this.usePagination,
+        sort: this.useSort,
+        fields: this.useFields,
+      };
+      const results = await this.repository.listStamps(opts);
       this.res
         .status(HttpStatus.OK)
-        .send(this.presenter.render(results));
+        .send(this.render<stamps>(results));
     } catch (e) {
       console.error(e);
     }

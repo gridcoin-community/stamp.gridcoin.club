@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { PresenterInterface } from '../presenters/types';
 import { GenericInterface } from '../models/Generic';
+import { RepoListResults } from '../repositories/types';
 
 export const DEFAULT_PAGINATION_LIMIT = 25;
 export const DEFAULT_SORT_FIELD = 'id';
@@ -36,26 +37,24 @@ interface Query {
   readonly sort: string;
 }
 
-interface Pagination {
+export interface Pagination {
   offset?: number;
   limit?: number;
 }
 
-interface Sorting {
+export interface Sorting {
   order: [string, SortOrder][];
 }
 
-interface Fields {
-  fields: {
-    [key: string]: string[];
-  };
+export interface Fields {
+  [key: string]: string[];
 }
 
-interface Includes {
+export interface Includes {
   include: string[];
 }
 
-interface Filters {
+export interface Filters {
   where: {
     [key: string]: unknown;
   };
@@ -85,6 +84,7 @@ export class Controller {
   public constructor(req: Request, res: Response) {
     this.req = req;
     this.res = res;
+    this.useFields = { };
   }
 
   protected init(): void {
@@ -124,6 +124,10 @@ export class Controller {
           || 0,
         limit: paginationLimit,
       };
+    } else {
+      this.usePagination = {
+        limit: DEFAULT_PAGINATION_LIMIT,
+      };
     }
   }
 
@@ -137,13 +141,13 @@ export class Controller {
         if (values) {
           empty = false;
           const newFields = prev;
-          newFields[key] = values.split(/,/);
+          newFields[key] = values.split(/,/).filter((field) => field.match(/^[a-zA-Z_0-9]+$/)).filter(Boolean);
           return newFields;
         }
         return prev;
       }, {});
       if (!empty) {
-        this.useFields.fields = fields;
+        this.useFields = fields;
       }
     }
   }
@@ -273,8 +277,8 @@ export class Controller {
     // return value && typeof value === 'object' && value.constructor === Object;
   }
 
-  public render(data: Record<string, unknown>): Record<string, unknown> {
-    if (data.rows) {
+  public render<T>(data: T | RepoListResults<T>): Record<string, unknown> {
+    if ('rows' in data) {
       const meta = {
         count: 0,
       };
