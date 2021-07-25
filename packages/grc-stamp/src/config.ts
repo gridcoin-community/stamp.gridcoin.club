@@ -1,6 +1,6 @@
 import nconf from 'nconf';
 import path from 'path';
-// import packageJson from '../package.json';
+import packageJson from '../package.json';
 
 interface Config {
   DATABASE_URL: string;
@@ -16,6 +16,7 @@ interface Config {
   BLOCK_GROUPS: number;
   SCRAPER_TIMEOUT: number;
   PUBLISH_TIMEOUT: number;
+  PORT: number;
 }
 
 /**
@@ -44,6 +45,7 @@ nconf
     'GRC_RPC_HOST',
     'GRC_RPC_PORT',
     'START_BLOCK',
+    'PORT',
   ])
   // 3. Config file
   .file({
@@ -58,12 +60,13 @@ nconf
     isTesting: process.env.NODE_ENV === 'testing',
     isProduction: process.env.NODE_ENV === 'production',
     START_BLOCK: 1581500,
-    // START_BLOCK: 1629037,
     BLOCK_GROUPS: 500,
     // Run scraper once per minute by default
     SCRAPER_TIMEOUT: 60000,
+    // SCRAPER_TIMEOUT: 10 * 1000,
     PUBLISH_TIMEOUT: 2 * 60 * 1000,
     // PUBLISH_TIMEOUT: 20 * 1000,
+    PORT: packageJson.port,
   });
 
 // Check required settings
@@ -75,6 +78,7 @@ checkConfig([
   'GRC_RPC_PORT',
   'START_BLOCK',
   'BLOCK_GROUPS',
+  'PORT',
 ]);
 
 export const config = Object.freeze(nconf.get()) as Config;

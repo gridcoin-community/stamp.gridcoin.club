@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "port": 7000,
   "nodemonConfig": {
     "ignore": [
       ".node_persits/**/*"
@@ -29,9 +30,12 @@
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/ioredis": "^4.26.6",
+    "@types/method-override": "^0.0.32",
+    "@types/morgan": "^1.9.3",
     "@types/nconf": "^0.10.0",
     "@types/node": "^15.14.2",
     "@types/uuid": "^8.3.0",
+    "@types/yayson": "^2.0.2",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
     "chai": "^4.3.4",
@@ -53,11 +57,14 @@
     "gridcoin-rpc": "^3.0.2",
     "http-status-codes": "^2.1.4",
     "ioredis": "^4.27.6",
+    "method-override": "^3.0.0",
     "moment": "^2.29.1",
+    "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
     "nconf": "^0.11.2",
     "uuid": "^8.3.2",
     "validator": "^13.6.0",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "yayson": "^2.1.0"
   }
 }
