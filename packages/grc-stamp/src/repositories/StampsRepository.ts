@@ -1,7 +1,11 @@
-import { PrismaClient, Prisma, stamps } from '@prisma/client';
+import { Prisma, stamps } from '@prisma/client';
 import {
-  Fields, Filters, Pagination, Sorting,
+  Fields,
+  Filters,
+  Pagination,
+  Sorting,
 } from '../controllers/BaseController';
+import { Stamp } from '../models/Stamp';
 import { RepoListResults } from './types';
 
 interface SelectOptions {
@@ -11,7 +15,7 @@ interface SelectOptions {
   pagination?: Pagination;
 }
 export class StampsRepositoryClass {
-  constructor(private prisma = new PrismaClient()) {}
+  constructor(private stamp = new Stamp()) {}
 
   public async listStamps(options?: SelectOptions): Promise<RepoListResults<stamps>> {
     // console.log('------------------------------------------------');
@@ -28,12 +32,16 @@ export class StampsRepositoryClass {
         opts.skip = options.pagination.offset;
         opts.take = options.pagination.limit;
       }
+      if (options.filters) {
+        opts.where = options.filters;
+      }
     }
-    // console.log(opts);
-    const res = await this.prisma.stamps.findMany(opts);
+    const res = await this.stamp.model.findMany(opts);
     return {
       rows: res,
-      count: await this.prisma.stamps.count(),
+      count: await this.stamp.model.count({
+        where: options.filters || {},
+      }),
     };
   }
 }

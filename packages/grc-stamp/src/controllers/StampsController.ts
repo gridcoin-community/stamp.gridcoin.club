@@ -5,6 +5,7 @@ import { StampPresenter } from '../presenters/stamp.presenter';
 // import { PresenterInterface } from '../presenters/types';
 import { StampsRepository } from '../repositories/StampsRepository';
 import { Controller } from './BaseController';
+import { Stamp } from '../models/Stamp';
 
 export class StampsController extends Controller {
   constructor(
@@ -14,6 +15,7 @@ export class StampsController extends Controller {
   ) {
     super(req, res);
     this.presenter = StampPresenter;
+    this.model = new Stamp();
     this.init();
   }
 
@@ -23,6 +25,7 @@ export class StampsController extends Controller {
         pagination: this.usePagination,
         sort: this.useSort,
         fields: this.useFields,
+        filters: this.useFilters,
       };
       const results = await this.repository.listStamps(opts);
       this.res

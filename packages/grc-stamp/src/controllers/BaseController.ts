@@ -4,6 +4,7 @@ import { GenericInterface } from '../models/Generic';
 import { RepoListResults } from '../repositories/types';
 
 export const DEFAULT_PAGINATION_LIMIT = 25;
+export const MAXIMUM_PAGINATION_LIMIT = 100;
 export const DEFAULT_SORT_FIELD = 'id';
 enum FilterTypes {
   'gt',
@@ -12,12 +13,26 @@ enum FilterTypes {
   'lte',
   'ne',
   'eq',
-  'between',
-  'notBetween',
-  'in',
-  'notIn',
-  'like',
-  'notLike',
+  // 'between',
+  // 'notBetween',
+  // 'in',
+  // 'notIn',
+  // 'like',
+  // 'notLike',
+}
+enum MapFilterTypes {
+  'gt' = 'gt',
+  'lt' = 'lt',
+  'gte' = 'gte',
+  'lte' = 'lte',
+  'ne' = 'not',
+  'eq' = 'equals',
+  // 'between',
+  // 'notBetween',
+  // 'in',
+  // 'notIn',
+  // 'like',
+  // 'notLike',
 }
 enum SortOrder {
   asc = 'ASC',
@@ -55,9 +70,7 @@ export interface Includes {
 }
 
 export interface Filters {
-  where: {
-    [key: string]: unknown;
-  };
+  [key: string]: unknown;
 }
 
 export class Controller {
@@ -79,7 +92,7 @@ export class Controller {
 
   protected presenter: PresenterInterface;
 
-  protected allFilters?: {[key: string]: string};
+  protected allFilters?: Record<string, string>;
 
   public constructor(req: Request, res: Response) {
     this.req = req;
@@ -117,7 +130,11 @@ export class Controller {
     const query = this.req.query as unknown as Query;
     if (query && 'page' in query) {
       // we keep "limit" keyword in the data structure for compatibility
-      const paginationLimit = parseInt(query.page.size, 10) || DEFAULT_PAGINATION_LIMIT;
+      let paginationLimit = parseInt(query.page.size, 10) || DEFAULT_PAGINATION_LIMIT;
+      // Do not allow it to be too big
+      if (paginationLimit > MAXIMUM_PAGINATION_LIMIT) {
+        paginationLimit = MAXIMUM_PAGINATION_LIMIT;
+      }
       this.usePagination = {
         offset: parseInt(query.page.offset, 10)
           || parseInt(query.page.number, 10) * paginationLimit
@@ -141,6 +158,7 @@ export class Controller {
         if (values) {
           empty = false;
           const newFields = prev;
+          // Filter out all non-fields-like values
           newFields[key] = values.split(/,/).filter((field) => field.match(/^[a-zA-Z_0-9]+$/)).filter(Boolean);
           return newFields;
         }
@@ -194,48 +212,57 @@ export class Controller {
    * It is up to us
    */
   private discoverFilters(): void {
-    // const { query } = this.req;
-    // if (!query) return;
-    // const attributes = this.model.rawAttributes;
-    // if ('filter' in query) {
-    //   this.allFilters = query.filter;
-    //   // Store fields so we can use it for the search
-    //   const filters = [];
-    //   Object.keys(query.filter).forEach((key) => {
-    //     let dbProperKey = key;
-    //     if (attributes[key] && attributes[key].field) {
-    //       dbProperKey = attributes[key].field;
-    //     }
-    //     if (this.isObject(query.filter[key])) {
-    //       const filterType = ([Object.keys(query.filter[key])]).toString();
-    //       if ((Object as any).values(FilterTypes).includes(filterType)) {
-    //       // if (FILTER_TYPES.indexOf(filterType) > -1) {
-    //         let list = query.filter[key][filterType].split(',');
-    //         if (filterType === 'like' || filterType === 'notLike') {
-    //           list = `%${list.toString()}%`;
-    //         }
-    //         // filters.push({ [dbProperKey]: { [Op[filterType]]: list } });
-    //         filters.push(
-    //          { [dbProperKey]: { [Op[filterType]]: list.length > 1 ? list : list[0] } });
-    //       }
-    //     } else {
-    //       const list = query.filter[key].split(',');
-    //       if (list.length > 1) {
-    //         filters.push({ [dbProperKey]: { [Op.in]: list } });
-    //       } else if (list[0]) {
-    //         filters.push({ [dbProperKey]: list[0] });
-    //       }
-    //     }
-    //   });
-    //   if (filters.length) {
-    //     this.useFilters = { where: filters };
-    //   }
-    // }
+    const { query } = this.req;
+    if (!query) return;
+    const { attributes } = this.model;
+    if ('filter' in query) {
+      this.allFilters = query.filter as Record<string, string>;
+      // Store fields so we can use it for the search
+      let filters = {};
+      Object.keys(query.filter).forEach((key) => {
+        let dbProperKey = key;
+        if (attributes[key] && attributes[key].field) {
+          dbProperKey = attributes[key].field;
+        }
+        if (this.isObject(query.filter[key])) {
+          const filterTypeUnresolved = ([Object.keys(query.filter[key])]).toString();
+          if (Object.values(FilterTypes).includes(filterTypeUnresolved)) {
+            const filterType = MapFilterTypes[filterTypeUnresolved];
+            // if (FILTER_TYPES.indexOf(filterType) > -1) {
+            let list = query.filter[key][filterTypeUnresolved].split(',');
+            list = list.map((value: any) => (Number.isNaN(value) ? value : BigInt(value)));
+            // if (filterType === 'like' || filterType === 'notLike') {
+            //   list = `%${list.toString()}%`;
+            // }
+            // filters.push({ [dbProperKey]: { [Op[filterType]]: list } });
+
+            filters = {
+              ...filters,
+              [dbProperKey]: { [filterType]: list.length > 1 ? list : list[0] },
+            };
+          }
+        } else {
+          const list = query.filter[key].split(',');
+          if (list.length > 1) {
+            filters = {
+              ...filters,
+              [dbProperKey]: { in: list },
+            };
+          } else if (list[0]) {
+            filters = {
+              ...filters,
+              [dbProperKey]: list[0],
+            };
+          }
+        }
+      });
+      this.useFilters = filters;
+    }
   }
 
   public hasFilter(filter: string): boolean {
     if ('where' in this.useFilters) {
-      const filtersLength = this.useFilters.where.length;
+      const filtersLength = this.useFilters.length;
       for (let i = 0; i < filtersLength; i++) {
         if (Object.keys(this.useFilters.where[i]).includes(filter)) return true;
       }
@@ -248,7 +275,7 @@ export class Controller {
 
   public getFilter(filter: string): string | null {
     if ('where' in this.useFilters) {
-      const filtersLength = this.useFilters.where.length;
+      const filtersLength = this.useFilters.length;
       for (let i = 0; i < filtersLength; i++) {
         if (Object.keys(this.useFilters.where[i]).includes(filter)) {
           return this.useFilters.where[i][filter];
