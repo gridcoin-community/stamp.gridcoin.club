@@ -14,7 +14,7 @@ export class StampPresenter extends Presenter {
       protocol: instanse.protocol,
       type: instanse.type,
       hash: instanse.hash,
-      block: Number(instanse.block.toString()),
+      block: instanse.block ? Number(instanse.block.toString()) : undefined,
       tx: instanse.tx,
       rawTransaction: instanse.raw_transaction,
       time: instanse.time,
