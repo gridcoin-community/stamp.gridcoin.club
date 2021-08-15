@@ -60,7 +60,7 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-      - build:
+      - build
       - lint_commit_message:
           requires:
             - build
