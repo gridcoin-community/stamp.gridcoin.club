@@ -1,0 +1,77 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/grc
+  docker:
+    - image: circleci/node:12
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }} # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - run: npm run build
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: ~/grc
+          paths: .
+
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/grc
+      - run:
+          name: Run tests
+          command: npm test
+
+  lint_commit_message:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/grc
+      - run:
+          name: Define environment variable with lastest commit's message
+          command: |
+            echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Lint commit message
+          command: echo "$COMMIT_MESSAGE" | npx commitlint
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/grc
+      - run:
+          name: Semantic release
+          command: npm run semantic-release
+
+workflows:
+  version: 2
+  test-deploy:
+    jobs:
+      - build:
+      - lint_commit_message:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          filters:
+            branches:
+              only: master
+          requires:
+            - build
+            - lint_commit_message
+            - test
