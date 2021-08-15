@@ -11,9 +11,11 @@ export class ErrorModel {
 
   public static NOT_FOUND = 404;
 
-  public rawAttributes = { };
-
-  constructor(status: number, title: string, message?: string) {
+  constructor(
+    status: number,
+    title: string,
+    message?: string,
+  ) {
     this.status = status;
     this.title = title || 'Internal Server Error';
     if (message) {

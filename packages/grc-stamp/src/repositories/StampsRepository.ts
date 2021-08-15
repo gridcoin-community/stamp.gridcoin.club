@@ -5,6 +5,7 @@ import {
   Pagination,
   Sorting,
 } from '../controllers/BaseController';
+import { StampData } from '../controllers/schemas/StampSchema';
 import { Stamp } from '../models/Stamp';
 import { RepoListResults } from './types';
 
@@ -16,6 +17,10 @@ interface SelectOptions {
 }
 export class StampsRepositoryClass {
   constructor(private stamp = new Stamp()) {}
+
+  public createStamp(stampData: StampData): void {
+    console.log(stampData);
+  }
 
   public async getById(id: bigint, options: Pick<SelectOptions, 'fields'>): Promise<stamps> {
     const opts: Record<string, unknown> = {

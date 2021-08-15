@@ -12,3 +12,8 @@ stampsRouter.get('/:id', async (req: Request, res: Response) => {
   const controller = new StampsController(req, res);
   return controller.getById(Number(req.params.id));
 });
+
+stampsRouter.post('/', async (req: Request, res: Response) => {
+  const controller = new StampsController(req, res);
+  return controller.createStamp(req.body);
+});
