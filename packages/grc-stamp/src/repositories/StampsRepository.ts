@@ -1,13 +1,13 @@
-import { Prisma, stamps } from '@prisma/client';
+import { Prisma, stamps, StampsType } from '@prisma/client';
 import {
   Fields,
   Filters,
   Pagination,
   Sorting,
 } from '../controllers/BaseController';
-import { StampData } from '../controllers/schemas/StampSchema';
 import { Stamp } from '../models/Stamp';
 import { RepoListResults } from './types';
+import { PROTOCOL } from '../constants';
 
 interface SelectOptions {
   sort?: Sorting;
@@ -18,8 +18,22 @@ interface SelectOptions {
 export class StampsRepositoryClass {
   constructor(private stamp = new Stamp()) {}
 
-  public createStamp(stampData: StampData): void {
-    console.log(stampData);
+  /**
+   * Creates empty stamp in the database
+   * @param type
+   * @param hash
+   */
+  public async createStamp(hash: string, type: StampsType = StampsType.sha256): Promise<any> {
+    if (!type || !hash) {
+      throw new Error('Not enough data');
+    }
+    return this.stamp.model.create({
+      data: {
+        protocol: PROTOCOL,
+        type,
+        hash,
+      },
+    });
   }
 
   public async getById(id: bigint, options: Pick<SelectOptions, 'fields'>): Promise<stamps> {
@@ -38,8 +52,6 @@ export class StampsRepositoryClass {
   }
 
   public async listStamps(options?: SelectOptions): Promise<RepoListResults<stamps>> {
-    // console.log('------------------------------------------------');
-    // console.log(options);
     const opts: Prisma.stampsFindManyArgs = {};
     if (options) {
       if (options.fields && options.fields?.stamps) {

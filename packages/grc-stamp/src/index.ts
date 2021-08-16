@@ -19,15 +19,10 @@ async function main(): Promise<void> {
   const scraper = new Scraper();
   // run scraper once per minute
   setInterval(() => scraper.scrape(), config.SCRAPER_TIMEOUT);
-  // // ss.createStamp();
   const hash = `${Math.random() * 100000000000000}`;
   const sha = crypto.createHash('sha256');
   sha.update(hash);
-  // const shaman = sha.digest('hex');
-  // // 9999
-  // stampService.createStamp(shaman);
   setInterval(() => stampService.publishStamp(), config.PUBLISH_TIMEOUT);
-  // ss.publishStamp();
 }
 
 main();

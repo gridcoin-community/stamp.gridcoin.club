@@ -7,24 +7,6 @@ import { rpc } from '../lib/gridcoin';
 export class StampService {
   constructor(private prisma = new PrismaClient()) {}
 
-  /**
-   * Creates empty stamp in the database
-   * @param type
-   * @param hash
-   */
-  public async createStamp(hash: string, type: StampsType = StampsType.sha256): Promise<void> {
-    if (!type || !hash) {
-      throw new Error('Not enough data');
-    }
-    await this.prisma.stamps.create({
-      data: {
-        protocol: PROTOCOL,
-        type,
-        hash,
-      },
-    });
-  }
-
   public async publishStamp(): Promise<void> {
     const readyStamps = await this.prisma.stamps.findMany({
       where: {

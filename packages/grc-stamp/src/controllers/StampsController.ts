@@ -1,6 +1,6 @@
 import HttpStatus from 'http-status-codes';
 import { Request, Response } from 'express';
-import { stamps } from '@prisma/client';
+import { stamps, StampsType } from '@prisma/client';
 import { NOTFOUND } from 'dns';
 import { ValidationResult } from 'joi';
 import yayson from 'yayson';
@@ -79,22 +79,32 @@ export class StampsController extends Controller {
     try {
       data = store.sync(input);
       const result = StampSchema.validate(data);
-      if (result.error) throw new Error();
+      if (result.error && result.error.details) {
+        throw new Error(result.error.details[0].message);
+      }
     } catch (_e) {
-      // console.log(result.error);
       this.res
         .status(HttpStatus.BAD_REQUEST)
         .send({
           errors: [
             new ErrorModel(
               HttpStatus.BAD_REQUEST,
-              HttpStatus.getStatusText(HttpStatus.BAD_REQUEST),
+              _e.message
+                ? _e.message
+                : HttpStatus.getStatusText(HttpStatus.BAD_REQUEST),
             ),
           ],
         });
       return;
     }
-    console.log(1231123);
-    // const result = await this.repository.getById();
+    const result = await this.repository.createStamp(
+      data.hash,
+      data.hashType
+        ? data.hashType as StampsType
+        : StampsType.sha256,
+    );
+    this.res
+      .status(HttpStatus.CREATED)
+      .send(this.render<stamps>(result));
   }
 }
