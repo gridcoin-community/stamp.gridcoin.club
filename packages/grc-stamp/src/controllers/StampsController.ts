@@ -97,6 +97,15 @@ export class StampsController extends Controller {
         });
       return;
     }
+    // Find existing
+    const existing = await this.repository.getByHash(data.hash, data.hashType as StampsType);
+    if (existing) {
+      this.res
+        .status(HttpStatus.OK)
+        .send(this.render<stamps>(existing));
+      return;
+    }
+
     const result = await this.repository.createStamp(
       data.hash,
       data.hashType
