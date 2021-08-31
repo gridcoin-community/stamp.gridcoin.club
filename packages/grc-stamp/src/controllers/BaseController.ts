@@ -213,7 +213,7 @@ export class Controller {
    */
   private discoverFilters(): void {
     const { query } = this.req;
-    if (!query) return;
+    if (!query || !this.model) return;
     const { attributes } = this.model;
     if ('filter' in query) {
       this.allFilters = query.filter as Record<string, string>;
@@ -305,7 +305,7 @@ export class Controller {
   }
 
   public render<T>(data: T | RepoListResults<T>): Record<string, unknown> {
-    if ('rows' in data) {
+    if (this.isObject(data) && 'rows' in data) {
       const meta = {
         count: 0,
       };

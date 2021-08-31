@@ -6,6 +6,7 @@ import { config } from './config';
 import { ErrorModel } from './models/Error';
 import { statusRouter } from './routes/status';
 import { stampsRouter } from './routes/stamps';
+import { walletRouter } from './routes/wallet';
 import packageJson from '../package.json';
 
 const app = express();
@@ -50,6 +51,7 @@ app.use((req, res, next) => {
  */
 app.use('/status', statusRouter);
 app.use('/stamps', stampsRouter);
+app.use('/wallet', walletRouter);
 
 // Not found error handling
 /* eslint-disable no-unused-vars */

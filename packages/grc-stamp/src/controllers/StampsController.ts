@@ -1,8 +1,7 @@
 import HttpStatus from 'http-status-codes';
 import { Request, Response } from 'express';
 import { stamps, StampsType } from '@prisma/client';
-import { NOTFOUND } from 'dns';
-import { ValidationResult } from 'joi';
+// import { ValidationResult } from 'joi';
 import yayson from 'yayson';
 import { StampPresenter } from '../presenters/stamp.presenter';
 // import { PresenterInterface } from '../presenters/types';
