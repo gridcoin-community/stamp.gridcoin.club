@@ -14,10 +14,7 @@ export default class MyDocument extends Document {
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
         </Head>
-        <body style={{
-          backgroundColor: '#f8fafd', minHeight: '100vh', display: 'flex', flexDirection: 'column',
-        }}
-        >
+        <body style={{ backgroundColor: '#f8fafd' }}>
           <Main />
           <NextScript />
         </body>

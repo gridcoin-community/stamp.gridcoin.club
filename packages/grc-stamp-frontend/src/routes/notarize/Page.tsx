@@ -48,10 +48,10 @@ export function Page() {
   }
 
   return (
-    <>
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
       <FilesContext.Provider value={contextValue}>
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
           <Box sx={{ width: '100%' }}>
             <Stepper activeStep={activeStep} alternativeLabel>
               {stepTitle.map((label) => (
@@ -70,6 +70,6 @@ export function Page() {
         </Container>
       </FilesContext.Provider>
       <Footer />
-    </>
+    </Box>
   );
 }
