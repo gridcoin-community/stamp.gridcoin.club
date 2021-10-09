@@ -5,7 +5,6 @@ import React, {
   useCallback,
 } from 'react';
 import Container from '@mui/material/Container';
-import { Balance } from 'components/Balance';
 import Box from '@mui/material/Box';
 import { Header } from 'components/Header/Header';
 import Stepper from '@mui/material/Stepper';
@@ -67,7 +66,6 @@ export function Page() {
                 <Result back={handleBack} />
               )}
             </div>
-            <Balance />
           </Box>
         </Container>
       </FilesContext.Provider>

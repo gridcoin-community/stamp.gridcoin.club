@@ -15,9 +15,11 @@ export function BalanceComponent() {
 
   return (
     <div>
-      Balance:
+      Stamp service wallet balance:
       {' '}
       {balance}
+      {' '}
+      grc
     </div>
   );
 }
