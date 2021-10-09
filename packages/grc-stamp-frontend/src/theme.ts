@@ -7,10 +7,12 @@ const theme = createTheme({
     primary: {
       main: '#732DE2',
       light: '#953EF5',
-      dark: '#621CD1',
+      dark: '#4c1ea4',
     },
     secondary: {
-      main: '#19857b',
+      main: '#e58842',
+      light: '#f4b34a',
+      dark: '#d6733c',
     },
     error: {
       main: red.A400,
