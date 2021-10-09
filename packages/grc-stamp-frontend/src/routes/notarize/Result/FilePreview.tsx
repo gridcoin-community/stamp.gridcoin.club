@@ -1,5 +1,6 @@
 import { CardMedia } from '@mui/material';
 import React from 'react';
+import { FileType } from './FileType';
 
 interface Props {
   file: File;
@@ -21,6 +22,7 @@ export function isImage(file: File): boolean {
  */
 function FilePreviewComponent({ file, preview }: Props) {
   // console.log('📙 FilePreview re-renders 📙');
+  console.log(file.type);
   return (
     <>
       {(isImage(file) && preview) ? (
@@ -30,7 +32,18 @@ function FilePreviewComponent({ file, preview }: Props) {
           image={preview}
           alt={file.name}
         />
-      ) : (<span />)}
+      ) : (
+        <CardMedia
+          component="div"
+          sx={{ width: 250, height: 250 }}
+        >
+          <FileType
+            type={file.type}
+            sx={{ fontSize: 250 }}
+            color="disabled"
+          />
+        </CardMedia>
+      )}
     </>
   );
 }
