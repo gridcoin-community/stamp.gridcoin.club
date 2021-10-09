@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {
-  Button, CardActions,
+  Button, CardActions, useTheme,
 } from '@mui/material';
 import { getFirstFromTheStore, storeToBlockchain } from '../actions';
 import { FilesContext } from '../context';
@@ -20,6 +20,7 @@ interface Props {
 export function Result({ back }: Props) {
   const { state, dispatch } = React.useContext(FilesContext);
   const [isUploading, setUploading] = React.useState(false);
+  const theme = useTheme();
 
   const onCancel = () => {
     dispatch({ type: ActionType.clear });
@@ -40,8 +41,6 @@ export function Result({ back }: Props) {
     });
   };
 
-  // if (fileData)
-
   return (
     <Box sx={{
       display: 'flex',
@@ -50,7 +49,11 @@ export function Result({ back }: Props) {
       mb: 4,
     }}
     >
-      <Card sx={{ width: 'auto' }}>
+      <Card sx={{
+        width: 'auto',
+        minWidth: theme.spacing(120),
+      }}
+      >
         <Box sx={{ display: 'flex' }}>
           <FilePreview file={fileData.file} preview={fileData.preview} />
           <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
