@@ -87,3 +87,14 @@ export async function getStampInfoById(
   const { block, tx, time } = result.data.data.attributes;
   return { block, tx, time };
 }
+
+export function readableFileSize(size: number): string {
+  let newSize = size;
+  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  let i = 0;
+  while (newSize >= 1024) {
+    newSize /= 1024;
+    ++i;
+  }
+  return `${newSize.toFixed(1)} ${units[i]}`;
+}

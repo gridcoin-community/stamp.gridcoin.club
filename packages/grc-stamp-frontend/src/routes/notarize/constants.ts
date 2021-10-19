@@ -7,6 +7,8 @@ export enum Steps {
 
 export const stepTitle = [
   'Select file',
-  'Upload',
+  'Stamp',
   'Results',
 ];
+
+export const fileMaxSize = 1024 * 1024 * 256;

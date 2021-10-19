@@ -2,10 +2,12 @@ import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
 import { useDropzone, FileRejection } from 'react-dropzone';
 import { styled, Theme } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 import { FilesContext } from '../context';
 import { ActionType } from '../reducer';
 import { Errors } from './Errors';
 import { hashFiles, checkForExistance } from '../actions';
+import { fileMaxSize } from '../constants';
 
 interface Props {
   next: () => void;
@@ -72,11 +74,10 @@ export function Upload({ next }: Props) {
   const {
     getRootProps,
     getInputProps,
-    isDragActive,
   } = useDropzone({
     onDrop,
     maxFiles: 1,
-    maxSize: 1024 * 1024 * 1024,
+    maxSize: fileMaxSize,
     onDropRejected,
   });
 
@@ -86,11 +87,9 @@ export function Upload({ next }: Props) {
         {/* <Typography variant="h4" component="h1" gutterBottom> */}
         <DropBox {...getRootProps()}>
           <input {...getInputProps()} />
-          {
-                isDragActive
-                  ? <p>Drop any file here</p>
-                  : <p>Drag n drop some files here, or click to select files</p>
-              }
+          <Typography variant="body1" gutterBottom>
+            Drag n drop your file here, or click to select.
+          </Typography>
         </DropBox>
         {/* </Typography> */}
       </Box>
