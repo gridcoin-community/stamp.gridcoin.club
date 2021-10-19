@@ -4,20 +4,22 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {
-  Button, CardActions, useTheme,
+  Button, CardActions, Stack, useTheme,
 } from '@mui/material';
 import { getFirstFromTheStore, storeToBlockchain } from '../actions';
 import { FilesContext } from '../context';
 import { FilePreview } from './FilePreview';
 import { ActionType } from '../reducer';
 import { BlockchainData } from './BlockchainData';
+import { Steps } from '../constants';
 
 interface Props {
-  // next: any;
+  next: any;
   back: any;
+  activeStep: number;
 }
 
-export function Result({ back }: Props) {
+export function Result({ back, next, activeStep }: Props) {
   const { state, dispatch } = React.useContext(FilesContext);
   const [isUploading, setUploading] = React.useState(false);
   const theme = useTheme();
@@ -31,6 +33,14 @@ export function Result({ back }: Props) {
 
   const saveButtonDisabled = !fileData.hash || fileData.existing || isUploading;
   const cancelButtonDisabled = !fileData.hash || isUploading;
+  const transaction = fileData.blockchainData?.tx;
+  const block = fileData.blockchainData?.block;
+  const time = fileData.blockchainData?.time;
+  const finished = transaction && block && time;
+
+  if (finished && activeStep < Steps.Upload) {
+    next();
+  }
 
   const onUpload = async () => {
     setUploading(true);
@@ -66,22 +76,41 @@ export function Result({ back }: Props) {
           </Box>
         </Box>
         <CardActions>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={onCancel}
-            disabled={cancelButtonDisabled}
+          <Stack
+            direction="row"
+            justifyContent="flex-end"
+            sx={{ width: '100%' }}
+            spacing={2}
           >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={onUpload}
-            disabled={saveButtonDisabled}
-          >
-            Store to the blockchain
-          </Button>
+            {finished ? (
+              <Button
+                onClick={onCancel}
+                variant="outlined"
+                color="primary"
+              >
+                Stamp another file
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={onCancel}
+                  disabled={cancelButtonDisabled}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={onUpload}
+                  disabled={saveButtonDisabled}
+                >
+                  Store to the blockchain
+                </Button>
+              </>
+            )}
+          </Stack>
         </CardActions>
       </Card>
     </Box>

@@ -41,8 +41,6 @@ export function Page() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }, []);
 
-  // console.log('re-render Page component');
-
   if (!stateHasFile(state) && activeStep !== 0) {
     setActiveStep(0);
   }
@@ -63,7 +61,11 @@ export function Page() {
             <div>
               {activeStep === Steps.Select && <Upload next={handleNext} />}
               {(activeStep > Steps.Select && stateHasFile(state)) && (
-                <Result back={handleBack} />
+                <Result
+                  next={handleNext}
+                  back={handleBack}
+                  activeStep={activeStep}
+                />
               )}
             </div>
           </Box>
