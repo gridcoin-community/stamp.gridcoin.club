@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import { Header } from 'components/Header/Header';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
-import { Step } from '@mui/material';
+import { Step, Typography } from '@mui/material';
 import { Footer } from 'components/Footer/Footer';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
@@ -50,6 +50,11 @@ export function Page() {
       <Header />
       <FilesContext.Provider value={contextValue}>
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
+          <Typography variant="body1" gutterBottom>
+            Timestamping of documents can allow a public verification of the issue history
+            which is permanently recorded to the public blockchain.
+            There is absolutely no method of potential malicious modification at a later stage.
+          </Typography>
           <Box sx={{ width: '100%' }}>
             <Stepper activeStep={activeStep} alternativeLabel>
               {stepTitle.map((label) => (
