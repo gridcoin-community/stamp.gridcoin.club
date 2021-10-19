@@ -12,6 +12,7 @@ import { FilePreview } from './FilePreview';
 import { ActionType } from '../reducer';
 import { BlockchainData } from './BlockchainData';
 import { Steps } from '../constants';
+import { Progress } from './Progress';
 
 interface Props {
   next: any;
@@ -76,6 +77,7 @@ export function Result({ back, next, activeStep }: Props) {
           </Box>
         </Box>
         <CardActions>
+          <Progress fileData={fileData} isUploading={isUploading} />
           <Stack
             direction="row"
             justifyContent="flex-end"
