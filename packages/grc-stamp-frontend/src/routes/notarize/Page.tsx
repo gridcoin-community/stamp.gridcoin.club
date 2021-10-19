@@ -9,15 +9,15 @@ import Box from '@mui/material/Box';
 import { Header } from 'components/Header/Header';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
-import { Step, Typography } from '@mui/material';
+import { Step } from '@mui/material';
 import { Footer } from 'components/Footer/Footer';
-import { StampIcon } from 'icons/StampIcon';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
 import { FilesContext } from './context';
 import { stepTitle, Steps } from './constants';
 import { stateHasFile } from './actions';
 import { Result } from './Result/Result';
+import { Instructions } from './Instructions';
 
 export function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -51,27 +51,7 @@ export function Page() {
       <Header />
       <FilesContext.Provider value={contextValue}>
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-            <Box mr={4} sx={{ display: 'flex', alignItems: 'center' }}>
-              <StampIcon />
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <Typography variant="body1" gutterBottom>
-                Timestamping of documents can allow a public verification of the issue history
-                which is permanently recorded to the public blockchain.
-                There is absolutely no method of potential malicious modification at a later stage.
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                In order to notarize the document or check the proof of existence
-                {' '}
-                just drop the target file down below and follow the instructions.
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                The service is provided free of charge.
-              </Typography>
-            </Box>
-          </Box>
-          <br />
+          <Instructions />
           <Box sx={{ width: '100%' }}>
             <Stepper activeStep={activeStep} alternativeLabel>
               {stepTitle.map((label) => (
