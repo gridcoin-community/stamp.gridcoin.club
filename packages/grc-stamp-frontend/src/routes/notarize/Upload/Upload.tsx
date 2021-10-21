@@ -18,15 +18,15 @@ const DropBox = styled('div')(({ theme }: { theme: Theme }) => ({
   borderColor: theme.palette.grey[500],
   borderStyle: 'dashed',
   borderWidth: '5px',
-  height: '50vh',
+  height: '40vh',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  width: theme.spacing(120),
 }));
 
 export function Upload({ next }: Props) {
   const { dispatch } = useContext(FilesContext);
-
   const [messageCode, setMessageCode] = React.useState('');
 
   const onDrop = (acceptedFiles: File[]) => {
@@ -83,7 +83,12 @@ export function Upload({ next }: Props) {
 
   return (
     <>
-      <Box sx={{ my: 4 }}>
+      <Box sx={{
+        my: 4,
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+      >
         {/* <Typography variant="h4" component="h1" gutterBottom> */}
         <DropBox {...getRootProps()}>
           <input {...getInputProps()} />
