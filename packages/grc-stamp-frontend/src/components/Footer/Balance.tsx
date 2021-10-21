@@ -5,7 +5,7 @@ export function BalanceComponent() {
   const [balance, setBalance] = useState(0);
 
   const fetchBalance = async () => {
-    const res: any = await axios.get(`${process.env.API_URL}/wallet/balance`);
+    const res: any = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/wallet/balance`);
     setBalance(res.data?.data?.attributes?.balance || 0);
   };
 

@@ -9,7 +9,7 @@ interface Props {
 
 export function TXInfo({ tx }: Props) {
   const url = tx
-    ? process.env.EXPLORER_TX_URL?.replace(/\[data\]/, tx)
+    ? process.env.NEXT_PUBLIC_EXPLORER_TX_URL?.replace(/\[data\]/, tx)
     : '';
 
   return (

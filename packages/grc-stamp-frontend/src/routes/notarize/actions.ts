@@ -51,7 +51,7 @@ export async function checkForExistance(
 ): Promise<BlockchainData | null> {
   // Get the very first one from the store
   // const fileData = getFirstFromTheStore(store);
-  const { data } = await axios.get(`${process.env.API_URL}/stamps?filter[hash]=${hash}`);
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/stamps?filter[hash]=${hash}`);
   // const { data } = await axios.get(`http://localhost:7000/stamps?filter[hash]=${'f6fc84c9f21c24907d6bee6eec38cabab5fa9a7be8c4a7827fe9e56f245bd2d5'}`);
   // console.log(data);
   if (data?.meta?.count > 0) {
@@ -68,7 +68,7 @@ export async function checkForExistance(
 
 export async function storeToBlockchain(hash: string): Promise<string | undefined> {
   if (!hash) return undefined;
-  const res: any = await axios.post(`${process.env.API_URL}/stamps`, {
+  const res: any = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/stamps`, {
     data: {
       type: 'stamps',
       attributes: {
@@ -83,7 +83,7 @@ export async function storeToBlockchain(hash: string): Promise<string | undefine
 export async function getStampInfoById(
   dataId: number,
 ): Promise<{ block?: number, tx?: string, time?: number }> {
-  const result = await axios.get(`${process.env.API_URL}/stamps/${dataId}`);
+  const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/stamps/${dataId}`);
   const { block, tx, time } = result.data.data.attributes;
   return { block, tx, time };
 }

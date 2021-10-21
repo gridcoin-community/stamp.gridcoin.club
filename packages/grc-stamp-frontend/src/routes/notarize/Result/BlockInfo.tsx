@@ -9,7 +9,7 @@ interface Props {
 
 export function BlockInfo({ block }: Props) {
   const url = block
-    ? process.env.EXPLORER_BLOCK_URL?.replace(/\[data\]/, String(block))
+    ? process.env.NEXT_PUBLIC_EXPLORER_BLOCK_URL?.replace(/\[data\]/, String(block))
     : '';
 
   return (
