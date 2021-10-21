@@ -9,4 +9,7 @@ RUN rm -rf ./node_modules
 RUN npm install
 RUN npm run build
 
+
+RUN sleep 1000000
+
 CMD ["npm", "start"]
