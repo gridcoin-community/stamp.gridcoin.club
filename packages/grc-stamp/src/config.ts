@@ -17,6 +17,7 @@ interface Config {
   SCRAPER_TIMEOUT: number;
   PUBLISH_TIMEOUT: number;
   PORT: number;
+  BLOCK_PREFIX: string;
 }
 
 /**
@@ -46,6 +47,7 @@ nconf
     'GRC_RPC_PORT',
     'START_BLOCK',
     'PORT',
+    'BLOCK_PREFIX',
   ])
   // 3. Config file
   .file({
@@ -67,6 +69,7 @@ nconf
     PUBLISH_TIMEOUT: 2 * 60 * 1000,
     // PUBLISH_TIMEOUT: 20 * 1000,
     PORT: packageJson.port,
+    BLOCK_PREFIX: 'f055aa',
   });
 
 // Check required settings
@@ -79,6 +82,7 @@ checkConfig([
   'START_BLOCK',
   'BLOCK_GROUPS',
   'PORT',
+  'BLOCK_PREFIX',
 ]);
 
 export const config = Object.freeze(nconf.get()) as Config;
