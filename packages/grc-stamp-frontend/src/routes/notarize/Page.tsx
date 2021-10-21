@@ -11,6 +11,7 @@ import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
 import { Step } from '@mui/material';
 import { Footer } from 'components/Footer/Footer';
+import Head from 'next/head';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
 import { FilesContext } from './context';
@@ -47,33 +48,39 @@ export function Page() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header />
-      <FilesContext.Provider value={contextValue}>
-        <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
-          <Instructions />
-          <Box sx={{ width: '100%' }}>
-            <Stepper activeStep={activeStep} alternativeLabel>
-              {stepTitle.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-            <div>
-              {activeStep === Steps.Select && <Upload next={handleNext} />}
-              {(activeStep > Steps.Select && stateHasFile(state)) && (
+    <>
+      <Head>
+        <title>Gridcoin blockhain stamping</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Header />
+        <FilesContext.Provider value={contextValue}>
+          <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
+            <Instructions />
+            <Box sx={{ width: '100%' }}>
+              <Stepper activeStep={activeStep} alternativeLabel>
+                {stepTitle.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+              <div>
+                {activeStep === Steps.Select && <Upload next={handleNext} />}
+                {(activeStep > Steps.Select && stateHasFile(state)) && (
                 <Result
                   next={handleNext}
                   back={handleBack}
                   activeStep={activeStep}
                 />
-              )}
-            </div>
-          </Box>
-        </Container>
-      </FilesContext.Provider>
-      <Footer />
-    </Box>
+                )}
+              </div>
+            </Box>
+          </Container>
+        </FilesContext.Provider>
+        <Footer />
+      </Box>
+    </>
   );
 }
