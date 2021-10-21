@@ -11,7 +11,7 @@ function InstructionsComponent() {
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <Typography component="h1" variant="h4" mb={3}>
-            Notarize documents in Gridcoin blockchain
+            Notarize documents with Gridcoin blockchain
           </Typography>
           <Typography variant="body1" gutterBottom>
             Timestamping of documents can allow a public verification of the issue history
