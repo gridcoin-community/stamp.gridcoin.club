@@ -7,12 +7,13 @@ import {
   Button, CardActions, Stack, useTheme,
 } from '@mui/material';
 import { getFirstFromTheStore, storeToBlockchain } from '../actions';
-import { FilesContext } from '../context';
+import { FilesContext, ErrorContext } from '../context';
 import { FilePreview } from './FilePreview';
 import { ActionType } from '../reducer';
 import { BlockchainData } from './BlockchainData';
 import { Steps } from '../constants';
 import { Progress } from './Progress';
+import { ErrorInsufficientFunds } from './ErrorInsufficientFunds';
 
 interface Props {
   next: any;
@@ -22,7 +23,9 @@ interface Props {
 
 export function Result({ back, next, activeStep }: Props) {
   const { state, dispatch } = React.useContext(FilesContext);
+  const { setError } = React.useContext(ErrorContext);
   const [isUploading, setUploading] = React.useState(false);
+  const [isFundError, setFundError] = React.useState(false);
   const theme = useTheme();
 
   const onCancel = () => {
@@ -44,12 +47,27 @@ export function Result({ back, next, activeStep }: Props) {
   }
 
   const onUpload = async () => {
-    setUploading(true);
-    const id = await storeToBlockchain(fileData.hash as string);
-    dispatch({
-      type: ActionType.setId,
-      payload: { id: fileData.file.name, dataId: id },
-    });
+    try {
+      const id = await storeToBlockchain(fileData.hash as string);
+      dispatch({
+        type: ActionType.setId,
+        payload: { id: fileData.file.name, dataId: id },
+      });
+      setUploading(true);
+    } catch (error: any) {
+      if (error.response?.status === 406) {
+        setFundError(true);
+      } else {
+        // console.log(error.response);
+        const res = error.response?.data?.errors;
+        if (res && res[110]) {
+          setError(res[0].title);
+        } else {
+          setError(`Unknown error ${error.response?.status}`);
+        }
+        back();
+      }
+    }
   };
 
   return (
@@ -60,6 +78,7 @@ export function Result({ back, next, activeStep }: Props) {
       mb: 4,
     }}
     >
+      {isFundError && <ErrorInsufficientFunds back={back} />}
       <Card sx={{
         width: 'auto',
         minWidth: theme.spacing(120),

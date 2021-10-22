@@ -3,9 +3,8 @@ import Box from '@mui/material/Box';
 import { useDropzone, FileRejection } from 'react-dropzone';
 import { styled, Theme } from '@mui/material/styles';
 import { Typography } from '@mui/material';
-import { FilesContext } from '../context';
+import { FilesContext, ErrorContext } from '../context';
 import { ActionType } from '../reducer';
-import { Errors } from './Errors';
 import { hashFiles, checkForExistance } from '../actions';
 import { fileMaxSize } from '../constants';
 
@@ -27,10 +26,10 @@ const DropBox = styled('div')(({ theme }: { theme: Theme }) => ({
 
 export function Upload({ next }: Props) {
   const { dispatch } = useContext(FilesContext);
-  const [messageCode, setMessageCode] = React.useState('');
+  const { setError } = useContext(ErrorContext);
 
   const onDrop = (acceptedFiles: File[]) => {
-    setMessageCode('');
+    setError(undefined);
     const file = acceptedFiles.shift();
     if (file) {
       dispatch({ type: ActionType.add, payload: { file } });
@@ -66,7 +65,7 @@ export function Upload({ next }: Props) {
     if (errors) {
       const err = errors.errors.shift();
       if (err) {
-        setMessageCode(err.code);
+        setError(err.code);
       }
     }
   };
@@ -98,7 +97,6 @@ export function Upload({ next }: Props) {
         </DropBox>
         {/* </Typography> */}
       </Box>
-      <Errors code={messageCode} />
     </>
   );
 }

@@ -14,26 +14,27 @@ import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
-import { FilesContext } from './context';
+import { FilesContext, ErrorContext } from './context';
 import { stepTitle, Steps } from './constants';
 import { stateHasFile } from './actions';
 import { Result } from './Result/Result';
 import { Instructions } from './Instructions';
+import { Errors } from './Errors';
 
 export function Page() {
   const [activeStep, setActiveStep] = useState(0);
+  const [error, setError] = useState<string>();
   // const [files, setFiles] = useState<File[]>();
   const [state, dispatch] = useReducer(reducer, InitialState);
 
-  const contextValue = useMemo(
+  const fileContextValue = useMemo(
     () => ({ state, dispatch }),
     [state],
   );
-
-  // useEffect(() => {
-  //   console.log('component did mount');
-  //   // setInterval(() => dispatch({ type: ActionType.test }), 2000);
-  // }, []);
+  const errorContextValue = useMemo(
+    () => ({ error, setError }),
+    [error],
+  );
 
   const handleBack = useCallback(() => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -55,30 +56,33 @@ export function Page() {
       </Head>
       <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Header />
-        <FilesContext.Provider value={contextValue}>
-          <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
-            <Instructions />
-            <Box sx={{ width: '100%' }}>
-              <Stepper activeStep={activeStep} alternativeLabel>
-                {stepTitle.map((label) => (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-              <div>
-                {activeStep === Steps.Select && <Upload next={handleNext} />}
-                {(activeStep > Steps.Select && stateHasFile(state)) && (
-                <Result
-                  next={handleNext}
-                  back={handleBack}
-                  activeStep={activeStep}
-                />
-                )}
-              </div>
-            </Box>
-          </Container>
-        </FilesContext.Provider>
+        <ErrorContext.Provider value={errorContextValue}>
+          <FilesContext.Provider value={fileContextValue}>
+            <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
+              <Instructions />
+              <Box sx={{ width: '100%' }}>
+                <Stepper activeStep={activeStep} alternativeLabel>
+                  {stepTitle.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+                <div>
+                  {activeStep === Steps.Select && <Upload next={handleNext} />}
+                  {(activeStep > Steps.Select && stateHasFile(state)) && (
+                  <Result
+                    next={handleNext}
+                    back={handleBack}
+                    activeStep={activeStep}
+                  />
+                  )}
+                </div>
+              </Box>
+            </Container>
+            <Errors />
+          </FilesContext.Provider>
+        </ErrorContext.Provider>
         <Footer />
       </Box>
     </>

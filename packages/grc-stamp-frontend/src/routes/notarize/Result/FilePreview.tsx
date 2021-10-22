@@ -22,7 +22,7 @@ export function isImage(file: File): boolean {
  */
 function FilePreviewComponent({ file, preview }: Props) {
   // console.log('📙 FilePreview re-renders 📙');
-  console.log(file.type);
+  // console.log(file.type);
   return (
     <>
       {(isImage(file) && preview) ? (
