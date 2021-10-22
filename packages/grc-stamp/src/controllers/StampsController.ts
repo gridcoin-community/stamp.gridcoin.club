@@ -10,6 +10,8 @@ import { Controller } from './BaseController';
 import { Stamp } from '../models/Stamp';
 import { StampData, StampInput, StampSchema } from './schemas/StampSchema';
 import { ErrorModel } from '../models/Error';
+import { WalletRepository } from '../repositories/WalletRepository';
+import { config } from '../config';
 
 const { Store } = yayson();
 export class StampsController extends Controller {
@@ -17,6 +19,7 @@ export class StampsController extends Controller {
     req: Request,
     res: Response,
     private repository = StampsRepository,
+    private walletRepository = WalletRepository,
   ) {
     super(req, res);
     this.presenter = StampPresenter;
@@ -75,6 +78,33 @@ export class StampsController extends Controller {
   public async createStamp(input: StampInput): Promise<void> {
     const store = new Store();
     let data: StampData;
+    // Check wallet balance
+    try {
+      const balance = await this.walletRepository.getBalance();
+      if (balance < Number(config.MINIMUM_WALLET_AMOUNT)) {
+        // insufficient funds
+        this.res.status(HttpStatus.NOT_ACCEPTABLE).send({
+          errors: [
+            new ErrorModel(
+              HttpStatus.NOT_ACCEPTABLE,
+              'Insufficient Funds',
+            ),
+          ],
+        });
+        return;
+      }
+    } catch (e) {
+      console.error(e);
+      this.res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
+        errors: [
+          new ErrorModel(
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
+          ),
+        ],
+      });
+      return;
+    }
     try {
       data = store.sync(input);
       const result = StampSchema.validate(data);
@@ -96,7 +126,8 @@ export class StampsController extends Controller {
         });
       return;
     }
-    // Find existing
+
+    // Find existing record
     const existing = await this.repository.getByHash(data.hash, data.hashType as StampsType);
     if (existing) {
       this.res

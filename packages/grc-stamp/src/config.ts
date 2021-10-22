@@ -18,6 +18,7 @@ interface Config {
   PUBLISH_TIMEOUT: number;
   PORT: number;
   BLOCK_PREFIX: string;
+  MINIMUM_WALLET_AMOUNT: number;
 }
 
 /**
@@ -48,6 +49,7 @@ nconf
     'START_BLOCK',
     'PORT',
     'BLOCK_PREFIX',
+    'MINIMUM_WALLET_AMOUNT',
   ])
   // 3. Config file
   .file({
@@ -70,6 +72,7 @@ nconf
     // PUBLISH_TIMEOUT: 20 * 1000,
     PORT: packageJson.port,
     BLOCK_PREFIX: 'f055aa',
+    MINIMUM_WALLET_AMOUNT: 1,
   });
 
 // Check required settings
@@ -83,6 +86,7 @@ checkConfig([
   'BLOCK_GROUPS',
   'PORT',
   'BLOCK_PREFIX',
+  'MINIMUM_WALLET_AMOUNT',
 ]);
 
 export const config = Object.freeze(nconf.get()) as Config;
