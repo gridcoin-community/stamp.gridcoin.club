@@ -14,13 +14,20 @@ export function BalanceComponent() {
   });
 
   return (
-    <div>
-      Stamp service wallet balance:
-      {' '}
-      {balance}
-      {' '}
-      grc
-    </div>
+    <>
+      <div>
+        Stamp service wallet balance:
+        {' '}
+        {balance}
+        {' '}
+        grc
+      </div>
+      <div>
+        Address:
+        {' '}
+        { process.env.NEXT_PUBLIC_WALLET_ADDRESS }
+      </div>
+    </>
   );
 }
 
