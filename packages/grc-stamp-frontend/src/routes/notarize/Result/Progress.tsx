@@ -23,7 +23,7 @@ export function Progress({ fileData, isUploading }: Props) {
   } else if (!transaction && !block) {
     message = 'Submitting transaction...';
   } else if (!!transaction && !block) {
-    message = 'Waiting for the confirmations...';
+    message = 'Waiting for confirmations...';
   }
 
   return (
