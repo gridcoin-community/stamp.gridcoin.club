@@ -51,7 +51,7 @@ export function Page() {
   return (
     <>
       <Head>
-        <title>Gridcoin blockhain stamping</title>
+        <title>Gridcoin blockchain stamping</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>

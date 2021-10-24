@@ -4,8 +4,8 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Image from 'next/image';
-import { IconButton } from '@mui/material';
-import AppsIcon from '@mui/icons-material/Apps';
+// import { IconButton } from '@mui/material';
+// import AppsIcon from '@mui/icons-material/Apps';
 import Box from '@mui/material/Box';
 
 interface Props {
@@ -43,7 +43,7 @@ export function Header() {
               flexGrow: 1,
             }}
             >
-              <div>
+              {/* <div>
                 <IconButton
                   size="large"
                   aria-label="account of current user"
@@ -54,7 +54,7 @@ export function Header() {
                 >
                   <AppsIcon />
                 </IconButton>
-              </div>
+              </div> */}
             </Toolbar>
           </Container>
         </AppBar>
