@@ -24,7 +24,8 @@ export const StampSchema = Joi.object<StampData>({
   hash: Joi.string()
     .required()
     .min(64)
-    .max(64),
+    .max(64)
+    .regex(/^[a-fA-F0-9]{64}$/),
   protocol: Joi.string()
     .allow('0.0.1')
     .default('0.0.1')
