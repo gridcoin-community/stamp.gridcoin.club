@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "echo \"I am sorry\"; exit 0;",
     "lint": "next lint",
+    "typecheck": "tsc --project tsconfig.json --noEmit --pretty false",
     "commit": "cz"
   },
   "lint-staged": {

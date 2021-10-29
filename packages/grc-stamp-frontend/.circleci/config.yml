@@ -1,0 +1,126 @@
+version: 2
+
+references:
+  node_defaults: &node_defaults
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:14
+
+jobs:
+  checkout_code:
+    <<: *node_defaults
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - .
+
+  bundle:
+    <<: *node_defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - restore_cache:
+          key: npm-v1-{{ checksum "yarn.lock" }}
+      - run: npm install
+      - save_cache:
+          key: npm-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/repo/node_modules
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - node_modules
+
+  run_test:
+    <<: *node_defaults
+    parallelism: 4
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: run tests
+          command: npm run test
+
+
+  run_lint:
+    <<: *node_defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Run JS Linter
+          command: npm run lint
+
+  run_typecheck:
+    <<: *node_defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Run TypeScript
+          command: npm run typecheck
+
+  run_lint_commit_message:
+    <<: *node_defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Define environment variable with lastest commit's message
+          command: |
+            echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Lint commit message
+          command: echo "$COMMIT_MESSAGE" | npx commitlint
+
+  release:
+    <<: *node_defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Trust this ssh key
+          command: mkdir -p /.ssh/ && touch /.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Semantic release
+          command: npm run semantic-release || true
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - checkout_code
+
+      - bundle:
+          requires:
+            - checkout_code
+
+      - run_lint:
+          requires:
+            - bundle
+
+      - run_typecheck:
+          requires:
+            - bundle
+
+      - run_test:
+          requires:
+            - bundle
+
+      - run_lint_commit_message:
+          requires:
+            - bundle
+
+      - release:
+          filters:
+            branches:
+              only: master
+          requires:
+            - run_lint_commit_message
+            - run_test
+            - run_typecheck
+            - run_lint
+          context: semantic-release
