@@ -20,8 +20,8 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: [
-      '-apple-system',
       'SF UI Text Regular',
+      '-apple-system',
       'Arial',
       'sans-serif',
     ].join(','),
