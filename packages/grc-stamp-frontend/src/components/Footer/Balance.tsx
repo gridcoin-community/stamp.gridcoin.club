@@ -1,3 +1,4 @@
+import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
@@ -15,18 +16,22 @@ export function BalanceComponent() {
 
   return (
     <>
-      <div>
-        Stamp service wallet balance:
-        {' '}
-        {balance}
-        {' '}
-        grc
-      </div>
-      <div>
-        Address:
-        {' '}
-        { process.env.NEXT_PUBLIC_WALLET_ADDRESS }
-      </div>
+      <Box>
+        <Typography variant="caption">
+          Stamp service wallet balance:
+          {' '}
+          {balance}
+          {' '}
+          grc
+        </Typography>
+      </Box>
+      <Box>
+        <Typography variant="caption">
+          Address:
+          {' '}
+          { process.env.NEXT_PUBLIC_WALLET_ADDRESS }
+        </Typography>
+      </Box>
     </>
   );
 }
