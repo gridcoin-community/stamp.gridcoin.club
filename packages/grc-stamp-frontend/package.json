@@ -9,7 +9,8 @@
     "test": "echo \"I am sorry\"; exit 0;",
     "lint": "next lint",
     "typecheck": "tsc --project tsconfig.json --noEmit --pretty false",
-    "commit": "cz"
+    "commit": "cz",
+    "semantic-release": "semantic-release"
   },
   "lint-staged": {
     "{src,test,tools}/**/*.ts": [
