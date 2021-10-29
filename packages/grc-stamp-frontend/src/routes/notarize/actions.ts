@@ -8,7 +8,6 @@ export function readFile(file: File): Promise<ArrayBuffer | undefined> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {
-      // console.log('loaded');
       resolve(event?.target?.result as ArrayBuffer | undefined);
     };
     reader.onerror = (event) => {
@@ -34,7 +33,6 @@ export function getFirstFromTheStore(state: StateInterface): FileData {
 export function hashFiles(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     // Get the very first one from the store
-    // const fileData = getFirstFromTheStore(store);
     readFile(file).then(async (binary) => {
       if (binary) {
         const hash = sha256.update(binary);
@@ -50,13 +48,9 @@ export async function checkForExistance(
   hash: string,
 ): Promise<BlockchainData | null> {
   // Get the very first one from the store
-  // const fileData = getFirstFromTheStore(store);
   const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/stamps?filter[hash]=${hash}`);
-  // const { data } = await axios.get(`http://localhost:7000/stamps?filter[hash]=${'f6fc84c9f21c24907d6bee6eec38cabab5fa9a7be8c4a7827fe9e56f245bd2d5'}`);
-  // console.log(data);
   if (data?.meta?.count > 0) {
     const existing = data.data[0];
-    // console.log(existing);
     return {
       block: existing.attributes.block,
       tx: existing.attributes.tx,

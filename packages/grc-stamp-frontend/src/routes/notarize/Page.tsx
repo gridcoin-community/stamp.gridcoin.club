@@ -24,7 +24,6 @@ import { Errors } from './Errors';
 export function Page() {
   const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState<string>();
-  // const [files, setFiles] = useState<File[]>();
   const [state, dispatch] = useReducer(reducer, InitialState);
 
   const fileContextValue = useMemo(
