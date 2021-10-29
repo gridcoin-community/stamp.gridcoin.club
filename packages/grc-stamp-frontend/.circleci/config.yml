@@ -86,7 +86,7 @@ jobs:
           command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: Semantic release
-          command: npm run semantic-release || true
+          command: npm run semantic-release
 
 workflows:
   version: 2
