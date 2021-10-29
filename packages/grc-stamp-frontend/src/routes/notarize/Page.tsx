@@ -43,8 +43,8 @@ export function Page() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }, []);
 
-  if (!stateHasFile(state) && activeStep !== 0) {
-    setActiveStep(0);
+  if (!stateHasFile(state) && activeStep !== Steps.Select) {
+    setActiveStep(Steps.Select);
   }
 
   return (
