@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.0.0...v1.1.0) (2021-10-29)
+
+
+### Features
+
+* add github reference in the footer ([fdbb926](https://github.com/gridcat/grc-stamp-frontend/commit/fdbb926c07490d61d565880bbcd850877593d352))
+
 # 1.0.0 (2021-10-29)
 
 
