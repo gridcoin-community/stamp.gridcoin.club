@@ -3,44 +3,68 @@ import {
   Divider,
   Typography,
   Grid,
-  Toolbar,
-  Box,
 } from '@mui/material';
 import { Balance } from 'components/Footer/Balance';
 import GithubIcon from '@mui/icons-material/GitHub';
-import Link from 'next/link';
 import React from 'react';
+import { styled } from '@mui/material/styles';
+
+const SubFooterTypography = styled(Typography)(({ theme }) => ({
+  textAlign: 'left',
+  lineHeight: theme.spacing(8),
+  width: '100%',
+  display: 'inline-block',
+  color: theme.palette.grey[800],
+  [theme.breakpoints.down('sm')]: {
+    textAlign: 'center',
+    lineHeight: theme.spacing(5),
+  },
+}));
+
+const FooterTextTypography = styled(Typography)(({ theme }) => ({
+  display: 'inline-block',
+  width: '100%',
+  [theme.breakpoints.down('md')]: {
+    textAlign: 'left',
+  },
+  [theme.breakpoints.down('sm')]: {
+    textAlign: 'center',
+  },
+}));
 
 export function Footer() {
   return (
     <Container maxWidth="xl">
-      <Divider />
-      <Grid container spacing={2}>
+      <div>
+        <Divider />
+      </div>
+      <Grid container spacing={0} mt={2} mb={2}>
         <Grid item xs={12} md={6}>
-          <Box>
-            <Typography variant="caption">
-              Made with
-              {' '}
-              <span style={{ color: 'red' }}>❤</span>
-              {' '}
-              by @gridcat
-            </Typography>
-          </Box>
-          <Typography variant="caption">
-            <Link href="https://github.com/gridcat/grc-stamp-frontend" passHref>
-              <a target="_blank" rel="nofollow">
-                <GithubIcon color="action" />
-              </a>
-            </Link>
-          </Typography>
+          <FooterTextTypography variant="caption">
+            <Balance />
+          </FooterTextTypography>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography variant="caption" sx={{ textAlign: 'right' }}>
-            <Balance />
-          </Typography>
+          <FooterTextTypography variant="caption" textAlign="right">
+            <a
+              href="https://github.com/gridcat/grc-stamp-frontend"
+              target="_blank"
+              rel="nofollow noreferrer"
+              style={{ display: 'inline-block' }}
+            >
+              <GithubIcon color="primary" sx={{ fontSize: 40 }} />
+            </a>
+          </FooterTextTypography>
         </Grid>
       </Grid>
-      <Toolbar />
+      <Divider />
+      <SubFooterTypography variant="caption">
+        Made with
+        {' '}
+        <span style={{ color: 'red' }}>❤</span>
+        {' '}
+        by @gridcat
+      </SubFooterTypography>
     </Container>
   );
 }
