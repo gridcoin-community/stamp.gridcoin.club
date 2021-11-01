@@ -1,15 +1,32 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { StampIcon } from 'icons/StampIcon';
+import { useTheme, styled } from '@mui/material/styles';
+
+const Wrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  marginBottom: theme.spacing(2),
+}));
+
+const TextBox = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+}));
 
 function InstructionsComponent() {
+  const theme = useTheme();
+  const showIcon = useMediaQuery(theme.breakpoints.up('sm'));
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <Box mr={4} sx={{ display: 'flex', alignItems: 'center' }}>
-          <StampIcon />
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <Wrapper>
+        {showIcon && (
+          <Box mr={4} sx={{ display: 'flex', alignItems: 'center' }}>
+            <StampIcon />
+          </Box>
+        )}
+        <TextBox>
           <Typography component="h1" variant="h4" mb={3}>
             Notarize documents with Gridcoin blockchain
           </Typography>
@@ -26,9 +43,8 @@ function InstructionsComponent() {
           <Typography variant="body1" gutterBottom>
             The service is provided free of charge.
           </Typography>
-        </Box>
-      </Box>
-      <br />
+        </TextBox>
+      </Wrapper>
     </>
   );
 }

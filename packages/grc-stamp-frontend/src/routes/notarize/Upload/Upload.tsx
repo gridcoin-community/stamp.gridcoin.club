@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
 import { useDropzone, FileRejection } from 'react-dropzone';
-import { styled, Theme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import { FilesContext, ErrorContext } from '../context';
 import { ActionType } from '../reducer';
@@ -12,7 +12,7 @@ interface Props {
   next: () => void;
 }
 
-const DropBox = styled('div')(({ theme }: { theme: Theme }) => ({
+const DropBox = styled('div')(({ theme }) => ({
   borderRadius: Number(theme.shape.borderRadius) * 5,
   borderColor: theme.palette.grey[500],
   borderStyle: 'dashed',
