@@ -88,6 +88,45 @@ jobs:
           name: Semantic release
           command: npm run semantic-release
 
+  build_image:
+    working_directory: ~/repo
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - run:
+          name: Get the recent changes
+          command: git pull
+      - setup_remote_docker
+      - run:
+          name: Install dependencies
+          command: apk add --no-cache jq
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/app.tar | true
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build --cache-from=app -t app .
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/app.tar app
+      - deploy:
+          name: Push application Docker image
+          command: |
+            docker login ghcr.io -u USERNAME -p${CR_PAT}
+            docker tag app "ghcr.io/gridcat/$(jq -r '.name' package.json):$(jq -r '.version' package.json)"
+            docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):$(jq -r '.version' package.json)"
+
 workflows:
   version: 2
   build-and-deploy:
@@ -124,3 +163,11 @@ workflows:
             - run_typecheck
             - run_lint
           context: semantic-release
+      
+      - build_image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - release
+          context: git-container-registry
