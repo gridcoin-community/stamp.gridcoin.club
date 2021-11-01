@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { StampIcon } from 'icons/StampIcon';
-import { useTheme, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -15,34 +15,45 @@ const TextBox = styled(Box)(() => ({
   justifyContent: 'center',
 }));
 
+const Text = styled(Typography)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    textAlign: 'justify',
+  },
+}));
+
+const IconWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  marginRight: theme.spacing(4),
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
+}));
+
 function InstructionsComponent() {
-  const theme = useTheme();
-  const showIcon = useMediaQuery(theme.breakpoints.up('sm'));
   return (
     <>
       <Wrapper>
-        {showIcon && (
-          <Box mr={4} sx={{ display: 'flex', alignItems: 'center' }}>
-            <StampIcon />
-          </Box>
-        )}
+        <IconWrapper>
+          <StampIcon />
+        </IconWrapper>
         <TextBox>
           <Typography component="h1" variant="h4" mb={3}>
             Notarize documents with Gridcoin blockchain
           </Typography>
-          <Typography variant="body1" gutterBottom>
+          <Text variant="body1" gutterBottom>
             Timestamping of documents can allow a public verification of the issue history
             which is permanently recorded to the public blockchain.
             There is absolutely no method of potential malicious modification at a later stage.
-          </Typography>
-          <Typography variant="body1" gutterBottom>
+          </Text>
+          <Text variant="body1" gutterBottom>
             In order to notarize the document or check the proof of existence
             {' '}
             just drop the target file down below and follow the instructions.
-          </Typography>
-          <Typography variant="body1" gutterBottom>
+          </Text>
+          <Text variant="body1" gutterBottom>
             The service is provided free of charge.
-          </Typography>
+          </Text>
         </TextBox>
       </Wrapper>
     </>
