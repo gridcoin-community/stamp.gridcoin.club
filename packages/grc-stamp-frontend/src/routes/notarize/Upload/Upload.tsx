@@ -88,14 +88,12 @@ export function Upload({ next }: Props) {
         justifyContent: 'center',
       }}
       >
-        {/* <Typography variant="h4" component="h1" gutterBottom> */}
         <DropBox {...getRootProps()}>
           <input {...getInputProps()} />
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" gutterBottom pl={1} pr={1} textAlign="center">
             Drag n drop your file here, or click to select.
           </Typography>
         </DropBox>
-        {/* </Typography> */}
       </Box>
     </>
   );
