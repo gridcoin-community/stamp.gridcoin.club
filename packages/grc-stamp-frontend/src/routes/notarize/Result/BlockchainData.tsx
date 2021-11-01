@@ -1,4 +1,6 @@
-import { TableContainer, Table, TableBody } from '@mui/material';
+import {
+  List, Divider,
+} from '@mui/material';
 import React from 'react';
 import { getFirstFromTheStore, getStampInfoById } from '../actions';
 import { FilesContext } from '../context';
@@ -60,19 +62,18 @@ export function BlockchainData({ isUploading }: Props) {
   });
 
   return (
-    <TableContainer>
-      <Table>
-        <TableBody>
-          <HashInfo hash={fileData.hash} />
-          {(fileData.blockchainData || isUploading) && (
-          <>
-            <TXInfo tx={transaction} />
-            <BlockInfo block={block} />
-            <TimeInfo time={time} />
-          </>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <List>
+      <HashInfo hash={fileData.hash} />
+      {(fileData.blockchainData || isUploading) && (
+      <>
+        <Divider variant="fullWidth" component="li" />
+        <TXInfo tx={transaction} />
+        <Divider variant="fullWidth" component="li" />
+        <BlockInfo block={block} />
+        <Divider variant="fullWidth" component="li" />
+        <TimeInfo time={time} />
+      </>
+      )}
+    </List>
   );
 }
