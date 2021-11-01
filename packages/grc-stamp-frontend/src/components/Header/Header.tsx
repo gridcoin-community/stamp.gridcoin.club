@@ -7,6 +7,7 @@ import Image from 'next/image';
 // import { IconButton } from '@mui/material';
 // import AppsIcon from '@mui/icons-material/Apps';
 import Box from '@mui/material/Box';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 interface Props {
   children: React.ReactElement;
@@ -25,18 +26,30 @@ export function ElevationScroll(props: Props) {
 }
 
 export function Header() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <>
       <ElevationScroll>
         <AppBar color="transparent" sx={{ backgroundColor: '#f8fafd' }}>
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ float: 'left' }}>
-              <Image
-                src="/ic-logo-desktop.svg"
-                width={158}
-                height={50}
-                alt="Gridcoin stamp"
-              />
+              {isMobile ? (
+                <Image
+                  src="/ic-logo-mobile.svg"
+                  width={140}
+                  height={32}
+                  alt="Gridcoin stamp"
+                />
+              ) : (
+                <Image
+                  src="/ic-logo-desktop.svg"
+                  width={158}
+                  height={50}
+                  alt="Gridcoin stamp"
+                />
+              )}
             </Box>
             <Toolbar sx={{
               justifyContent: 'flex-end',
@@ -59,7 +72,6 @@ export function Header() {
           </Container>
         </AppBar>
       </ElevationScroll>
-      <Toolbar />
       <Toolbar />
     </>
   );
