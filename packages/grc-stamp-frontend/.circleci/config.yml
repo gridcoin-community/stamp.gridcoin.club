@@ -126,6 +126,8 @@ jobs:
             docker login ghcr.io -u gridcat -p${CR_PAT}
             docker tag app "ghcr.io/gridcat/$(jq -r '.name' package.json):$(jq -r '.version' package.json)"
             docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):$(jq -r '.version' package.json)"
+            docker tag app "ghcr.io/gridcat/$(jq -r '.name' package.json):latest"
+            docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):latest"
 
 workflows:
   version: 2
