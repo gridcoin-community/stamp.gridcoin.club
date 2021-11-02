@@ -96,7 +96,7 @@ jobs:
       - checkout
       - run:
           name: Get the recent changes
-          command: git pull
+          command: git pull origin master
       - setup_remote_docker
       - run:
           name: Install dependencies
