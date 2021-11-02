@@ -17,8 +17,7 @@ import { Progress } from './Progress';
 import { ErrorInsufficientFunds } from './ErrorInsufficientFunds';
 
 const MainCard = styled(Card)(({ theme }) => ({
-  width: 'auto',
-  minWidth: theme.spacing(130),
+  width: theme.spacing(130),
   [theme.breakpoints.down('lg')]: {
     minWidth: theme.spacing(110),
   },
@@ -92,7 +91,7 @@ export function Result({ back, next, activeStep }: Props) {
           {showFilePreview && <FilePreview file={fileData.file} preview={fileData.preview} />}
           <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
             <CardContent sx={{ flex: '1 0 auto' }}>
-              <Typography component="div" variant="h5" sx={{ pb: 3 }}>
+              <Typography component="div" variant="h5" pb={1}>
                 {fileData.file.name}
               </Typography>
               <BlockchainData isUploading={isUploading} />

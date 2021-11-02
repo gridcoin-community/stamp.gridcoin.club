@@ -10,6 +10,15 @@ import React from 'react';
 const ListItemTextResponsive = styled(ListItemText)(({ theme }) => ({
   '& .MuiListItemText-secondary': {
     textAlign: 'left',
+    display: 'table',
+    tableLayout: 'fixed',
+    width: '100%',
+    whiteSpace: 'nowrap',
+  },
+  '& .MuiListItemText-secondary > *': {
+    display: 'table-cell',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   [theme.breakpoints.up('md')]: {
     '&.MuiListItemText-root': {
@@ -21,6 +30,7 @@ const ListItemTextResponsive = styled(ListItemText)(({ theme }) => ({
       width: '100%',
       textAlign: 'right',
       paddingLeft: theme.spacing(2),
+
     },
     '& .MuiListItemText-primary': {
       flexGrow: 1,
@@ -53,7 +63,7 @@ function SecondaryText({ value, link }: Omit<Props, 'title'>) {
       </Link>
     );
   }
-  return (<>{value}</>);
+  return (<span>{value}</span>);
 }
 
 export function Info({ title, value, link }: Props) {
