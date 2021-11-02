@@ -1,3 +1,22 @@
+# [1.2.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.1.0...v1.2.0) (2021-11-02)
+
+
+### Bug Fixes
+
+* make logo resposive ([2392d8a](https://github.com/gridcat/grc-stamp-frontend/commit/2392d8aba6d071d9e5330ac0738942f1ca41539e))
+
+
+### Features
+
+* add allipsis to the properties ([be04bf9](https://github.com/gridcat/grc-stamp-frontend/commit/be04bf91ed6861be69548ba1038d83554c50f230))
+* enchance instructions responsiveness ([7855e9e](https://github.com/gridcat/grc-stamp-frontend/commit/7855e9ead77c7b7d4025b43cec8e9f4b48ddd89d))
+* introduce responsive font sizes ([44fffed](https://github.com/gridcat/grc-stamp-frontend/commit/44fffed5556d13e77df34ed1df7815526b392498))
+* make actions responsive in the main card ([941c3f0](https://github.com/gridcat/grc-stamp-frontend/commit/941c3f0c0f3fcb4c9cb3b128a219473357b7baa4))
+* make dnd responsive ([7c28bcc](https://github.com/gridcat/grc-stamp-frontend/commit/7c28bcc97d9988fc01af8b8f3a6bfca72cba80dd))
+* make footer responsive ([9296aa9](https://github.com/gridcat/grc-stamp-frontend/commit/9296aa946c1aacfc3595f73bc9743fc9fe69a75f))
+* make info card responsive ([b198882](https://github.com/gridcat/grc-stamp-frontend/commit/b1988825712f1ff10593e17e28d6c3ddda51c8bd))
+* make instructions block mobile friendly ([0df28a7](https://github.com/gridcat/grc-stamp-frontend/commit/0df28a77c11bdb9f3b14d31215cac53190df0f6a))
+
 # [1.1.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.0.0...v1.1.0) (2021-10-29)
 
 
