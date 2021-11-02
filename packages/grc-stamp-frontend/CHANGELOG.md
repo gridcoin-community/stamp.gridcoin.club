@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/gridcat/grc-stamp-frontend/compare/v1.2.0...v1.2.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* add .env file to repo ([004fb08](https://github.com/gridcat/grc-stamp-frontend/commit/004fb08d2691d5b0c0237b75d3fe71c94b109142))
+
 # [1.2.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.1.0...v1.2.0) (2021-11-02)
 
 
