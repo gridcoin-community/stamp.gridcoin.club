@@ -29,6 +29,17 @@ const IconWrapper = styled(Box)(({ theme }) => ({
     display: 'none',
   },
 }));
+const Gradient = styled('div')(({ theme }) => ({
+  backgroundImage: `linear-gradient(to right, ${theme.palette.primary.dark}, ${theme.palette.primary.light})`,
+  width: 100,
+  height: 4,
+  borderRadius: 2,
+  marginTop: theme.spacing(6),
+  marginBottom: theme.spacing(4),
+  [theme.breakpoints.up('sm')]: {
+    display: 'none',
+  },
+}));
 
 function InstructionsComponent() {
   return (
@@ -38,6 +49,7 @@ function InstructionsComponent() {
           <StampIcon />
         </IconWrapper>
         <TextBox>
+          <Gradient />
           <Typography component="h1" variant="h4" mb={3}>
             Notarize documents with Gridcoin blockchain
           </Typography>
