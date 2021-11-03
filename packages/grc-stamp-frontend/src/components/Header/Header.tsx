@@ -22,6 +22,7 @@ export function ElevationScroll(props: Props) {
 
   return React.cloneElement(children, {
     elevation: trigger ? 4 : 0,
+    sx: { backgroundColor: trigger ? 'white' : 'transparent' },
   });
 }
 
@@ -32,7 +33,7 @@ export function Header() {
   return (
     <>
       <ElevationScroll>
-        <AppBar color="transparent" sx={{ backgroundColor: '#f8fafd' }}>
+        <AppBar color="transparent">
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ float: 'left' }}>
               {isMobile ? (
