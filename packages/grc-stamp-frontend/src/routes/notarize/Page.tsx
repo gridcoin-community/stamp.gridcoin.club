@@ -7,19 +7,17 @@ import React, {
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Header } from 'components/Header/Header';
-import Stepper from '@mui/material/Stepper';
-import StepLabel from '@mui/material/StepLabel';
-import { Step } from '@mui/material';
 import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
 import { FilesContext, ErrorContext } from './context';
-import { stepTitle, Steps } from './constants';
+import { Steps } from './constants';
 import { stateHasFile } from './actions';
 import { Result } from './Result/Result';
 import { Instructions } from './Instructions/Instructions';
 import { Errors } from './Errors';
+import { ColorizedSteppers } from './Stepper/ColorizedSteppers';
 
 export function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -60,14 +58,8 @@ export function Page() {
             <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
               <Instructions />
               <Box sx={{ width: '100%' }}>
-                <Stepper activeStep={activeStep} alternativeLabel>
-                  {stepTitle.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-                <div>
+                <ColorizedSteppers activeStep={activeStep} />
+                <Box>
                   {activeStep === Steps.Select && <Upload next={handleNext} />}
                   {(activeStep > Steps.Select && stateHasFile(state)) && (
                   <Result
@@ -76,7 +68,7 @@ export function Page() {
                     activeStep={activeStep}
                   />
                   )}
-                </div>
+                </Box>
               </Box>
             </Container>
             <Errors />
