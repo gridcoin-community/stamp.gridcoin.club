@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.2.1...v1.3.0) (2021-11-03)
+
+
+### Bug Fixes
+
+* **header:** make header to change color on elevation ([37aa140](https://github.com/gridcat/grc-stamp-frontend/commit/37aa1404353525788b2579beb3582338f6c2fcc5))
+
+
+### Features
+
+* add ui elements ([51becdd](https://github.com/gridcat/grc-stamp-frontend/commit/51becdd7c0662560640b21b605d672d66413cb42))
+* **buttons:** make buttons looks sexier ([86b4328](https://github.com/gridcat/grc-stamp-frontend/commit/86b432828b53faddf726a8ff1a8cc1c063216d40))
+
 ## [1.2.1](https://github.com/gridcat/grc-stamp-frontend/compare/v1.2.0...v1.2.1) (2021-11-02)
 
 
