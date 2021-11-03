@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.3.0...v1.4.0) (2021-11-03)
+
+
+### Features
+
+* make steps look nice ([f6e4b9c](https://github.com/gridcat/grc-stamp-frontend/commit/f6e4b9cfa1d97a0891b59bf40cc940e4d445785e))
+
 # [1.3.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.2.1...v1.3.0) (2021-11-03)
 
 
