@@ -122,7 +122,7 @@ export function Result({ back, next, activeStep }: Props) {
                   <>
                     <Button
                       variant="outlined"
-                      color="error"
+                      color="primary"
                       onClick={onCancel}
                       disabled={cancelButtonDisabled}
                     >
@@ -130,7 +130,7 @@ export function Result({ back, next, activeStep }: Props) {
                     </Button>
                     <Button
                       variant="contained"
-                      color="success"
+                      color="primary"
                       onClick={onUpload}
                       disabled={saveButtonDisabled}
                     >

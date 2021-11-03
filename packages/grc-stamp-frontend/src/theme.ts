@@ -26,6 +26,29 @@ const theme = createTheme({
       'sans-serif',
     ].join(','),
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        contained: {
+          borderRadius: 50,
+          textTransform: 'none',
+        },
+        outlined: {
+          borderWidth: 2,
+          borderRadius: 50,
+          textTransform: 'none',
+          ':hover': {
+            borderWidth: 2,
+          },
+        },
+        root: {
+          '&.Mui-disabled': {
+            borderWidth: 2,
+          },
+        },
+      },
+    },
+  },
 });
 
 export default responsiveFontSizes(theme);
