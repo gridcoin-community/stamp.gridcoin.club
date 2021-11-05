@@ -1,9 +1,9 @@
 import React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { fileMaxSize } from './constants';
-import { readableFileSize } from './actions';
-import { ErrorContext } from './context';
+import { fileMaxSize } from '../constants';
+import { readableFileSize } from '../actions';
+import { ErrorContext } from '../context';
 
 const errorMap: { [key: string]: string } = {
   'too-many-files': 'You can only stamp the single file at once',

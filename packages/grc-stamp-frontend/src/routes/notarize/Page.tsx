@@ -17,7 +17,7 @@ import { Steps } from './constants';
 import { stateHasFile } from './actions';
 import { Result } from './Result/Result';
 import { Instructions } from './Instructions/Instructions';
-import { Errors } from './Errors';
+import { Errors } from './Errors/Errors';
 import { ColorizedSteppers } from './Stepper/ColorizedSteppers';
 
 const PageWrapper = styled(Box)(({ theme }) => ({
