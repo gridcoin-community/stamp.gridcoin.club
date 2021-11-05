@@ -2,8 +2,9 @@ import { styled } from '@mui/material/styles';
 import React from 'react';
 import Link from 'next/link';
 import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
 
-const itemHorzPadding = 2;
+const itemHorzPadding = 1;
 const gutter = 2;
 
 const Nav = styled('ul')(() => ({
@@ -23,7 +24,7 @@ const NavItem = styled('li')(({ theme }) => ({
   textDecoration: 'none',
   transition: '0.2s ease-out',
   '& a': {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.secondary,
     textDecoration: 'none',
   },
   '&:after': {
@@ -37,13 +38,16 @@ const NavItem = styled('li')(({ theme }) => ({
     transform: 'scale(0, 1)',
     transition: '0.2s ease-out',
     opacity: 0,
-    backgroundColor: theme.palette.primary.light,
+    borderRadius: 2,
+    backgroundImage: `linear-gradient(to right, ${theme.palette.primary.dark}, ${theme.palette.primary.light})`,
   },
   '&:hover': {
-    color:
+    '& a': {
+      color:
     theme.palette.mode === 'dark'
       ? theme.palette.primary.light
       : theme.palette.primary.main,
+    },
     '&:after': {
       opacity: 1,
       transform: 'scale(1, 1)',
@@ -52,23 +56,41 @@ const NavItem = styled('li')(({ theme }) => ({
   '&:not(:first-child)': {
     marginLeft: typeof gutter === 'number' ? theme.spacing(gutter) : gutter,
   },
+  '&.itemActive': {
+    '& a': {
+      color:
+        theme.palette.mode === 'dark'
+          ? theme.palette.primary.light
+          : theme.palette.primary.main,
+    },
+    '&:after': {
+      opacity: 1,
+      transform: 'scale(1, 1)',
+      backgroundColor:
+          theme.palette.mode === 'dark'
+            ? theme.palette.primary.light
+            : theme.palette.primary.main,
+    },
+  },
 }));
 
 export function NavMenu() {
+  const router = useRouter();
+
   return (
     <Box component="nav">
       <Nav>
-        <NavItem>
+        <NavItem className={router.pathname === '/' ? 'itemActive' : undefined}>
           <Link href="/">
             <a>Stamp</a>
           </Link>
         </NavItem>
-        <NavItem>
+        <NavItem className={router.pathname === '/about' ? 'itemActive' : undefined}>
           <Link href="/about">
             <a>About</a>
           </Link>
         </NavItem>
-        <NavItem>
+        <NavItem className={router.pathname === '/api' ? 'itemActive' : undefined}>
           <Link href="/api">
             <a>API</a>
           </Link>
