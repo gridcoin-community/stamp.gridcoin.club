@@ -1,3 +1,3 @@
-import { Page } from 'routes/notarize/Page';
+import { Page } from 'routes/notarize';
 
 export default Page;
