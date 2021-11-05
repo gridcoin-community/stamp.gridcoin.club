@@ -57,7 +57,7 @@ export function Header() {
               flexGrow: 1,
             }}
             >
-              <NavMenu isVisible={false} />
+              <NavMenu />
               <Box display="none">
                 <IconButton
                   size="large"

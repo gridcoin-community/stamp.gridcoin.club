@@ -54,14 +54,7 @@ const NavItem = styled('li')(({ theme }) => ({
   },
 }));
 
-interface Props {
-  isVisible: Boolean;
-}
-
-export function NavMenu({ isVisible }: Props) {
-  if (!isVisible) {
-    return null;
-  }
+export function NavMenu() {
   return (
     <Box component="nav">
       <Nav>
