@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
+import { styled } from '@mui/material/styles';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
 import { FilesContext, ErrorContext } from './context';
@@ -18,6 +19,16 @@ import { Result } from './Result/Result';
 import { Instructions } from './Instructions/Instructions';
 import { Errors } from './Errors';
 import { ColorizedSteppers } from './Stepper/ColorizedSteppers';
+
+const PageWrapper = styled(Box)(({ theme }) => ({
+  minHeight: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  [theme.breakpoints.up('sm')]: {
+    paddingTop: theme.spacing(2),
+
+  },
+}));
 
 export function Page() {
   const [activeStep, setActiveStep] = useState(0);
@@ -51,13 +62,13 @@ export function Page() {
         <title>Gridcoin blockchain stamping</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <PageWrapper>
         <Header />
         <ErrorContext.Provider value={errorContextValue}>
           <FilesContext.Provider value={fileContextValue}>
             <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
               <Instructions />
-              <Box sx={{ width: '100%' }}>
+              <Box width="100%">
                 <ColorizedSteppers activeStep={activeStep} />
                 <Box>
                   {activeStep === Steps.Select && <Upload next={handleNext} />}
@@ -75,7 +86,7 @@ export function Page() {
           </FilesContext.Provider>
         </ErrorContext.Provider>
         <Footer />
-      </Box>
+      </PageWrapper>
     </>
   );
 }
