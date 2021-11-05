@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.4.0...v1.5.0) (2021-11-05)
+
+
+### Bug Fixes
+
+* page spacing ([cd9a182](https://github.com/gridcat/grc-stamp-frontend/commit/cd9a182f863130eb0e3e05080b2735a37c2c52d6))
+
+
+### Features
+
+* move errors to their folder ([517f90a](https://github.com/gridcat/grc-stamp-frontend/commit/517f90a1c9cdfecff9a6022d5324ed177f08cfd6))
+* **favicon:** upgrade favicon ([cd81d8b](https://github.com/gridcat/grc-stamp-frontend/commit/cd81d8bdad3051939b8e1dbbe8a6cbc409d5b9a9))
+
 # [1.4.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.3.0...v1.4.0) (2021-11-03)
 
 
