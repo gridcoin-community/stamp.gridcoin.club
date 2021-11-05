@@ -4,10 +4,10 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Image from 'next/image';
-// import { IconButton } from '@mui/material';
-// import AppsIcon from '@mui/icons-material/Apps';
+import { IconButton, useMediaQuery, useTheme } from '@mui/material';
+import AppsIcon from '@mui/icons-material/Apps';
 import Box from '@mui/material/Box';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { NavMenu } from '../Navigation/NavMenu';
 
 interface Props {
   children: React.ReactElement;
@@ -57,7 +57,8 @@ export function Header() {
               flexGrow: 1,
             }}
             >
-              {/* <div>
+              <NavMenu isVisible={false} />
+              <Box display="none">
                 <IconButton
                   size="large"
                   aria-label="account of current user"
@@ -68,7 +69,7 @@ export function Header() {
                 >
                   <AppsIcon />
                 </IconButton>
-              </div> */}
+              </Box>
             </Toolbar>
           </Container>
         </AppBar>
