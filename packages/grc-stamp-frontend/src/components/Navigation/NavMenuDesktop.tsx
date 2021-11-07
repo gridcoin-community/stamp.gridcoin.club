@@ -1,8 +1,10 @@
 import { styled } from '@mui/material/styles';
 import React from 'react';
 import Link from 'next/link';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
+import AppsIcon from '@mui/icons-material/Apps';
 import { useRouter } from 'next/router';
+import { ModeToggle } from './Mode';
 
 const itemHorzPadding = 1;
 const gutter = 2;
@@ -74,28 +76,43 @@ const NavItem = styled('li')(({ theme }) => ({
   },
 }));
 
-export function NavMenu() {
+export function NavMenuDesktop() {
   const router = useRouter();
 
   return (
-    <Box component="nav">
-      <Nav>
-        <NavItem className={router.pathname === '/' ? 'itemActive' : undefined}>
-          <Link href="/">
-            <a>Stamp</a>
-          </Link>
-        </NavItem>
-        <NavItem className={router.pathname === '/about' ? 'itemActive' : undefined}>
-          <Link href="/about">
-            <a>About</a>
-          </Link>
-        </NavItem>
-        <NavItem className={router.pathname === '/api' ? 'itemActive' : undefined}>
-          <Link href="/api">
-            <a>API</a>
-          </Link>
-        </NavItem>
-      </Nav>
-    </Box>
+    <>
+      <Box component="nav">
+        <Nav>
+          <NavItem className={router.pathname === '/' ? 'itemActive' : undefined}>
+            <Link href="/">
+              <a>Stamp</a>
+            </Link>
+          </NavItem>
+          <NavItem className={router.pathname === '/about' ? 'itemActive' : undefined}>
+            <Link href="/about">
+              <a>About</a>
+            </Link>
+          </NavItem>
+          <NavItem className={router.pathname === '/api' ? 'itemActive' : undefined}>
+            <Link href="/api">
+              <a>API</a>
+            </Link>
+          </NavItem>
+        </Nav>
+      </Box>
+      <ModeToggle />
+      <Box display="none">
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+                  // onClick={handleMenu}
+          color="inherit"
+        >
+          <AppsIcon />
+        </IconButton>
+      </Box>
+    </>
   );
 }

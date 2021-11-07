@@ -4,10 +4,10 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Image from 'next/image';
-import { IconButton, useMediaQuery, useTheme } from '@mui/material';
-import AppsIcon from '@mui/icons-material/Apps';
+import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
-import { NavMenu } from '../Navigation/NavMenu';
+import { NavMenuMobile } from 'components/Navigation/NavMenuMobile';
+import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
 interface Props {
   children: React.ReactElement;
@@ -15,6 +15,7 @@ interface Props {
 
 export function ElevationScroll(props: Props) {
   const { children } = props;
+  const theme = useTheme();
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
@@ -22,7 +23,7 @@ export function ElevationScroll(props: Props) {
 
   return React.cloneElement(children, {
     elevation: trigger ? 4 : 0,
-    sx: { backgroundColor: trigger ? 'white' : 'transparent' },
+    sx: { backgroundColor: trigger ? theme.palette.background.paper : 'transparent' },
   });
 }
 
@@ -57,19 +58,7 @@ export function Header() {
               flexGrow: 1,
             }}
             >
-              <NavMenu />
-              <Box display="none">
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  // onClick={handleMenu}
-                  color="inherit"
-                >
-                  <AppsIcon />
-                </IconButton>
-              </Box>
+              {isMobile ? <NavMenuMobile /> : <NavMenuDesktop />}
             </Toolbar>
           </Container>
         </AppBar>

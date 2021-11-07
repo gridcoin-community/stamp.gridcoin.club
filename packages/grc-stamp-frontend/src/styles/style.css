@@ -92,3 +92,7 @@
   font-weight: normal;
   src: local('SF UI Text Heavy Italic'), url('/fonts/SFUIText/SFUIText-HeavyItalic.woff') format('woff');
 }
+
+body {
+  background-color: #f8fafd;
+}
