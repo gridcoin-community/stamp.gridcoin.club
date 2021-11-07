@@ -2,19 +2,8 @@ import React from 'react';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import { Container } from '@mui/material';
-
-const PageWrapper = styled(Box)(({ theme }) => ({
-  minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  [theme.breakpoints.up('sm')]: {
-    paddingTop: theme.spacing(2),
-
-  },
-}));
+import { PageWrapper } from '../../components/PageWrapper';
 
 export function Page() {
   return (

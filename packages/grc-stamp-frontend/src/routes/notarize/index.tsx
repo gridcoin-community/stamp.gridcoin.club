@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
-import { styled } from '@mui/material/styles';
+import { PageWrapper } from '../../components/PageWrapper';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
 import { FilesContext, ErrorContext } from './context';
@@ -19,16 +19,6 @@ import { Result } from './Result/Result';
 import { Instructions } from './Instructions/Instructions';
 import { Errors } from './Errors/Errors';
 import { ColorizedSteppers } from './Stepper/ColorizedSteppers';
-
-const PageWrapper = styled(Box)(({ theme }) => ({
-  minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  [theme.breakpoints.up('sm')]: {
-    paddingTop: theme.spacing(2),
-
-  },
-}));
 
 export function Page() {
   const [activeStep, setActiveStep] = useState(0);
