@@ -12,29 +12,29 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Image from 'next/image';
-import { menuItems } from './constants';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
+import { menuItems } from './constants';
 import { ModeToggle } from './Mode';
 
 const SubMenuContainer = styled(Container)(() => ({
   alignItems: 'center',
   display: 'flex',
-}))
+}));
 
 const MenuContainer = styled(Container)(() => ({
   alignItems: 'center',
   display: 'flex',
   justifyContent: 'center',
-  height: '100%' ,
+  height: '100%',
 }));
 
 const MenuButton = styled(Button)(({ theme }) => ({
   paddingLeft: theme.spacing(5),
   paddingRight: theme.spacing(5),
   fontWeight: 600,
-}))
+}));
 
 export function NavMenuMobile() {
   const [open, setOpen] = useState(false);
@@ -73,10 +73,13 @@ export function NavMenuMobile() {
               alt="Gridcoin stamp"
             />
           </Box>
-          <Toolbar sx={{
-            justifyContent: 'flex-end',
-            flexGrow: 1,
-          }} disableGutters>
+          <Toolbar
+            sx={{
+              justifyContent: 'flex-end',
+              flexGrow: 1,
+            }}
+            disableGutters
+          >
             <IconButton
               edge="start"
               color="inherit"
@@ -89,20 +92,23 @@ export function NavMenuMobile() {
         </SubMenuContainer>
         <MenuContainer>
           <Stack alignItems="center">
-          {Object.entries(menuItems).map(([uri, name]: [string, string]) => {
-            const isCurrent = router.pathname === uri; 
-            return (
-              <Box key={`mmenu-item-${uri.replace('/', '')}`} p={3}>
-                <Link href={uri} passHref>
-                  <MenuButton
-                    variant={isCurrent ? 'contained' : 'text'}
-                    disableElevation
-                    color={isCurrent ? 'primary' : 'inherit'}
-                  >{name}</MenuButton>
-                </Link>
-              </Box>
-            )
-          })}
+            {Object.entries(menuItems).map(([uri, name]: [string, string]) => {
+              const isCurrent = router.pathname === uri;
+              return (
+                <Box key={`mmenu-item-${uri.replace('/', '')}`} p={3}>
+                  <Link href={uri} passHref>
+                    <MenuButton
+                      variant={isCurrent ? 'contained' : 'text'}
+                      disableElevation
+                      color={isCurrent ? 'primary' : 'inherit'}
+                      onClick={handleClose}
+                    >
+                      {name}
+                    </MenuButton>
+                  </Link>
+                </Box>
+              );
+            })}
           </Stack>
         </MenuContainer>
         <Divider />
