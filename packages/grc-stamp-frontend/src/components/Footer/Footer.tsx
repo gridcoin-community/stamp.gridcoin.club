@@ -14,7 +14,7 @@ const SubFooterTypography = styled(Typography)(({ theme }) => ({
   lineHeight: theme.spacing(8),
   width: '100%',
   display: 'inline-block',
-  color: theme.palette.grey[800],
+  color: theme.palette.text.disabled,
   [theme.breakpoints.down('sm')]: {
     textAlign: 'center',
     lineHeight: theme.spacing(5),
