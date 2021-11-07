@@ -5,6 +5,7 @@ import { Box, IconButton } from '@mui/material';
 import AppsIcon from '@mui/icons-material/Apps';
 import { useRouter } from 'next/router';
 import { ModeToggle } from './Mode';
+import { menuItems } from './constants';
 
 const itemHorzPadding = 1;
 const gutter = 2;
@@ -83,21 +84,13 @@ export function NavMenuDesktop() {
     <>
       <Box component="nav">
         <Nav>
-          <NavItem className={router.pathname === '/' ? 'itemActive' : undefined}>
-            <Link href="/">
-              <a>Stamp</a>
-            </Link>
-          </NavItem>
-          <NavItem className={router.pathname === '/about' ? 'itemActive' : undefined}>
-            <Link href="/about">
-              <a>About</a>
-            </Link>
-          </NavItem>
-          <NavItem className={router.pathname === '/api' ? 'itemActive' : undefined}>
-            <Link href="/api">
-              <a>API</a>
-            </Link>
-          </NavItem>
+          {Object.entries(menuItems).map(([uri, name]: [string, string]) => (
+            <NavItem key={`dmenu-item-${uri.replace('/', '')}`} className={router.pathname === uri ? 'itemActive' : undefined}>
+              <Link href={uri}>
+                <a>{name}</a>
+              </Link>
+            </NavItem>
+          ))}
         </Nav>
       </Box>
       <ModeToggle />

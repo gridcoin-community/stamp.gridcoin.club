@@ -33,14 +33,25 @@ const theme: ThemeOptions = {
         contained: {
           borderRadius: 50,
           textTransform: 'none',
+          paddingLeft: 24,
+          paddingRight: 24,
+          paddingTop: 10,
+          paddingBottom: 10,
         },
         outlined: {
           borderWidth: 2,
           borderRadius: 50,
+          paddingLeft: 24,
+          paddingRight: 24,
+          paddingTop: 10,
+          paddingBottom: 10,
           textTransform: 'none',
           ':hover': {
             borderWidth: 2,
           },
+        },
+        text: {
+          textTransform: 'none',
         },
         root: {
           '&.Mui-disabled': {

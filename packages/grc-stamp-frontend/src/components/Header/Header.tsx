@@ -36,7 +36,7 @@ export function Header() {
       <ElevationScroll>
         <AppBar color="transparent">
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ float: 'left' }}>
+            <Box>
               {isMobile ? (
                 <Image
                   src="/ic-logo-mobile.svg"
@@ -53,10 +53,12 @@ export function Header() {
                 />
               )}
             </Box>
-            <Toolbar sx={{
-              justifyContent: 'flex-end',
-              flexGrow: 1,
-            }}
+            <Toolbar
+              sx={{
+                justifyContent: 'flex-end',
+                flexGrow: 1,
+              }}
+              disableGutters
             >
               {isMobile ? <NavMenuMobile /> : <NavMenuDesktop />}
             </Toolbar>
