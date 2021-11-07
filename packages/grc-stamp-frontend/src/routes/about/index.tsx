@@ -2,8 +2,12 @@ import React from 'react';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
-import { Container } from '@mui/material';
+import {
+  Container, Grid,
+} from '@mui/material';
 import { PageWrapper } from '../../components/PageWrapper';
+import { Contents } from './Contents';
+import { Credits } from './Chapters/Credits';
 
 export function Page() {
   return (
@@ -15,7 +19,14 @@ export function Page() {
       <PageWrapper>
         <Header />
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
-          123
+          <Grid container spacing={3}>
+            <Grid item sm={3}>
+              <Contents />
+            </Grid>
+            <Grid item sm={9}>
+              <Credits />
+            </Grid>
+          </Grid>
         </Container>
         <Footer />
       </PageWrapper>
