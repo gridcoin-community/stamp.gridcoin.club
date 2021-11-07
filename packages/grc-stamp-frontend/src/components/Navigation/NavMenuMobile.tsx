@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
-import { Container, Button, Dialog, Toolbar, Typography, Box, Stack, Divider } from '@mui/material';
+import {
+  Container,
+  Button,
+  Dialog,
+  Toolbar,
+  Box,
+  Stack,
+  Divider,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Image from 'next/image';
 import { menuItems } from './constants';
