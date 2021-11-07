@@ -2,6 +2,8 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { StampIcon } from 'icons/StampIcon';
 import { styled } from '@mui/material/styles';
+import MLink from '@mui/material/Link';
+import Link from 'next/link';
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -57,6 +59,12 @@ function InstructionsComponent() {
             Timestamping of documents can allow a public verification of the issue history
             which is permanently recorded to the public blockchain.
             There is absolutely no method of potential malicious modification at a later stage.
+            Learn more
+            {' '}
+            <Link href="/about" passHref>
+              <MLink>here</MLink>
+            </Link>
+            .
           </Text>
           <Text variant="body1" gutterBottom>
             In order to notarize the document or check the proof of existence
