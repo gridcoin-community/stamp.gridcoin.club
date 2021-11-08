@@ -8,6 +8,7 @@ import {
 import { PageWrapper } from '../../components/PageWrapper';
 import { Contents } from './Contents';
 import { Credits } from './Chapters/Credits';
+import { Costs } from './Chapters/Costs';
 
 export function Page() {
   return (
@@ -24,6 +25,7 @@ export function Page() {
               <Contents />
             </Grid>
             <Grid item sm={9}>
+              <Costs />
               <Credits />
             </Grid>
           </Grid>
