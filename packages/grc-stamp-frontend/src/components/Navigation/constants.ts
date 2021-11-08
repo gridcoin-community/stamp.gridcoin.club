@@ -1,5 +1,5 @@
 export const menuItems = {
   '/': 'Stamp',
   '/about': 'About',
-  '/api': 'Api',
+  '/api': 'Api Specifications',
 };

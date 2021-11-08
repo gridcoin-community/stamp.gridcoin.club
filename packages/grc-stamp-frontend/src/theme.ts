@@ -1,14 +1,18 @@
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes, lighten } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import { PaletteMode, ThemeOptions } from '@mui/material';
 
 // Create a theme instance.
-const theme: ThemeOptions = {
+const theme = (mode: PaletteMode): ThemeOptions => ({
   palette: {
-    primary: {
+    primary: mode === 'light' ? {
       main: '#732DE2',
       light: '#953EF5',
       dark: '#4c1ea4',
+    } : {
+      main: lighten('#732DE2', 0.3),
+      light: lighten('#953EF5', 0.3),
+      dark: lighten('#4c1ea4', 0.3),
     },
     secondary: {
       main: '#e58842',
@@ -18,6 +22,7 @@ const theme: ThemeOptions = {
     error: {
       main: red.A400,
     },
+    mode,
   },
   typography: {
     fontFamily: [
@@ -61,15 +66,6 @@ const theme: ThemeOptions = {
       },
     },
   },
-};
+});
 
-export const themeCreator = (mode: PaletteMode = 'light') => {
-  const pathchedTheme: ThemeOptions = {
-    ...theme,
-    palette: {
-      ...theme.palette,
-      mode,
-    },
-  };
-  return responsiveFontSizes(createTheme(pathchedTheme));
-};
+export const themeCreator = (mode: PaletteMode = 'light') => responsiveFontSizes(createTheme(theme(mode)));
