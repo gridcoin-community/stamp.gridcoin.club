@@ -5,7 +5,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import Script from 'next/script';
-import { useMediaQuery } from '@mui/material';
 import { themeCreator } from '../theme';
 import createEmotionCache from '../createEmotionCache';
 import { ColorModeContext } from '../context';
@@ -20,8 +19,8 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [mode, setMode] = React.useState<'light' | 'dark'>(prefersDarkMode ? 'dark' : 'light');
+  const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
@@ -35,6 +34,7 @@ export default function MyApp(props: MyAppProps) {
     () => themeCreator(mode),
     [mode],
   );
+
   return (
     <CacheProvider value={emotionCache}>
       <ColorModeContext.Provider value={colorMode}>
