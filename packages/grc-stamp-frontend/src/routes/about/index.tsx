@@ -4,13 +4,22 @@ import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
 import {
   Container, Grid,
+  // useMediaQuery, useTheme,
 } from '@mui/material';
 import { PageWrapper } from '../../components/PageWrapper';
-import { Contents } from './Contents';
-import { Credits } from './Chapters/Credits';
-import { Costs } from './Chapters/Costs';
+// import { Contents } from './Contents';
+import {
+  // Credits,
+  About,
+  Costs,
+  ProofOfExistence,
+  // Protocol,
+} from './Chapters';
 
 export function Page() {
+  // const theme = useTheme();
+  // const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <>
       <Head>
@@ -21,12 +30,15 @@ export function Page() {
         <Header />
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
           <Grid container spacing={3}>
-            <Grid item sm={3}>
+            {/* <Grid item sm={3} sx={{ display: isMobile ? 'none' : 'flex' }}>
               <Contents />
-            </Grid>
-            <Grid item sm={9}>
+            </Grid> */}
+            <Grid item sm={12}>
+              <ProofOfExistence />
+              <About />
+              {/* <Protocol /> */}
               <Costs />
-              <Credits />
+              {/* <Credits /> */}
             </Grid>
           </Grid>
         </Container>
