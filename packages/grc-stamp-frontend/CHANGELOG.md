@@ -1,3 +1,29 @@
+# [1.6.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.5.0...v1.6.0) (2021-11-11)
+
+
+### Bug Fixes
+
+* **navigation:** fix navigation click unresponsive issues ([1a1602d](https://github.com/gridcat/grc-stamp-frontend/commit/1a1602dc3e49aad7d9e9f74e2418ec6283073e63))
+* **theme:** make colors lighter for the dark theme ([3b6730b](https://github.com/gridcat/grc-stamp-frontend/commit/3b6730bccb69bf140f99e49db888fae110d3ca92))
+* **theme:** remove auto applying the dark theme as it is a bit glitchy ([603369d](https://github.com/gridcat/grc-stamp-frontend/commit/603369ddf85b12382ba48c178b4ed76f4b9f6787))
+* fix footer credits color to be visible in the dark mode ([7cd2c89](https://github.com/gridcat/grc-stamp-frontend/commit/7cd2c89ea9274d10c84cbeba2c6795c1b7e3065b))
+* fix navigation links ([ea02720](https://github.com/gridcat/grc-stamp-frontend/commit/ea02720233427223ca6c70fc66c9e62917314d02))
+* remove unused import ([9930583](https://github.com/gridcat/grc-stamp-frontend/commit/99305838c43d64a51f28822efbb0ebef3f39b121))
+
+
+### Features
+
+* add about route ([3e19ec4](https://github.com/gridcat/grc-stamp-frontend/commit/3e19ec4fc6cc12c519d331cee7b55e86e12ab6f3))
+* add costs section ([44f6222](https://github.com/gridcat/grc-stamp-frontend/commit/44f62227529e9abef9d3450501bdfd00a653e705))
+* add link to about page from instructions ([1cb908f](https://github.com/gridcat/grc-stamp-frontend/commit/1cb908f283b09bb5a64b2d4e1edacee616cd7070))
+* main menu mobile version ([82ff980](https://github.com/gridcat/grc-stamp-frontend/commit/82ff980dbd91a3b27d90a58f42f3b7c125f1b6ad))
+* prepare meaningful changes for the release ([4939a85](https://github.com/gridcat/grc-stamp-frontend/commit/4939a85f3620220a13269e463b93acd6bc3b9ee7))
+* **404:** customize not found page ([8baf523](https://github.com/gridcat/grc-stamp-frontend/commit/8baf523532834a372937656c16d56cd3a7ed55a8))
+* **navigation:** add navigation menu (hidden by default) ([3db981b](https://github.com/gridcat/grc-stamp-frontend/commit/3db981ba860402e0086c2975e8b72757cf5a5628))
+* **theme:** introduce theme switch ([71ffa35](https://github.com/gridcat/grc-stamp-frontend/commit/71ffa354da2c0c899ebc9f6756cf064702845940))
+* **theme:** respect OS theme, use it as default ([55f2090](https://github.com/gridcat/grc-stamp-frontend/commit/55f2090dde9b2d7b3954bb4e50803c37eb4544c6))
+* unhide header menu ([839d47d](https://github.com/gridcat/grc-stamp-frontend/commit/839d47ded77bf79282878535314a7d71b914a7ea))
+
 # [1.5.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.4.0...v1.5.0) (2021-11-05)
 
 
