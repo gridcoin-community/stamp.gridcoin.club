@@ -1,3 +1,16 @@
+# [1.7.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.6.0...v1.7.0) (2021-11-13)
+
+
+### Bug Fixes
+
+* some text fixes ([6b7b402](https://github.com/gridcat/grc-stamp-frontend/commit/6b7b40209fe4adabfa475398872497bc193809e3))
+
+
+### Features
+
+* add contents ([981d77e](https://github.com/gridcat/grc-stamp-frontend/commit/981d77e13cdb746d657afc1a951ead478e0f97cc))
+* add smooth scroll ([8183ae6](https://github.com/gridcat/grc-stamp-frontend/commit/8183ae65d729061c8b5b9b443a3e71e1ac5e1c7b))
+
 # [1.6.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.5.0...v1.6.0) (2021-11-11)
 
 
