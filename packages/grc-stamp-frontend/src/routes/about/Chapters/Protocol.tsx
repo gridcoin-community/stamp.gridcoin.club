@@ -13,9 +13,9 @@ const CodePaper = styled(Paper)(({ theme }) => ({
 
 function ChapterProtocol() {
   return (
-    <Box pb={3} id="protocol">
+    <Box pb={3} id="protocol-overview">
       <Typography variant="h4" component="h3" pb={2}>
-        Protocol
+        Protocol Overview
       </Typography>
       <Box component="article">
         <Typography gutterBottom variant="body1" component="p">

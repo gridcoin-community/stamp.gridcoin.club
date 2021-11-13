@@ -6,7 +6,7 @@ function ChapterAbout() {
   return (
     <Box pb={3}>
       <Typography variant="h4" component="h3" pb={2} id="about-the-service">
-        About the service
+        About the Service
       </Typography>
       <Box component="article">
         <Typography gutterBottom variant="body1" component="p">
