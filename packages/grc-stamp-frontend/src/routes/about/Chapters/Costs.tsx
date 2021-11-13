@@ -4,15 +4,15 @@ import React from 'react';
 
 function ChapterCosts() {
   return (
-    <Box pb={3}>
+    <Box pb={3} id="costs">
       <Typography variant="h4" component="h3" pb={2}>
         Costs
       </Typography>
       <Box component="article">
         <Typography gutterBottom variant="body1" component="p">
           At the moment of writing this article, the cost of the stamp transaction is relatively low.
-          It consists of the amount to burned plus transaction fees.
-          The amount to be burn is
+          It consists of the amount burned plus transaction fees.
+          The amount to be burned is
           {' '}
           <b>0.00000001</b>
           {' '}

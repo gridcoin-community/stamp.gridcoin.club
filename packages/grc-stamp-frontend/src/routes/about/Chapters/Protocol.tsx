@@ -4,7 +4,7 @@ import React from 'react';
 
 function ChapterProtocol() {
   return (
-    <Box pb={3}>
+    <Box pb={3} id="protocol">
       <Typography variant="h4" component="h3" pb={2}>
         Protocol
       </Typography>
