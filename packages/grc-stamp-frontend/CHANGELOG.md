@@ -1,3 +1,16 @@
+# [1.8.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.7.0...v1.8.0) (2021-11-13)
+
+
+### Bug Fixes
+
+* fix link at about page to be visible in the dark theme ([27938d2](https://github.com/gridcat/grc-stamp-frontend/commit/27938d2a169244d6e3c72fad077355add60768d4))
+* text adjustments ([8d8838c](https://github.com/gridcat/grc-stamp-frontend/commit/8d8838ce9a53404b9b67aeba341534c199ac41b6))
+
+
+### Features
+
+* add protocol description ([3e3e0b3](https://github.com/gridcat/grc-stamp-frontend/commit/3e3e0b3a5b0720f4df088c0c37b0fe3a63e84124))
+
 # [1.7.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.6.0...v1.7.0) (2021-11-13)
 
 
