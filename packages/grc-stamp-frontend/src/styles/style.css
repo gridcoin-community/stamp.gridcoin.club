@@ -1,3 +1,12 @@
+
+body {
+  background-color: #f8fafd;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+
 @font-face {
   font-family: 'SF UI Text Regular';
   font-style: normal;
@@ -91,8 +100,4 @@
   font-style: normal;
   font-weight: normal;
   src: local('SF UI Text Heavy Italic'), url('/fonts/SFUIText/SFUIText-HeavyItalic.woff') format('woff');
-}
-
-body {
-  background-color: #f8fafd;
 }
