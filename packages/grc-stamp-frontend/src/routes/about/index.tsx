@@ -4,10 +4,11 @@ import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
 import {
   Container, Grid,
-  // useMediaQuery, useTheme,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { PageWrapper } from '../../components/PageWrapper';
-// import { Contents } from './Contents';
+import { Contents } from './Contents';
 import {
   // Credits,
   About,
@@ -17,8 +18,8 @@ import {
 } from './Chapters';
 
 export function Page() {
-  // const theme = useTheme();
-  // const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <>
@@ -30,10 +31,10 @@ export function Page() {
         <Header />
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
           <Grid container spacing={3}>
-            {/* <Grid item sm={3} sx={{ display: isMobile ? 'none' : 'flex' }}>
+            <Grid item sm={3} sx={{ display: isMobile ? 'none' : 'flex' }}>
               <Contents />
-            </Grid> */}
-            <Grid item sm={12}>
+            </Grid>
+            <Grid item sm={9}>
               <ProofOfExistence />
               <About />
               {/* <Protocol /> */}
