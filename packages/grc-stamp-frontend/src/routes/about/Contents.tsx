@@ -32,13 +32,13 @@ export function Contents() {
             </ListItemButton>
           </ListItem>
         </Link>
-        {/* <Link href="#protocol" passHref>
+        <Link href="#protocol" passHref>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemText>Protocol</ListItemText>
             </ListItemButton>
           </ListItem>
-        </Link> */}
+        </Link>
         <Link href="#costs" passHref>
           <ListItem disablePadding>
             <ListItemButton>

@@ -14,7 +14,7 @@ import {
   About,
   Costs,
   ProofOfExistence,
-  // Protocol,
+  Protocol,
 } from './Chapters';
 
 export function Page() {
@@ -37,7 +37,7 @@ export function Page() {
             <Grid item sm={9}>
               <ProofOfExistence />
               <About />
-              {/* <Protocol /> */}
+              <Protocol />
               <Costs />
               {/* <Credits /> */}
             </Grid>
