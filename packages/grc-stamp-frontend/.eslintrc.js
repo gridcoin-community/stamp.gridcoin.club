@@ -5,6 +5,7 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
+    'jest',
   ],
   extends: [
     // 'plugin:@typescript-eslint/recommended',
