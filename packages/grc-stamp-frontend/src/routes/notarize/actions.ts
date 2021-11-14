@@ -85,11 +85,12 @@ export async function getStampInfoById(
 
 export function readableFileSize(size: number): string {
   let newSize = size;
+  const isFloat = (n: any) => Number(n) === n && n % 1 !== 0;
   const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   let i = 0;
   while (newSize >= 1024) {
     newSize /= 1024;
     ++i;
   }
-  return `${newSize.toFixed(1)} ${units[i]}`;
+  return `${isFloat(newSize) ? newSize.toFixed(1) : newSize} ${units[i]}`;
 }
