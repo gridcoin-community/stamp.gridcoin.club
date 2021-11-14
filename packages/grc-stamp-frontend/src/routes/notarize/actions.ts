@@ -46,7 +46,7 @@ export function hashFiles(file: File): Promise<string> {
   });
 }
 
-export async function checkForExistance(
+export async function checkForExistence(
   hash: string,
 ): Promise<BlockchainData | null> {
   // Get the very first one from the store

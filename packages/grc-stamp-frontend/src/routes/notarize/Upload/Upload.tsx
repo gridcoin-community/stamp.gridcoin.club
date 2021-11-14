@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import { FilesContext, ErrorContext } from '../context';
 import { ActionType } from '../reducer';
-import { hashFiles, checkForExistance } from '../actions';
+import { hashFiles, checkForExistence } from '../actions';
 import { fileMaxSize } from '../constants';
 
 interface Props {
@@ -42,7 +42,7 @@ export function Upload({ next }: Props) {
               hash,
             },
           });
-          return checkForExistance(hash);
+          return checkForExistence(hash);
         })
         .then((blockchainData) => {
           if (blockchainData) {
