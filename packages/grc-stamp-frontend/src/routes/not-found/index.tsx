@@ -6,7 +6,7 @@ import {
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PageWrapper } from '../../components/PageWrapper';
+import { PageWrapper } from 'components/PageWrapper';
 
 const PageBody = styled(Box)(() => ({
   backgroundImage: 'url(/il-background-error-page.svg)',

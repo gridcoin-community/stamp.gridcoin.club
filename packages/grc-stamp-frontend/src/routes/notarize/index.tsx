@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
-import { PageWrapper } from '../../components/PageWrapper';
+import { PageWrapper } from 'components/PageWrapper';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
 import { FilesContext, ErrorContext } from './context';
