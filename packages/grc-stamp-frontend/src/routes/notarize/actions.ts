@@ -1,5 +1,7 @@
 import { sha256 } from 'js-sha256';
 import axios from 'axios';
+import { StampRepository } from 'lib/StampsRepository';
+import { StampEntity } from 'entities/StampEntity';
 import {
   BlockchainData, FileData, StateInterface,
 } from './reducer';
@@ -76,10 +78,9 @@ export async function storeToBlockchain(hash: string): Promise<string | undefine
 
 export async function getStampInfoById(
   dataId: number,
-): Promise<{ block?: number, tx?: string, time?: number }> {
-  const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/stamps/${dataId}`);
-  const { block, tx, time } = result.data.data.attributes;
-  return { block, tx, time };
+): Promise<StampEntity> {
+  const repository = new StampRepository();
+  return repository.getStampById(dataId);
 }
 
 export function readableFileSize(size: number): string {
