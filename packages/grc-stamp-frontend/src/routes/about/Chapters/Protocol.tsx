@@ -9,6 +9,7 @@ const CodePaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   fontFamily: 'monospace',
   overflowX: 'auto',
+  maxWidth: '100%',
 }));
 
 function ChapterProtocol() {

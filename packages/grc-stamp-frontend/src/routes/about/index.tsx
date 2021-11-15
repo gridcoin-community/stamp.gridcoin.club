@@ -7,6 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { GradientLine } from 'components/GradientLine';
 import { PageWrapper } from '../../components/PageWrapper';
 import { Contents } from './Contents';
 import {
@@ -30,11 +31,12 @@ export function Page() {
       <PageWrapper>
         <Header />
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
+          <GradientLine />
           <Grid container spacing={3}>
-            <Grid item sm={3} sx={{ display: isMobile ? 'none' : 'flex' }}>
+            <Grid item sm={3} xs={12} sx={{ display: isMobile ? 'none' : 'flex' }}>
               <Contents />
             </Grid>
-            <Grid item sm={9}>
+            <Grid item sm={9} xs={12}>
               <ProofOfExistence />
               <About />
               <Protocol />
