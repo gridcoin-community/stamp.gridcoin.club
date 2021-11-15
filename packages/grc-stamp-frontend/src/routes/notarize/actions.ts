@@ -1,6 +1,6 @@
 import { sha256 } from 'js-sha256';
 import axios from 'axios';
-import { StampRepository } from 'lib/StampsRepository';
+import { StampRepository } from 'repositories/StampsRepository';
 import { StampEntity } from 'entities/StampEntity';
 import {
   BlockchainData, FileData, StateInterface,
@@ -78,7 +78,7 @@ export async function storeToBlockchain(hash: string): Promise<string | undefine
 
 export async function getStampInfoById(
   dataId: number,
-): Promise<StampEntity> {
+): Promise<StampEntity | null> {
   const repository = new StampRepository();
   return repository.getStampById(dataId);
 }
