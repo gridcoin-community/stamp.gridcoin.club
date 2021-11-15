@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/gridcat/grc-stamp-frontend/compare/v1.8.0...v1.8.1) (2021-11-15)
+
+
+### Bug Fixes
+
+* fix mobile view for about page ([3e717b9](https://github.com/gridcat/grc-stamp-frontend/commit/3e717b9220f9f3f569bbcc1183af19a0f7571e2f))
+
 # [1.8.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.7.0...v1.8.0) (2021-11-13)
 
 
