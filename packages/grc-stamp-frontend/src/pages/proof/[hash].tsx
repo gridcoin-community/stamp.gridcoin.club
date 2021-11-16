@@ -1,16 +1,15 @@
-import { useRouter } from 'next/router';
-import axios from 'axios';
+import { StampEntity, StampRawData } from 'entities/StampEntity';
+import { StampRepository } from 'repositories/StampsRepository';
+import { Page } from 'routes/proof';
 
-const Post = () => {
-  const router = useRouter();
-  const { hash } = router.query;
+interface Props {
+  stampData: Partial<StampRawData>;
+}
 
+const Post = ({ stampData }: Props) => {
+  const stamp = new StampEntity(stampData);
   return (
-    <p>
-      Post:
-      {' '}
-      {hash}
-    </p>
+    <Page stamp={stamp} />
   );
 };
 
@@ -20,30 +19,23 @@ interface Context {
   }
 }
 
-interface Result {
-  meta: {
-    count: number;
-  }
-  data: {
+type ServerSideProps = { props: Partial<Props> } | { notFound: boolean };
 
-  }
-}
-
-// type ServerSideProps = { props: Partial<Props> } | { notFound: boolean };
-
-export async function getServerSideProps(context: Context) {
+export async function getServerSideProps(context: Context): Promise<ServerSideProps> {
   const { hash } = context.params;
-  const { data } = await axios.get<Result>(`${process.env.NEXT_PUBLIC_API_URL}/stamps?filter[hash]=${hash}`);
-  console.log(JSON.stringify(data, null, 2));
+  const repository = new StampRepository();
+  const stamp = await repository.findStampByHash(hash);
 
-  if (!data || !data.meta.count) {
+  if (!stamp || !stamp.isFinished()) {
     return {
       notFound: true,
     };
   }
 
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      stampData: stamp.toJson(),
+    },
   };
 }
 
