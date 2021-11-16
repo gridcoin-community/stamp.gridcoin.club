@@ -1,3 +1,14 @@
+# [1.9.0](https://github.com/gridcat/grc-stamp-frontend/compare/v1.8.1...v1.9.0) (2021-11-16)
+
+
+### Features
+
+* add meaningful message to the proof page ([b9a6c65](https://github.com/gridcat/grc-stamp-frontend/commit/b9a6c65f5aed8b60f0beea260046f3ffa8e2581a))
+* make logo image clickable ([d241faa](https://github.com/gridcat/grc-stamp-frontend/commit/d241faa0f73c72660aab86d86636a49273cdbfba))
+* redirect to the proof url if file got stamped ([d595962](https://github.com/gridcat/grc-stamp-frontend/commit/d5959621ecc883bbec968f628662a4829b6c6192)), closes [#29](https://github.com/gridcat/grc-stamp-frontend/issues/29)
+* **permalink page:** bring the permalink page ([310fb56](https://github.com/gridcat/grc-stamp-frontend/commit/310fb56c394e02cafbab67999a9ac2b09ecd7084))
+* add permalink page ([bff6659](https://github.com/gridcat/grc-stamp-frontend/commit/bff665953f3d452071654adf7e306366b2c3fd3c)), closes [#29](https://github.com/gridcat/grc-stamp-frontend/issues/29)
+
 ## [1.8.1](https://github.com/gridcat/grc-stamp-frontend/compare/v1.8.0...v1.8.1) (2021-11-15)
 
 
