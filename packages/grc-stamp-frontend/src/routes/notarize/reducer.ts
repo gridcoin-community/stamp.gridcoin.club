@@ -1,6 +1,7 @@
 export interface BlockchainData {
   block?: number;
   tx?: string;
+  hash?: string;
   time?: number;
 }
 
@@ -114,7 +115,10 @@ export function reducer(
       const withHash = { ...state };
       const { id, hash } = action.payload;
       if (withHash[id]) {
-        withHash[id] = { ...withHash[id], hash };
+        withHash[id] = {
+          ...withHash[id],
+          hash,
+        };
       }
       return withHash;
     }

@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { useDropzone, FileRejection } from 'react-dropzone';
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
+import router from 'next/router';
 import { FilesContext, ErrorContext } from '../context';
 import { ActionType } from '../reducer';
 import { hashFiles, checkForExistence } from '../actions';
@@ -46,13 +47,7 @@ export function Upload({ next }: Props) {
         })
         .then((blockchainData) => {
           if (blockchainData) {
-            dispatch({
-              type: ActionType.existing,
-              payload: {
-                id: file.name,
-                blockchainData,
-              },
-            });
+            router.push(`/proof/${blockchainData.hash}`);
           }
         });
       next();
