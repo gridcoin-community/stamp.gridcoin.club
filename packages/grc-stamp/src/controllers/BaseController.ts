@@ -304,7 +304,11 @@ export class Controller {
     // return value && typeof value === 'object' && value.constructor === Object;
   }
 
-  public render<T>(data: T | RepoListResults<T>): Record<string, unknown> {
+  public render<T>(
+    data: T | RepoListResults<T>,
+    customPresenter?: PresenterInterface,
+  ): Record<string, unknown> {
+    const presenter = customPresenter || this.presenter;
     if (this.isObject(data) && 'rows' in data) {
       const meta = {
         count: 0,
@@ -312,8 +316,8 @@ export class Controller {
       if (data.count) {
         meta.count = data.count as number;
       }
-      return this.presenter.render(data.rows, { meta });
+      return presenter.render(data.rows, { meta });
     }
-    return this.presenter.render(data);
+    return presenter.render(data);
   }
 }
