@@ -32,6 +32,7 @@ export function BlockchainData({ isUploading }: Props) {
       idRef.current = setInterval(async () => {
         if (fileData.dataId) {
           const info = await getStampInfoById(fileData.dataId);
+          if (!info) return;
           if (info.block) {
             dispatch({
               type: ActionType.setBlock,

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { StampRepository } from 'repositories/StampsRepository';
 import { StampEntity } from 'entities/StampEntity';
 import {
-  BlockchainData, FileData, StateInterface,
+  FileData, StateInterface,
 } from './reducer';
 
 export function readFile(file: File): Promise<ArrayBuffer | undefined> {
@@ -48,18 +48,9 @@ export function hashFiles(file: File): Promise<string> {
 
 export async function checkForExistence(
   hash: string,
-): Promise<BlockchainData | null> {
-  // Get the very first one from the store
-  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/stamps?filter[hash]=${hash}`);
-  if (data?.meta?.count > 0) {
-    const existing = data.data[0];
-    return {
-      block: existing.attributes.block,
-      tx: existing.attributes.tx,
-      time: existing.attributes.time,
-    };
-  }
-  return null;
+): Promise<StampEntity | null> {
+  const repository = new StampRepository();
+  return repository.findStampByHash(hash);
 }
 
 export async function storeToBlockchain(hash: string): Promise<string | undefined> {
