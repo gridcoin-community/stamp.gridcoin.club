@@ -32,7 +32,7 @@ export function Page({ stamp }: Props) {
     <>
       <Head>
         <title>
-          Gridcoin blockchain stamping :: Proof for
+          Gridcoin blockchain stamping :: Proof of
           {' '}
           {stamp.hash}
         </title>
@@ -44,7 +44,7 @@ export function Page({ stamp }: Props) {
           <Message gutterBottom variant="body1">
             This document&apos;s digest was successfully embedded in the Gridcoin blockchain.
             <br />
-            It is now permanently certified and proven to exist since the transaction was confirmed.
+            It is permanently certified and proven to exist since the transaction was confirmed.
           </Message>
           <Box justifyContent="center" display="flex" pt={2}>
             <CheckCircleOutlineIcon sx={{ fontSize: 140 }} color="success" />
