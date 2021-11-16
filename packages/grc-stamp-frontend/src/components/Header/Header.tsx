@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import { NavMenuMobile } from 'components/Navigation/NavMenuMobile';
+import Link from 'next/link';
 import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
 interface Props {
@@ -37,21 +38,25 @@ export function Header() {
         <AppBar color="transparent">
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
             <Box>
-              {isMobile ? (
-                <Image
-                  src="/ic-logo-mobile.svg"
-                  width={140}
-                  height={32}
-                  alt="Gridcoin stamp"
-                />
-              ) : (
-                <Image
-                  src="/ic-logo-desktop.svg"
-                  width={158}
-                  height={50}
-                  alt="Gridcoin stamp"
-                />
-              )}
+              <Link passHref href="/">
+                <a>
+                  {isMobile ? (
+                    <Image
+                      src="/ic-logo-mobile.svg"
+                      width={140}
+                      height={32}
+                      alt="Gridcoin stamp"
+                    />
+                  ) : (
+                    <Image
+                      src="/ic-logo-desktop.svg"
+                      width={158}
+                      height={50}
+                      alt="Gridcoin stamp"
+                    />
+                  )}
+                </a>
+              </Link>
             </Box>
             <Toolbar
               sx={{
