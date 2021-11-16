@@ -48,7 +48,7 @@ function InstructionsComponent() {
           <Text variant="body1" gutterBottom>
             Timestamping of documents can allow a public verification of the issue history
             which is permanently recorded to the public blockchain.
-            There is absolutely no method of potential malicious modification at a later stage.
+            There is absolutely no way of potential malicious modification at a later stage.
             Learn more
             {' '}
             <Link href="/about" passHref>
