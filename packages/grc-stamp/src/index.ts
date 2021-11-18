@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 import { config } from './config';
 import { connect } from './lib/gridcoin';
-import { Scraper } from './Services/Scraper';
-import { StampService } from './Services/StampService';
+import { Scraper } from './services/Scraper';
+import { StampService } from './services/StampService';
 import './api';
 
 async function initConnections(): Promise<void> {
