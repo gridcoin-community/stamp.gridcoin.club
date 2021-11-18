@@ -24,6 +24,15 @@ jobs:
           root: ~/grc
           paths: .
 
+  run_typecheck:
+    <<: *node_defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Run typechecks
+          command: npm run typecheck
+
   test:
     <<: *defaults
     steps:
@@ -64,6 +73,9 @@ workflows:
       - lint_commit_message:
           requires:
             - build
+      - run_typecheck:
+          requires:
+            - build
       - test:
           requires:
             - build
@@ -74,5 +86,6 @@ workflows:
               only: master
           requires:
             - build
+            - run_typecheck
             - lint_commit_message
             - test
