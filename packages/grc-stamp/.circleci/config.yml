@@ -25,7 +25,7 @@ jobs:
           paths: .
 
   run_typecheck:
-    <<: *node_defaults
+    <<: *defaults
     steps:
       - attach_workspace:
           at: ~/repo
