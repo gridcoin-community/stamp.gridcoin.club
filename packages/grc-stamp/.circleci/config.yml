@@ -28,7 +28,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: ~/grc
       - run:
           name: Run typechecks
           command: npm run typecheck
