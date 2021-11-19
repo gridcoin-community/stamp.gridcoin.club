@@ -9,7 +9,7 @@ import { stampsRouter } from './routes/stamps';
 import { walletRouter } from './routes/wallet';
 import packageJson from '../package.json';
 
-const app = express();
+export const app = express();
 
 // Set up port
 app.set('port', config.PORT);
@@ -85,8 +85,6 @@ app.on('error', (err) => {
 });
 
 // Start web server using defined port
-app.listen(app.get('port'), () => {
+export const server = app.listen(app.get('port'), () => {
   console.info(`${packageJson.name} is running on port ${app.get('port')}`);
 });
-
-module.exports = app;

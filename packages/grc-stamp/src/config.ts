@@ -25,8 +25,8 @@ interface Config {
  * Check setting existance and throw error if not provided
  * @param {Array} settings Setting name to check
  */
-const checkConfig = (settings: any[]): void => {
-  settings.forEach((setting: any): void => {
+const checkConfig = (settings: string[]): void => {
+  settings.forEach((setting: string): void => {
     if (!nconf.get(setting)) {
       throw new Error(`You must set ${setting} as an environment variable or in config.json!`);
     }
