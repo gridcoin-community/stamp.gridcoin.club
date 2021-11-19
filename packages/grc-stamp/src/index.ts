@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { config } from './config';
 import { connect } from './lib/gridcoin';
 import { log } from './lib/log';
@@ -20,9 +19,6 @@ async function main(): Promise<void> {
   const scraper = new Scraper();
   // run scraper once per minute
   setInterval(() => scraper.scrape(), config.SCRAPER_TIMEOUT);
-  const hash = `${Math.random() * 100000000000000}`;
-  const sha = crypto.createHash('sha256');
-  sha.update(hash);
   setInterval(() => stampService.publishStamp(), config.PUBLISH_TIMEOUT);
 }
 
