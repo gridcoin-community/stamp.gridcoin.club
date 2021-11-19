@@ -3,6 +3,7 @@ import {
   MINIMUM, PREFIX, PROTOCOL, MIN_FEE,
 } from '../constants';
 import { rpc } from '../lib/gridcoin';
+import { log } from '../lib/log';
 
 export class StampService {
   constructor(private prisma = new PrismaClient()) {}
@@ -24,18 +25,18 @@ export class StampService {
     const hashes = readyStamps.map((stamp) => stamp.hash);
 
     if (!hashes.length) {
-      console.log('Nothing to publish');
+      log.info('Nothing to publish');
       return;
     }
 
     const string = `${PREFIX}000001${hashes.join('')}`;
-    console.log(string);
-    console.log(string.length);
+    // console.log(string);
+    // console.log(string.length);
     // maximum 160 characters (80 bytes)
 
     await rpc.setTXfee(MIN_FEE);
     const tx = await rpc.burn(MINIMUM, string);
-    console.log({ tx });
+    log.debug({ tx });
     if (tx) {
       await this.prisma.stamps.updateMany({
         where: {

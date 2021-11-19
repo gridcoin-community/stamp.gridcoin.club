@@ -1,15 +1,16 @@
 import crypto from 'crypto';
 import { config } from './config';
 import { connect } from './lib/gridcoin';
+import { log } from './lib/log';
 import { Scraper } from './services/Scraper';
 import { StampService } from './services/StampService';
 import './api';
 
 async function initConnections(): Promise<void> {
   while (!await connect()) {
-    console.log('Connecting to the gridcoin wallet...');
+    log.info('Connecting to the gridcoin wallet...');
   }
-  console.log('Connected to the gridcoin wallet...');
+  log.info('Connected to the gridcoin wallet...');
 }
 
 async function main(): Promise<void> {

@@ -20,7 +20,7 @@
     "test:lint": "eslint .",
     "test:app": "jest",
     "typecheck": "tsc --project tsconfig.json --noEmit --pretty false",
-    "test": "npm run test:app && npm run test:lint",
+    "test": "npm run test:app && npm run test:lint && npm run typecheck",
     "prisma": "npx prisma generate",
     "commit": "git-cz",
     "semantic-release": "semantic-release"
