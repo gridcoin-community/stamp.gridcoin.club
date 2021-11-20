@@ -5,6 +5,7 @@ import { WalletPresenter } from '../presenters/wallet.presenter';
 import { WalletRepository } from '../repositories/WalletRepository';
 import { Controller } from './BaseController';
 import { ErrorModel } from '../models/Error';
+import { log } from '../lib/log';
 
 export class WalletController extends Controller {
   constructor(
@@ -25,7 +26,7 @@ export class WalletController extends Controller {
         .status(HttpStatus.OK)
         .send(this.render(wallet, this.walletPresenter));
     } catch (e) {
-      console.error(e);
+      log.error(e);
       this.res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
         errors: [
           new ErrorModel(
@@ -44,7 +45,7 @@ export class WalletController extends Controller {
         .status(HttpStatus.OK)
         .send(this.render(balance, this.balancePresenter));
     } catch (e) {
-      console.error(e);
+      log.error(e);
       this.res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
         errors: [
           new ErrorModel(

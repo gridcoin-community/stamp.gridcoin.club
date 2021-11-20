@@ -39,8 +39,14 @@ jobs:
       - attach_workspace:
           at: ~/grc
       - run:
+          name: Start test container
+          command: npm run test:start-test-container
+      - run:
           name: Run tests
           command: npm test
+      - run:
+          name: Stop test container
+          command: npm run test:stop-test-container
 
   lint_commit_message:
     <<: *defaults

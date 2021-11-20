@@ -8,6 +8,7 @@ import { statusRouter } from './routes/status';
 import { stampsRouter } from './routes/stamps';
 import { walletRouter } from './routes/wallet';
 import packageJson from '../package.json';
+import { log } from './lib/log';
 
 export const app = express();
 
@@ -54,9 +55,8 @@ app.use('/stamps', stampsRouter);
 app.use('/wallet', walletRouter);
 
 // Not found error handling
-/* eslint-disable no-unused-vars */
 app.use((req, res) => {
-  console.warn(`Not found URL: ${req.url}`);
+  log.warn(`Not found URL: ${req.url}`);
   res
     .status(HttpStatus.NOT_FOUND)
     .send({
@@ -68,7 +68,7 @@ app.use((req, res) => {
 
 // 500 error handling
 app.use((err, req, res, next) => {
-  console.error(`Internal server error: ${err}`);
+  log.error(`Internal server error: ${err}`);
   res
     .status(HttpStatus.INTERNAL_SERVER_ERROR)
     .send({
@@ -77,14 +77,8 @@ app.use((err, req, res, next) => {
       ],
     });
 });
-/* eslint-enable no-unused-vars */
-
-// Express error logging
-app.on('error', (err) => {
-  console.error(`Express: ${err}`);
-});
 
 // Start web server using defined port
 export const server = app.listen(app.get('port'), () => {
-  console.info(`${packageJson.name} is running on port ${app.get('port')}`);
+  log.info(`${packageJson.name} is running on port ${app.get('port')}`);
 });

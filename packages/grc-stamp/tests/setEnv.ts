@@ -1,4 +1,4 @@
-process.env.DATABASE_URL = 'localhost';
+process.env.DATABASE_URL = 'mysql://test:test@localhost:3306/test';
 process.env.PORT = '7777';
 process.env.GRC_RPC_USER = 'grc-user';
 process.env.GRC_RPC_PASSWORD = 'grc-password';

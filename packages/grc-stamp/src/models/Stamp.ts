@@ -1,6 +1,7 @@
-import { PrismaClient, StampsType, stamps } from '@prisma/client';
+import { StampsType } from '@prisma/client';
 import { TX } from 'gridcoin-rpc/dist/types';
 import { log } from '../lib/log';
+import { getPrisma } from '../lib/prisma';
 import { GenericInterface } from './Generic';
 
 export class Stamp implements GenericInterface {
@@ -34,7 +35,7 @@ export class Stamp implements GenericInterface {
     'updatedAt',
   ];
 
-  constructor(public model = (new PrismaClient()).stamps) {}
+  constructor(public model = getPrisma().stamps) {}
 
   public async saveOrUpdate(): Promise<any> {
     // Try to find existing one

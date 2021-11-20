@@ -24,7 +24,7 @@ describe('Wallet endpoints', () => {
   it('GET /wallet', async () => {
     const res = await request(app)
       .get('/wallet')
-      .send({});
+      .send();
     const { data } = res.body;
     const { attributes } = data;
     expect(res.status).to.be.equal(200);

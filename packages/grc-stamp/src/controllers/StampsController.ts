@@ -12,6 +12,7 @@ import { StampData, StampInput, StampSchema } from './schemas/StampSchema';
 import { ErrorModel } from '../models/Error';
 import { WalletRepository } from '../repositories/WalletRepository';
 import { config } from '../config';
+import { log } from '../lib/log';
 
 const { Store } = yayson();
 export class StampsController extends Controller {
@@ -38,7 +39,7 @@ export class StampsController extends Controller {
         .status(HttpStatus.OK)
         .send(this.render<stamps>(result));
     } catch (e) {
-      console.error(e);
+      log.error(e);
       this.res.status(HttpStatus.NOT_FOUND).send({
         errors: [
           new ErrorModel(
@@ -63,7 +64,7 @@ export class StampsController extends Controller {
         .status(HttpStatus.OK)
         .send(this.render<stamps>(results));
     } catch (e) {
-      console.error(e);
+      log.error(e);
       this.res.status(HttpStatus.NOT_FOUND).send({
         errors: [
           new ErrorModel(
@@ -94,7 +95,7 @@ export class StampsController extends Controller {
         return;
       }
     } catch (e) {
-      console.error(e);
+      log.error(e);
       this.res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
         errors: [
           new ErrorModel(
