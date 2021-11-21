@@ -35,19 +35,19 @@ jobs:
 
   test:
     <<: *defaults
+    docker:
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_RANDOM_ROOT_PASSWORD: true
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
+          MYSQL_DATABASE: test
     steps:
       - attach_workspace:
           at: ~/grc
-      - setup_remote_docker
-      - run:
-          name: Start test container
-          command: npm run test:start-test-container
       - run:
           name: Run tests
           command: npm test
-      - run:
-          name: Stop test container
-          command: npm run test:stop-test-container
 
   lint_commit_message:
     <<: *defaults
