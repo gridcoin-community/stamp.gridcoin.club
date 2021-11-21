@@ -85,4 +85,32 @@ describe('GET /stamps', () => {
     expect(meta).to.be.an('object').to.have.property('count');
     expect(meta.count).to.be.equal(MANY_RECORDS);
   });
+
+  it('should sort all results', async () => {
+    const res = await request(app)
+      .get('/stamps?page[size]=3&sort=time')
+      .send();
+    const { data } = res.body;
+    expect(res.status).to.be.equal(200);
+    expect(data).to.be.an('array').lengthOf(3);
+    const time1 = Number(data[0].attributes.time);
+    const time2 = Number(data[1].attributes.time);
+    const time3 = Number(data[2].attributes.time);
+    expect(time1).to.be.lessThanOrEqual(time2);
+    expect(time2).to.be.lessThanOrEqual(time3);
+  });
+
+  it('should sort all results in reverce order as well', async () => {
+    const res = await request(app)
+      .get('/stamps?page[size]=3&sort=-block')
+      .send();
+    const { data } = res.body;
+    expect(res.status).to.be.equal(200);
+    expect(data).to.be.an('array').lengthOf(3);
+    const block1 = Number(data[0].attributes.block);
+    const block2 = Number(data[1].attributes.block);
+    const block3 = Number(data[2].attributes.block);
+    expect(block3).to.be.lessThanOrEqual(block2);
+    expect(block2).to.be.lessThanOrEqual(block1);
+  });
 });

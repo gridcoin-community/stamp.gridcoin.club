@@ -35,8 +35,8 @@ enum MapFilterTypes {
   // 'notLike',
 }
 enum SortOrder {
-  asc = 'ASC',
-  desc = 'DESC',
+  asc = 'asc',
+  desc = 'desc',
 }
 
 interface Query {
@@ -58,7 +58,9 @@ export interface Pagination {
 }
 
 export interface Sorting {
-  order: [string, SortOrder][];
+  order: [{
+    [key: string]: SortOrder;
+  }];
 }
 
 export interface Fields {
@@ -182,7 +184,7 @@ export class Controller {
     const query = this.req.query as unknown as Query;
     if (!query) return;
     if ('sort' in query) {
-      const fields = query.sort.split(/,/).reduce((orderByArray, currentElem) => {
+      const fields: [{ [key: string]: SortOrder }] = query.sort.split(/,/).reduce((orderByArray, currentElem) => {
         let fieldName: string = currentElem;
         let order: SortOrder;
         order = SortOrder.asc;
@@ -194,14 +196,14 @@ export class Controller {
         // cleanup fieldname
         fieldName = fieldName.replace(/[^a-z0-9_-]/ig, '');
 
-        orderByArray.push([fieldName, order]);
+        orderByArray.push({ [fieldName]: order });
         return orderByArray;
-      }, []);
+      }, [] as any);
       if (fields) {
         this.useSort = { order: fields };
       }
     } else {
-      this.useSort = { order: [[DEFAULT_SORT_FIELD, SortOrder.asc]] };
+      this.useSort = { order: [{ [DEFAULT_SORT_FIELD]: SortOrder.asc }] };
     }
   }
 

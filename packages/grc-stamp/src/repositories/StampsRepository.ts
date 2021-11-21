@@ -75,6 +75,9 @@ export class StampsRepositoryClass {
       if (options.filters) {
         opts.where = options.filters;
       }
+      if (options.sort) {
+        opts.orderBy = options.sort.order;
+      }
     }
     const res = await this.stamp.model.findMany(opts);
     return {
