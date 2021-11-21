@@ -5,7 +5,6 @@ services:
     image: mysql:5.7
     container_name: test_grc_mysql
     command: --character-set-server=utf8mb4
-    restart: always
     ports:
       - 3306:3306
     environment:
