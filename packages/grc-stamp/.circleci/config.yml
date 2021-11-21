@@ -36,6 +36,7 @@ jobs:
   test:
     <<: *defaults
     docker:
+      - image: circleci/node:12
       - image: circleci/mysql:5.7
         environment:
           MYSQL_RANDOM_ROOT_PASSWORD: true
