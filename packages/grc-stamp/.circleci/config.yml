@@ -47,6 +47,9 @@ jobs:
       - attach_workspace:
           at: ~/grc
       - run:
+          name: Wait for mysql
+          command: sleep 7
+      - run:
           name: Run tests
           command: npm test
 
