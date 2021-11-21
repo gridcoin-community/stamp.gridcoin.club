@@ -37,7 +37,8 @@ export class StampsRepositoryClass {
   }
 
   public async getByHash(
-    hash: string, hashType: StampsType = StampsType.sha256,
+    hash: string,
+    hashType: StampsType = StampsType.sha256,
   ): Promise<stamps | null> {
     return this.stamp.model.findFirst({
       where: { hash, type: hashType },

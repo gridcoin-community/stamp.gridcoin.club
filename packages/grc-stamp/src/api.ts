@@ -37,9 +37,11 @@ app.use((req, res, next) => {
   res.header('Content-Type', 'application/vnd.api+json; charset=utf-8');
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH');
-  res.header('Access-Control-Allow-Headers',
+  res.header(
+    'Access-Control-Allow-Headers',
     'x-forwarded-proto,Accept,DNT,X-CustomHeader,Keep-Alive,User-Agent,'
-    + 'X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+    + 'X-Requested-With,If-Modified-Since,Cache-Control,Content-Type',
+  );
   next();
 });
 
