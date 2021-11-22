@@ -113,4 +113,15 @@ describe('GET /stamps', () => {
     expect(block3).to.be.lessThanOrEqual(block2);
     expect(block2).to.be.lessThanOrEqual(block1);
   });
+
+  it('should give not found when search for non existing record', async () => {
+    const res = await request(app)
+      .get('/stamp?filter[hash]=0')
+      .send();
+    expect(res.status).to.be.equal(404);
+    const { errors } = res.body;
+    expect(errors).to.be.an('array')
+      .to.have.lengthOf(1)
+      .that.deep.includes({ status: 404, title: 'Not Found' });
+  });
 });
