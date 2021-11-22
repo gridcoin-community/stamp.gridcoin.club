@@ -1,6 +1,6 @@
-import { PrismaClient, StampsType } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import {
-  MINIMUM, PREFIX, PROTOCOL, MIN_FEE,
+  MINIMUM, PREFIX, MIN_FEE,
 } from '../constants';
 import { rpc } from '../lib/gridcoin';
 import { log } from '../lib/log';

@@ -1,6 +1,4 @@
 import { StampsType } from '@prisma/client';
-import { ScriptPubKey } from 'gridcoin-rpc/dist/contracts/transaction';
-import { TX } from 'gridcoin-rpc/dist/types';
 import { config } from '../config';
 import { OP_RETURN, PREFIX, PROTOCOL } from '../constants';
 import { rpc } from '../lib/gridcoin';

@@ -2,6 +2,6 @@ import { PrismaClient } from '.prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getPrisma = () => prisma;
+export const getPrisma = (): PrismaClient => prisma;
 
-export const disconnect = () => prisma.$disconnect();
+export const disconnect = (): Promise<any> => prisma.$disconnect();
