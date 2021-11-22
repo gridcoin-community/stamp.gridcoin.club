@@ -35,6 +35,10 @@ export class StampsController extends Controller {
       };
       const bigId = BigInt(id);
       const result = await this.repository.getById(bigId, opts);
+      if (!result) {
+        log.debug(`Cannot find record with id: ${id}`);
+        throw new Error('Record not found');
+      }
       this.res
         .status(HttpStatus.OK)
         .send(this.render<stamps>(result));

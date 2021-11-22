@@ -114,6 +114,29 @@ describe('GET /stamps', () => {
     expect(block2).to.be.lessThanOrEqual(block1);
   });
 
+  it('should find record by id (primary key)', async () => {
+    const id = 1;
+    const res = await request(app)
+      .get(`/stamps/${id}`)
+      .send();
+    expect(res.status).to.be.equal(200);
+    const { data } = res.body;
+    expect(data).to.be.an('object')
+      .to.have.property('id').that.equal(String(id));
+  });
+
+  it('should give 404 when getting by id (primary key) and there is no record', async () => {
+    const id = 0;
+    const res = await request(app)
+      .get(`/stamps/${id}`)
+      .send();
+    expect(res.status).to.be.equal(404);
+    const { errors } = res.body;
+    expect(errors).to.be.an('array')
+      .to.have.lengthOf(1)
+      .that.deep.includes({ status: 404, title: 'Not Found' });
+  });
+
   it('should give not found when search for non existing record', async () => {
     const res = await request(app)
       .get('/stamp?filter[hash]=0')
