@@ -18,7 +18,7 @@ export async function connect(): Promise<boolean> {
     await rpc.getWalletInfo();
     return true;
   } catch (err) {
-    log.warning('Connection error');
+    log.warn('Connection error');
     await wait(5000);
     return false;
   }
