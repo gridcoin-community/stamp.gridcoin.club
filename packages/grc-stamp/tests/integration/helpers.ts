@@ -21,6 +21,22 @@ export async function initDatabase(): Promise<void> {
   await execPromise(`DATABASE_URL=${process.env.DATABASE_URL} ${prismaBinary} db push  --force-reset `);
 }
 
+export async function createManyWithSameHash(hash: string, amount = 3): Promise<void> {
+  const data = [];
+  for (let i = 0; i < amount; i++) {
+    data.push({
+      protocol: PROTOCOL,
+      type: StampsType.sha256,
+      hash,
+      block: 10000 + i,
+      tx: faker.git.commitSha(),
+      raw_transaction: `${faker.git.commitSha()}${faker.git.commitSha()}`,
+      time: i,
+    });
+  }
+  await getPrisma().stamps.createMany({ data });
+}
+
 export async function createManyCompletedStamps(amount = 10): Promise<void> {
   const data = [];
   for (let i = 0; i < amount; i++) {

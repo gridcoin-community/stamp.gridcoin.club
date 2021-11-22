@@ -18,7 +18,7 @@
     "start": "node dist/index.js",
     "start:dev": "nodemon dist/index.js",
     "test:lint": "eslint .",
-    "test:app": "NODE_ENV=testing jest --runInBand",
+    "test:app": "NODE_ENV=testing jest --runInBand --verbose",
     "typecheck": "tsc --project tsconfig.json --noEmit --pretty false",
     "test": "npm run test:app && npm run test:lint && npm run typecheck",
     "test:start-test-container": "docker-compose up -d",

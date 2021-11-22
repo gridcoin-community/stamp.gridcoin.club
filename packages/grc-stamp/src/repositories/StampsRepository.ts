@@ -42,6 +42,7 @@ export class StampsRepositoryClass {
   ): Promise<stamps | null> {
     return this.stamp.model.findFirst({
       where: { hash, type: hashType },
+      orderBy: { time: 'asc' },
     });
   }
 

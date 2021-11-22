@@ -230,13 +230,8 @@ export class Controller {
           const filterTypeUnresolved = ([Object.keys(query.filter[key])]).toString();
           if (Object.values(FilterTypes).includes(filterTypeUnresolved)) {
             const filterType = MapFilterTypes[filterTypeUnresolved];
-            // if (FILTER_TYPES.indexOf(filterType) > -1) {
             let list = query.filter[key][filterTypeUnresolved].split(',');
             list = list.map((value: any) => (Number.isNaN(value) ? value : BigInt(value)));
-            // if (filterType === 'like' || filterType === 'notLike') {
-            //   list = `%${list.toString()}%`;
-            // }
-            // filters.push({ [dbProperKey]: { [Op[filterType]]: list } });
 
             filters = {
               ...filters,

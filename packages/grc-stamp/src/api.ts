@@ -7,6 +7,7 @@ import { ErrorModel } from './models/Error';
 import { statusRouter } from './routes/status';
 import { stampsRouter } from './routes/stamps';
 import { walletRouter } from './routes/wallet';
+import { hashesRouter } from './routes/hashes';
 import packageJson from '../package.json';
 import { log } from './lib/log';
 
@@ -55,6 +56,7 @@ app.use((req, res, next) => {
 app.use('/status', statusRouter);
 app.use('/stamps', stampsRouter);
 app.use('/wallet', walletRouter);
+app.use('/hashes', hashesRouter);
 
 // Not found error handling
 app.use((req, res) => {
