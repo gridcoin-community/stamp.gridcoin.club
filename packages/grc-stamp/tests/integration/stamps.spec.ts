@@ -82,6 +82,25 @@ describe('POST /stamps', () => {
       .that.equal(null);
   });
 
+  it('should result in the error state if input data is wrong', async () => {
+    const res = await request(app)
+      .post('/stamps')
+      .send({
+        data: {
+          type: 'stamps',
+          attributes: {
+            hash: '123',
+          },
+        },
+      });
+    expect(res.status).to.be.equal(HttpStatus.BAD_REQUEST);
+    const { errors } = res.body;
+    expect(errors).to.be.an('array').to.have.lengthOf(1);
+    const [error] = errors;
+    expect(error).to.have.property('status')
+      .that.equal(HttpStatus.BAD_REQUEST);
+  });
+
   it('should fail if there is no enough funds', async () => {
     rpc.getBalance = jest.fn(() => Promise.resolve(0));
     const res = await request(app)
