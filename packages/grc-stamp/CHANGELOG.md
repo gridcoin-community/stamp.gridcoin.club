@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/gridcat/grc-stamp/compare/v1.1.0...v1.1.1) (2021-11-23)
+
+
+### Bug Fixes
+
+* push deploy ([f68103d](https://github.com/gridcat/grc-stamp/commit/f68103d96f6ae463213d962464f7704f23f6556b))
+
 # [1.1.0](https://github.com/gridcat/grc-stamp/compare/v1.0.0...v1.1.0) (2021-11-22)
 
 
