@@ -89,7 +89,7 @@ jobs:
           name: Get the recent changes
           command: git pull origin master
       - setup_remote_docker
-          versions: 19.03.13
+          version: 19.03.13
       - run:
           name: Install dependencies
           command: apk add --no-cache jq
