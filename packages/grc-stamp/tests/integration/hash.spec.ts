@@ -1,3 +1,4 @@
+import HttpStatus from 'http-status-codes';
 import { expect } from 'chai';
 import request from 'supertest';
 import { StampsType } from '.prisma/client';
@@ -24,7 +25,7 @@ afterEach(async () => {
   await cleanUp();
 });
 
-describe('Hash search', () => {
+describe('GET /hashes', () => {
   it('should select the very first hash out of many if present', async () => {
     const hash = '87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7';
     await createManyWithSameHash(hash, 13);
@@ -32,7 +33,7 @@ describe('Hash search', () => {
       .get(`/hashes/${hash}`)
       .send();
     const { data } = res.body;
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data).to.be.an('object')
       .to.have.property('id').that.equal('1');
     const { attributes } = data;
@@ -48,17 +49,19 @@ describe('Hash search', () => {
     expect(attributes)
       .to.have.property('time')
       .that.equal(0);
-    expect(1).to.be.equal(1);
   });
 
   it('should give not found if record is not presented', async () => {
     const res = await request(app)
       .get('/hashes/1')
       .send();
-    expect(res.status).to.be.equal(404);
+    expect(res.status).to.be.equal(HttpStatus.NOT_FOUND);
     const { errors } = res.body;
     expect(errors).to.be.an('array')
       .to.have.lengthOf(1)
-      .that.deep.includes({ status: 404, title: 'Not Found' });
+      .that.deep.includes({
+        status: HttpStatus.NOT_FOUND,
+        title: HttpStatus.getStatusText(HttpStatus.NOT_FOUND),
+      });
   });
 });

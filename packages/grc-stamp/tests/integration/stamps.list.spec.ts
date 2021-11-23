@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import HttpStatus from 'http-status-codes';
 import request from 'supertest';
 import { app, server } from '../../src/api';
 import { disconnect } from '../../src/lib/prisma';
@@ -28,7 +29,7 @@ describe('GET /stamps', () => {
       .get('/stamps')
       .send();
     const { data, meta } = res.body;
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     // Default is 25, we create 50, check that
     expect(data).to.be.an('array').lengthOf(DEFAULT_PAGINATION_LIMIT);
     // And meta should show 50
@@ -42,7 +43,7 @@ describe('GET /stamps', () => {
       .get(`/stamps?page[size]=${pageSize}`)
       .send();
     const { data, meta } = res.body;
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data).to.be.an('array').lengthOf(pageSize);
     expect(meta).to.be.an('object').to.have.property('count');
     expect(meta.count).to.be.equal(MANY_RECORDS);
@@ -54,7 +55,7 @@ describe('GET /stamps', () => {
       .get(`/stamps?page[size]=${pageSize}`)
       .send();
     const { data, meta } = res.body;
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data).to.be.an('array').lengthOf(MAXIMUM_PAGINATION_LIMIT);
     expect(meta).to.be.an('object').to.have.property('count');
     expect(meta.count).to.be.equal(MANY_RECORDS);
@@ -67,7 +68,7 @@ describe('GET /stamps', () => {
       .get(`/stamps?page[size]=${pageSize}&page[number]=1`)
       .send();
     const { data, meta } = res.body;
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data).to.be.an('array').lengthOf(desiredLeftover);
     expect(meta).to.be.an('object').to.have.property('count');
     expect(meta.count).to.be.equal(MANY_RECORDS);
@@ -80,7 +81,7 @@ describe('GET /stamps', () => {
       .get(`/stamps?page[size]=${pageSize}&page[offset]=${MAXIMUM_PAGINATION_LIMIT}`)
       .send();
     const { data, meta } = res.body;
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data).to.be.an('array').lengthOf(desiredLeftover);
     expect(meta).to.be.an('object').to.have.property('count');
     expect(meta.count).to.be.equal(MANY_RECORDS);
@@ -91,7 +92,7 @@ describe('GET /stamps', () => {
       .get('/stamps?page[size]=3&sort=time')
       .send();
     const { data } = res.body;
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data).to.be.an('array').lengthOf(3);
     const time1 = Number(data[0].attributes.time);
     const time2 = Number(data[1].attributes.time);
@@ -105,7 +106,7 @@ describe('GET /stamps', () => {
       .get('/stamps?page[size]=3&sort=-block')
       .send();
     const { data } = res.body;
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data).to.be.an('array').lengthOf(3);
     const block1 = Number(data[0].attributes.block);
     const block2 = Number(data[1].attributes.block);
@@ -119,7 +120,7 @@ describe('GET /stamps', () => {
     const res = await request(app)
       .get(`/stamps/${id}`)
       .send();
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     const { data } = res.body;
     expect(data).to.be.an('object')
       .to.have.property('id').that.equal(String(id));
@@ -130,21 +131,27 @@ describe('GET /stamps', () => {
     const res = await request(app)
       .get(`/stamps/${id}`)
       .send();
-    expect(res.status).to.be.equal(404);
+    expect(res.status).to.be.equal(HttpStatus.NOT_FOUND);
     const { errors } = res.body;
     expect(errors).to.be.an('array')
       .to.have.lengthOf(1)
-      .that.deep.includes({ status: 404, title: 'Not Found' });
+      .that.deep.includes({
+        status: HttpStatus.NOT_FOUND,
+        title: HttpStatus.getStatusText(HttpStatus.NOT_FOUND),
+      });
   });
 
   it('should give not found when search for non existing record', async () => {
     const res = await request(app)
       .get('/stamp?filter[hash]=0')
       .send();
-    expect(res.status).to.be.equal(404);
+    expect(res.status).to.be.equal(HttpStatus.NOT_FOUND);
     const { errors } = res.body;
     expect(errors).to.be.an('array')
       .to.have.lengthOf(1)
-      .that.deep.includes({ status: 404, title: 'Not Found' });
+      .that.deep.includes({
+        status: HttpStatus.NOT_FOUND,
+        title: HttpStatus.getStatusText(HttpStatus.NOT_FOUND),
+      });
   });
 });

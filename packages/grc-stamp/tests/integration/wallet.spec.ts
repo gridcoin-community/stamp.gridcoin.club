@@ -1,3 +1,4 @@
+import HttpStatus from 'http-status-codes';
 import { expect } from 'chai';
 import request from 'supertest';
 import { rpc } from '../../src/lib/gridcoin';
@@ -27,7 +28,7 @@ describe('Wallet endpoints', () => {
       .send();
     const { data } = res.body;
     const { attributes } = data;
-    expect(res.status).to.be.equal(200);
+    expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data.id).to.be.equal(ADDRESS);
     expect(data.type).to.be.equal(TYPE);
     expect(attributes.address).to.be.equal(ADDRESS);
@@ -38,10 +39,13 @@ describe('Wallet endpoints', () => {
     const res = await request(app)
       .get('/wallet')
       .send({});
-    expect(res.status).to.be.equal(500);
+    expect(res.status).to.be.equal(HttpStatus.INTERNAL_SERVER_ERROR);
     const { errors } = res.body;
     expect(errors).to.be.an('array')
       .to.have.lengthOf(1)
-      .that.deep.includes({ status: 500, title: 'Internal Server Error' });
+      .that.deep.includes({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        title: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
+      });
   });
 });
