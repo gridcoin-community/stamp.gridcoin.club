@@ -59,7 +59,7 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run:
-          name: Run TypeScript
+          name: Run typechecks
           command: npm run typecheck
 
   run_lint_commit_message:
