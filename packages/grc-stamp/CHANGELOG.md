@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/gridcat/grc-stamp/compare/v1.1.1...v1.1.2) (2021-11-23)
+
+
+### Bug Fixes
+
+* **docker:** fix docker version for the build proces ([54677bd](https://github.com/gridcat/grc-stamp/commit/54677bd7bb39dbe84ddb92117bde983a8001fd41))
+
 ## [1.1.1](https://github.com/gridcat/grc-stamp/compare/v1.1.0...v1.1.1) (2021-11-23)
 
 
