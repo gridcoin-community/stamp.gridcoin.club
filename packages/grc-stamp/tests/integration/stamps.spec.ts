@@ -5,7 +5,7 @@ import { StampsType } from '.prisma/client';
 import { app, server } from '../../src/api';
 import { PROTOCOL } from '../../src/constants';
 import { rpc } from '../../src/lib/gridcoin';
-import { disconnect } from '../../src/lib/prisma';
+import { disconnect, getPrisma } from '../../src/lib/prisma';
 import { cleanUp, initDatabase } from './helpers';
 
 const AMOUNT = '10.221';
@@ -47,6 +47,7 @@ describe('POST /stamps', () => {
     expect(res.status).to.be.equal(HttpStatus.CREATED);
     const { data } = res.body;
     const { attributes } = data;
+    const { id } = data;
     expect(attributes).to.have.property('hash')
       .that.equal(HASH);
     expect(data).to.have.property('id');
@@ -59,6 +60,25 @@ describe('POST /stamps', () => {
     expect(attributes).to.have.property('rawTransaction')
       .that.equal(null);
     expect(attributes).to.have.property('time')
+      .that.equal(null);
+    const records = await getPrisma().stamps.findMany({
+      where: {
+        id: BigInt(id),
+      },
+    });
+    expect(records).to.be.an('array').lengthOf(1);
+    const [record] = records;
+    expect(record).to.have.property('hash')
+      .that.equal(HASH);
+    expect(record).to.have.property('protocol')
+      .that.equal(PROTOCOL);
+    expect(record).to.have.property('type')
+      .that.equal(StampsType.sha256);
+    expect(record).to.have.property('tx')
+      .that.equal(null);
+    expect(record).to.have.property('raw_transaction')
+      .that.equal(null);
+    expect(record).to.have.property('time')
       .that.equal(null);
   });
 
