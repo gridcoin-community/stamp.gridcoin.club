@@ -53,3 +53,17 @@ export const HashListMock = {
     },
   ],
 };
+
+export const walletMock = {
+  data: {
+    id: 'mogUo6hwZDSCVCujPZZJGbzNKa1CkXxeJb',
+    type: 'wallet',
+    attributes: {
+      address: 'mogUo6hwZDSCVCujPZZJGbzNKa1CkXxeJb',
+      balance: 5118.3211,
+    },
+    links: {
+      self: '/wallet/',
+    },
+  },
+};

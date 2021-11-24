@@ -1,18 +1,23 @@
 import { Box, Typography } from '@mui/material';
-import axios from 'axios';
+import { WalletEntity } from 'entities/WalletEntity';
 import React, { useState, useEffect } from 'react';
+import { WalletRepository } from 'repositories/WalletRepository';
+
+const walletRepository = new WalletRepository();
 
 export function BalanceComponent() {
-  const [balance, setBalance] = useState(0);
+  const [walletData, setWalletData] = useState<WalletEntity>();
 
-  const fetchBalance = async () => {
-    const res: any = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/wallet/balance`);
-    setBalance(res.data?.data?.attributes?.balance || 0);
+  const fetchWalletInfo = async () => {
+    const walletEntity = await walletRepository.getWalletData();
+    if (walletEntity) {
+      setWalletData(walletEntity);
+    }
   };
 
   useEffect(() => {
-    fetchBalance();
-  });
+    fetchWalletInfo();
+  }, []);
 
   return (
     <>
@@ -20,7 +25,7 @@ export function BalanceComponent() {
         <Typography variant="caption">
           Stamp service wallet balance:
           {' '}
-          {balance}
+          {walletData?.balance}
           {' '}
           grc
         </Typography>
@@ -29,7 +34,7 @@ export function BalanceComponent() {
         <Typography variant="caption">
           Address:
           {' '}
-          { process.env.NEXT_PUBLIC_WALLET_ADDRESS }
+          { walletData?.address }
         </Typography>
       </Box>
     </>
