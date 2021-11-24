@@ -34,7 +34,7 @@ export function BalanceComponent() {
         <Typography variant="caption">
           Address:
           {' '}
-          { walletData?.address }
+          { process.env.NEXT_PUBLIC_WALLET_ADDRESS }
         </Typography>
       </Box>
     </>
