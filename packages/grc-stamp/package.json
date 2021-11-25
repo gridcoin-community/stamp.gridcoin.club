@@ -41,7 +41,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
+      "path": "packages/grc-stamp/node_modules/cz-conventional-changelog"
     }
   },
   "commitlint": {

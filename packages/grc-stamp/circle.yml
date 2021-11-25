@@ -1,7 +1,7 @@
 version: 2
 
 defaults: &defaults
-  working_directory: ~/grc
+  working_directory: ~/packages/grc-stamp/grc
   docker:
     - image: circleci/node:14
 
