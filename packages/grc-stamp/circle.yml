@@ -14,6 +14,7 @@ jobs:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "packages/grc-stamp/package.json" }} # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
+      - run: npm install
       - run: cd ~/app/packages/grc-stamp && npm install
       - run: cd ~/app/packages/grc-stamp && npm run build
       - save_cache:
