@@ -18,17 +18,17 @@ jobs:
       - run: cd ~/app/packages/grc-stamp && npm run build
       - save_cache:
           paths:
-            - ~/spp/packages/grc-stamp/node_modules
+            - ~/app/packages/grc-stamp/node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - persist_to_workspace:
-          root: ~/app/packages/grc-stamp
+          root: ~/app
           paths: .
 
   run_typecheck:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/app/packages/grc-stamp
+          at: ~/app
       - run:
           name: Run typechecks
           command: cd ~/app/packages/grc-stamp && npm run typecheck
@@ -45,7 +45,7 @@ jobs:
           MYSQL_DATABASE: test
     steps:
       - attach_workspace:
-          at: ~/app/packages/grc-stamp
+          at: ~/app
       - run:
           name: Wait for mysql
           command: sleep 7
@@ -57,7 +57,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/app/packages/grc-stamp
+          at: ~/app
       - run:
           name: Define environment variable with lastest commit's message
           command: |
@@ -72,7 +72,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/app/packages/grc-stamp
+          at: ~/app
       - run:
           name: Trust this ssh key
           command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
