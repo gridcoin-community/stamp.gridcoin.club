@@ -1,7 +1,7 @@
 version: 2
 
 defaults: &defaults
-  working_directory: ~/packages/grc-stamp
+  working_directory: ~/app
   docker:
     - image: circleci/node:14
 
@@ -14,24 +14,24 @@ jobs:
           keys:
           - v1-dependencies-{{ checksum "package.json" }} # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-      - run: cd ~/packages/grc-stamp && npm install
-      - run: cd ~/packages/grc-stamp && npm run build
+      - run: cd ~/app/packages/grc-stamp && npm install
+      - run: cd ~/app/packages/grc-stamp && npm run build
       - save_cache:
           paths:
-            - packages/grc-stamp/node_modules
+            - ~/spp/packages/grc-stamp/node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - persist_to_workspace:
-          root: ~/packages/grc-stamp
+          root: ~/app/packages/grc-stamp
           paths: .
 
   run_typecheck:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/packages/grc-stamp
+          at: ~/app/packages/grc-stamp
       - run:
           name: Run typechecks
-          command: cd ~/packages/grc-stamp && npm run typecheck
+          command: cd ~/app/packages/grc-stamp && npm run typecheck
 
   test:
     <<: *defaults
@@ -45,19 +45,19 @@ jobs:
           MYSQL_DATABASE: test
     steps:
       - attach_workspace:
-          at: ~/packages/grc-stamp
+          at: ~/app/packages/grc-stamp
       - run:
           name: Wait for mysql
           command: sleep 7
       - run:
           name: Run tests
-          command: cd ~/packages/grc-stamp && npm test
+          command: cd ~/app/packages/grc-stamp && npm test
 
   lint_commit_message:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/packages/grc-stamp
+          at: ~/app/packages/grc-stamp
       - run:
           name: Define environment variable with lastest commit's message
           command: |
@@ -71,16 +71,16 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/packages/grc-stamp
+          at: ~/app/packages/grc-stamp
       - run:
           name: Trust this ssh key
           command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: Semantic release
-          command: cd ~/packages/grc-stamp && npm run semantic-release
+          command: cd ~/app/packages/grc-stamp && npm run semantic-release
 
   build_image:
-    working_directory: ~/packages/grc-stamp
+    <<: *defaults
     docker:
       - image: docker:17.05.0-ce-git
     steps:
@@ -106,12 +106,12 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            cd ~/packages/grc-stamp && docker build --cache-from=app -t app -f Dockerfile.prod .
+            cd ~/app/packages/grc-stamp && docker build --cache-from=app -t app -f Dockerfile.prod .
       - run:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            cd ~/packages/grc-stamp && docker save -o /caches/app.tar app
+            cd ~/app/packages/grc-stamp && docker save -o /caches/app.tar app
       - deploy:
           name: Push application Docker image
           command: |
