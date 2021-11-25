@@ -10,7 +10,7 @@
     "lint": "next lint",
     "typecheck": "tsc --project tsconfig.json --noEmit --pretty false",
     "commit": "cz",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release -e semantic-release-monorepo"
   },
   "lint-staged": {
     "{src,test,tools}/**/*.ts": [
@@ -92,6 +92,7 @@
     "jest": "^27.3.1",
     "lint-staged": "^11.1.2",
     "semantic-release": "^17.4.5",
+    "semantic-release-monorepo": "^7.0.5",
     "ts-jest": "^27.0.7",
     "typescript": "^4.3.5"
   }

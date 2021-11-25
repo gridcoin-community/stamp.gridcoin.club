@@ -47,7 +47,7 @@ export function Footer() {
         <Grid item xs={12} md={6}>
           <FooterTextTypography variant="caption" textAlign="right">
             <a
-              href="https://github.com/gridcat/grc-stamp-frontend"
+              href="https://github.com/gridcat/gridcoin.club"
               target="_blank"
               rel="nofollow noreferrer"
               style={{ display: 'inline-block' }}

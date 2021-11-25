@@ -1,1 +1,2 @@
-targetBranches: ^(release/|master$|dev$)
+# targetBranches: ^(release/|master$|dev$)
+targetBranches: ^(release/$)
