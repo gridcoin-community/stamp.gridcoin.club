@@ -11,7 +11,7 @@ defaults: &defaults
 jobs:
   build:
     <<: *defaults
-    resource_class: small
+    # resource_class: small
     steps:
       - checkout
       - restore_cache:
