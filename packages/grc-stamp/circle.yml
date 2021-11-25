@@ -6,7 +6,7 @@ defaults: &defaults
     - image: circleci/node:14
 
 jobs:
-  build:
+  grc-stamp_build:
     <<: *defaults
     steps:
       - checkout
@@ -24,7 +24,7 @@ jobs:
           root: ~/app
           paths: .
 
-  run_typecheck:
+  grc-stamp_run_typecheck:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -33,7 +33,7 @@ jobs:
           name: Run typechecks
           command: cd ~/app/packages/grc-stamp && npm run typecheck
 
-  test:
+  grc-stamp_test:
     <<: *defaults
     docker:
       - image: circleci/node:12
@@ -53,7 +53,7 @@ jobs:
           name: Run tests
           command: cd ~/app/packages/grc-stamp && npm test
 
-  release:
+  grc-stamp_release:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -65,7 +65,7 @@ jobs:
           name: Semantic release
           command: cd ~/app/packages/grc-stamp && npm run semantic-release
 
-  build_image:
+  grc-stamp_build_image:
     <<: *defaults
     docker:
       - image: docker:17.05.0-ce-git
@@ -109,32 +109,32 @@ jobs:
 
 
 workflows:
-  grc-stamp-build-and-deploy:
+  grc-stamp_build-and-deploy:
     jobs:
-      - build
+      - grc-stamp_build
 
-      - run_typecheck:
+      - grc-stamp_run_typecheck:
           requires:
             - build
 
-      - test:
+      - grc-stamp_test:
           requires:
-            - build
+            - grc-stamp_build
 
-      - release:
+      - grc-stamp_release:
           context: semantic-release
           filters:
             branches:
               only: master
           requires:
-            - build
-            - run_typecheck
-            - test
+            - grc-stamp_build
+            - grc-stamp_run_typecheck
+            - grc-stamp_test
 
-      - build_image:
+      - grc-stamp_build_image:
           filters:
             branches:
               only: master
           requires:
-            - release
+            - grc-stamp_release
           context: git-container-registry

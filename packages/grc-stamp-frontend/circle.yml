@@ -6,7 +6,7 @@ defaults: &defaults
     - image: circleci/node:14
 
 jobs:
-  checkout_code:
+  grc-stamp-frontend_checkout_code:
     <<: *defaults
     steps:
       - checkout
@@ -15,7 +15,7 @@ jobs:
           paths:
             - .
 
-  bundle:
+  grc-stamp-frontend_bundle:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -32,7 +32,7 @@ jobs:
           paths:
             - node_modules
 
-  run_test:
+  grc-stamp-frontend_run_test:
     <<: *defaults
     parallelism: 4
     steps:
@@ -43,7 +43,7 @@ jobs:
           command: cd ~/packages/grc-stamp-fronend && npm run test
 
 
-  run_lint:
+  grc-stamp-frontend_run_lint:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -52,7 +52,7 @@ jobs:
           name: Run JS Linter
           command: cd ~/packages/grc-stamp-fronend && npm run lint
 
-  run_typecheck:
+  grc-stamp-frontend_run_typecheck:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -61,7 +61,7 @@ jobs:
           name: Run typechecks
           command: cd ~/packages/grc-stamp-fronend && npm run typecheck
 
-  release:
+  grc-stamp-frontend_release:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -73,7 +73,7 @@ jobs:
           name: Semantic release
           command: cd ~/packages/grc-stamp-fronend && npm run semantic-release
 
-  build_image:
+  grc-stamp-frontend_build_image:
     <<: *defaults
     docker:
       - image: docker:17.05.0-ce-git
@@ -115,40 +115,40 @@ jobs:
             docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):latest"
 
 workflows:
-  grc-stamp-frontend-build-and-deploy:
+  grc-stamp-frontend_build-and-deploy:
     jobs:
-      - checkout_code
+      - grc-stamp-frontend_checkout_code
 
-      - bundle:
+      - grc-stamp-frontend_bundle:
           requires:
-            - checkout_code
+            - grc-stamp-frontend_checkout_code
 
-      - run_lint:
+      - grc-stamp-frontend_run_lint:
           requires:
-            - bundle
+            - grc-stamp-frontend_bundle
 
-      - run_typecheck:
+      - grc-stamp-frontend_run_typecheck:
           requires:
-            - bundle
+            - grc-stamp-frontend_bundle
 
-      - run_test:
+      - grc-stamp-frontend_run_test:
           requires:
-            - bundle
+            - grc-stamp-frontend_bundle
 
-      - release:
+      - grc-stamp-frontend_release:
           filters:
             branches:
               only: master
           requires:
-            - run_test
-            - run_typecheck
-            - run_lint
+            - grc-stamp-frontend_run_test
+            - grc-stamp-frontend_run_typecheck
+            - grc-stamp-frontend_run_lint
           context: semantic-release
       
-      - build_image:
+      - grc-stamp-frontend_build_image:
           filters:
             branches:
               only: master
           requires:
-            - release
+            - grc-stamp-frontend_release
           context: git-container-registry
