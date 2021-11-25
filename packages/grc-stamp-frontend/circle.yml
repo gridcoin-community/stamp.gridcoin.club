@@ -1,95 +1,80 @@
 version: 2
 
-references:
-  node_defaults: &node_defaults
-    working_directory: ~/repo
-    docker:
-      - image: circleci/node:14
+defaults: &defaults
+  working_directory: ~/app
+  docker:
+    - image: circleci/node:14
 
 jobs:
   checkout_code:
-    <<: *node_defaults
+    <<: *defaults
     steps:
       - checkout
       - persist_to_workspace:
-          root: ~/repo
+          root: ~/app
           paths:
             - .
 
   bundle:
-    <<: *node_defaults
+    <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: ~/app
       - restore_cache:
-          key: npm-v1-{{ checksum "package-lock.json" }}
-      - run: npm install
+          key: npm-v1-{{ checksum "packages/grc-stamp-fronend/package-lock.json" }}
+      - run: cd ~/packages/grc-stamp-fronend && npm ci
       - save_cache:
-          key: npm-v1-{{ checksum "package-lock.json" }}
+          key: npm-v1-{{ checksum "packages/grc-stamp-fronend/package-lock.json" }}
           paths:
-            - ~/repo/node_modules
+            - ~/app/packages/grc-stamp-fronend/node_modules
       - persist_to_workspace:
-          root: ~/repo
+          root: ~/app
           paths:
             - node_modules
 
   run_test:
-    <<: *node_defaults
+    <<: *defaults
     parallelism: 4
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: ~/app
       - run:
           name: run tests
-          command: npm run test
+          command: cd ~/packages/grc-stamp-fronend && npm run test
 
 
   run_lint:
-    <<: *node_defaults
+    <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: ~/app
       - run:
           name: Run JS Linter
-          command: npm run lint
+          command: cd ~/packages/grc-stamp-fronend && npm run lint
 
   run_typecheck:
-    <<: *node_defaults
+    <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: ~/app
       - run:
           name: Run typechecks
-          command: npm run typecheck
-
-  run_lint_commit_message:
-    <<: *node_defaults
-    steps:
-      - attach_workspace:
-          at: ~/repo
-      - run:
-          name: Define environment variable with lastest commit's message
-          command: |
-            echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
-            source $BASH_ENV
-      - run:
-          name: Lint commit message
-          command: echo "$COMMIT_MESSAGE" | npx commitlint
+          command: cd ~/packages/grc-stamp-fronend && npm run typecheck
 
   release:
-    <<: *node_defaults
+    <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: ~/app
       - run:
           name: Trust this ssh key
           command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: Semantic release
-          command: npm run semantic-release
+          command: cd ~/packages/grc-stamp-fronend && npm run semantic-release
 
   build_image:
-    working_directory: ~/repo
+    <<: *defaults
     docker:
       - image: docker:17.05.0-ce-git
     steps:
@@ -114,12 +99,12 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build --cache-from=app -t app .
+            cd ~/packages/grc-stamp-fronend && docker build --cache-from=app -t app .
       - run:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/app.tar app
+            cd ~/packages/grc-stamp-fronend && docker save -o /caches/app.tar app
       - deploy:
           name: Push application Docker image
           command: |
@@ -151,16 +136,11 @@ workflows:
           requires:
             - bundle
 
-      - run_lint_commit_message:
-          requires:
-            - bundle
-
       - release:
           filters:
             branches:
               only: master
           requires:
-            - run_lint_commit_message
             - run_test
             - run_typecheck
             - run_lint
