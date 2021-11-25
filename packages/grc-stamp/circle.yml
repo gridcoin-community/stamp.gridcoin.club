@@ -115,7 +115,7 @@ workflows:
 
       - grc-stamp_run_typecheck:
           requires:
-            - build
+            - grc-stamp_build
 
       - grc-stamp_test:
           requires:
