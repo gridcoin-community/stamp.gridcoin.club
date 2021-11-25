@@ -109,8 +109,7 @@ jobs:
 
 
 workflows:
-  version: 2
-  build-and-deploy:
+  grc-stamp-build-and-deploy:
     jobs:
       - build
 
