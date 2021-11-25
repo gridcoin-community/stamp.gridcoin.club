@@ -29,8 +29,7 @@ jobs:
             - ~/app/packages/grc-stamp-frontend/node_modules
       - persist_to_workspace:
           root: ~/app
-          paths:
-            - node_modules
+          paths: .
 
   grc-stamp-frontend_run_test:
     <<: *defaults
