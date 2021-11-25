@@ -39,16 +39,6 @@
       "git add"
     ]
   },
-  "config": {
-    "commitizen": {
-      "path": "packages/grc-stamp/node_modules/cz-conventional-changelog"
-    }
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
