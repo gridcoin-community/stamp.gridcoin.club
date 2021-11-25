@@ -21,12 +21,12 @@ jobs:
       - attach_workspace:
           at: ~/app
       - restore_cache:
-          key: npm-v1-{{ checksum "packages/grc-stamp-fronend/package-lock.json" }}
-      - run: cd ~/packages/grc-stamp-fronend && npm ci
+          key: npm-v1-{{ checksum "packages/grc-stamp-frontend/package-lock.json" }}
+      - run: cd ~/packages/grc-stamp-frontend && npm ci
       - save_cache:
-          key: npm-v1-{{ checksum "packages/grc-stamp-fronend/package-lock.json" }}
+          key: npm-v1-{{ checksum "packages/grc-stamp-frontend/package-lock.json" }}
           paths:
-            - ~/app/packages/grc-stamp-fronend/node_modules
+            - ~/app/packages/grc-stamp-frontend/node_modules
       - persist_to_workspace:
           root: ~/app
           paths:
@@ -40,7 +40,7 @@ jobs:
           at: ~/app
       - run:
           name: run tests
-          command: cd ~/packages/grc-stamp-fronend && npm run test
+          command: cd ~/packages/grc-stamp-frontend && npm run test
 
 
   grc-stamp-frontend_run_lint:
@@ -50,7 +50,7 @@ jobs:
           at: ~/app
       - run:
           name: Run JS Linter
-          command: cd ~/packages/grc-stamp-fronend && npm run lint
+          command: cd ~/packages/grc-stamp-frontend && npm run lint
 
   grc-stamp-frontend_run_typecheck:
     <<: *defaults
@@ -59,7 +59,7 @@ jobs:
           at: ~/app
       - run:
           name: Run typechecks
-          command: cd ~/packages/grc-stamp-fronend && npm run typecheck
+          command: cd ~/packages/grc-stamp-frontend && npm run typecheck
 
   grc-stamp-frontend_release:
     <<: *defaults
@@ -71,7 +71,7 @@ jobs:
           command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
           name: Semantic release
-          command: cd ~/packages/grc-stamp-fronend && npm run semantic-release
+          command: cd ~/packages/grc-stamp-frontend && npm run semantic-release
 
   grc-stamp-frontend_build_image:
     <<: *defaults
@@ -99,12 +99,12 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            cd ~/packages/grc-stamp-fronend && docker build --cache-from=app -t app .
+            cd ~/packages/grc-stamp-frontend && docker build --cache-from=app -t app .
       - run:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            cd ~/packages/grc-stamp-fronend && docker save -o /caches/app.tar app
+            cd ~/packages/grc-stamp-frontend && docker save -o /caches/app.tar app
       - deploy:
           name: Push application Docker image
           command: |
