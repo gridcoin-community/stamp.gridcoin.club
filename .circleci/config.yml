@@ -3,7 +3,50 @@ setup: true
 orbs:
   circletron: circletron/circletron@3.0.1
 
+defaults: &defaults
+  working_directory: ~/app
+  docker:
+    - image: circleci/node:14
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }} # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - ~/app/node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: ~/app
+          paths: .
+  lint_commit_message:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Define environment variable with lastest commit's message
+          command: |
+            cd ~/app
+            echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Lint commit message
+          command: echo "$COMMIT_MESSAGE" | npx commitlint
+
 workflows:
   trigger-jobs:
     jobs:
-      - circletron/trigger-jobs
+      - build
+      - lint_commit_message:
+          requires:
+            - build
+      - circletron/trigger-jobs:
+          requires:
+            - lint_commit_message
