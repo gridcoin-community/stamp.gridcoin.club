@@ -9,9 +9,8 @@ defaults: &defaults
     - image: circleci/node:14
 
 jobs:
-  build:
+  lint_commit_message:
     <<: *defaults
-    # resource_class: small
     steps:
       - checkout
       - restore_cache:
@@ -23,14 +22,6 @@ jobs:
           paths:
             - ~/app/node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      # - persist_to_workspace:
-      #     root: ~/app
-      #     paths: .
-  lint_commit_message:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/app
       - run:
           name: Define environment variable with lastest commit's message
           command: |
@@ -44,10 +35,7 @@ jobs:
 workflows:
   trigger-jobs:
     jobs:
-      - build
-      - lint_commit_message:
-          requires:
-            - build
+      - lint_commit_message
       - circletron/trigger-jobs:
           requires:
             - lint_commit_message
