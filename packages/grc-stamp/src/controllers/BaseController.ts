@@ -6,6 +6,7 @@ import { RepoListResults } from '../repositories/types';
 export const DEFAULT_PAGINATION_LIMIT = 25;
 export const MAXIMUM_PAGINATION_LIMIT = 100;
 export const DEFAULT_SORT_FIELD = 'id';
+
 enum FilterTypes {
   'gt',
   'lt',

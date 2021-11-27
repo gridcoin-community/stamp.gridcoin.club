@@ -33,7 +33,7 @@ jobs:
           name: Run typechecks
           command: cd ~/app/packages/grc-stamp && npm run typecheck
 
-  grc-stamp_test:
+  grc-stamp_test-integration:
     <<: *defaults
     docker:
       - image: circleci/node:12
@@ -50,8 +50,26 @@ jobs:
           name: Wait for mysql
           command: sleep 7
       - run:
-          name: Run tests
-          command: cd ~/app/packages/grc-stamp && npm test
+          name: Run integration tests
+          command: cd ~/app/packages/grc-stamp && npm run test:integration
+
+  grc-stamp_test-unit:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Run unit tests
+          command: cd ~/app/packages/grc-stamp && npm run test:unit
+
+  grc-stamp_test-lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Run lint tests
+          command: cd ~/app/packages/grc-stamp && npm run test:lint
 
   grc-stamp_release:
     <<: *defaults
@@ -101,6 +119,7 @@ jobs:
       - deploy:
           name: Push application Docker image
           command: |
+            cd ~/app/packages/grc-stamp
             docker login ghcr.io -u gridcat -p${CR_PAT}
             docker tag app "ghcr.io/gridcat/$(jq -r '.name' package.json):$(jq -r '.version' package.json)"
             docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):$(jq -r '.version' package.json)"
@@ -117,7 +136,15 @@ workflows:
           requires:
             - grc-stamp_build
 
-      - grc-stamp_test:
+      - grc-stamp_test-integration:
+          requires:
+            - grc-stamp_build
+
+      - grc-stamp_test-unit:
+          requires:
+            - grc-stamp_build
+
+      - grc-stamp_test-lint:
           requires:
             - grc-stamp_build
 
@@ -129,7 +156,9 @@ workflows:
           requires:
             - grc-stamp_build
             - grc-stamp_run_typecheck
-            - grc-stamp_test
+            - grc-stamp_test-integration
+            - grc-stamp_test-unit
+            - grc-stamp_test-lint
 
       - grc-stamp_build_image:
           filters:
