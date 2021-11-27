@@ -126,7 +126,6 @@ jobs:
             docker tag app "ghcr.io/gridcat/$(jq -r '.name' package.json):latest"
             docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):latest"
 
-
 workflows:
   grc-stamp_build-and-deploy:
     jobs:
