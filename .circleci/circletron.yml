@@ -1,3 +1,2 @@
-# targetBranches: ^(release/|master$|dev$)
-targetBranchesRegex: ^(release/$)
+targetBranches: ^(release/|master$|dev$)
 runOnlyChangedOnTargetBranches: true
