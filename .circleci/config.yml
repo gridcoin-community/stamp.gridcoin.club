@@ -23,9 +23,9 @@ jobs:
           paths:
             - ~/app/node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - persist_to_workspace:
-          root: ~/app
-          paths: .
+      # - persist_to_workspace:
+      #     root: ~/app
+      #     paths: .
   lint_commit_message:
     <<: *defaults
     steps:
