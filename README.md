@@ -2,4 +2,3 @@
 # Gridcoin Stamp Service
 
 Monorepo for the https://stamp.gridcoin.club service.
-
