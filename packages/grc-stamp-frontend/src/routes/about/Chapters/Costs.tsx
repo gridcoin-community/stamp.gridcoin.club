@@ -18,11 +18,11 @@ function ChapterCosts() {
           {' '}
           grc, plus a fee (may vary, it depends on the transaction size and network load) is approximately
           {' '}
-          <b>0.001</b>
+          <b>0.05</b>
           {' '}
           grc. So the average price is about
           {' '}
-          <b>0.002</b>
+          <b>0.06</b>
           {' '}
           grc per proof.
         </Typography>
