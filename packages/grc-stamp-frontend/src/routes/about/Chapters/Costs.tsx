@@ -16,13 +16,13 @@ function ChapterCosts() {
           {' '}
           <b>0.00000001</b>
           {' '}
-          grc, plus a fee (may vary, it depends on the transaction size and network load) is approximately
+          grc (one Halford), plus a fee (may vary, it depends on the transaction size and network load) is approximately
           {' '}
-          <b>0.001</b>
+          <b>0.05</b>
           {' '}
           grc. So the average price is about
           {' '}
-          <b>0.002</b>
+          <b>0.06</b>
           {' '}
           grc per proof.
         </Typography>
