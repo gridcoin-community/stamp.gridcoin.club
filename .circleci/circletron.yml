@@ -1,2 +1,0 @@
-targetBranches: ^(release/|master$|dev$)
-runOnlyChangedOnTargetBranches: true
