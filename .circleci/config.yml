@@ -294,7 +294,6 @@ workflows:
               only: master
           requires:
             - grc-stamp_release
-          context: git-container-registry
 
   grc-stamp-frontend_build-and-deploy:
     jobs:
@@ -331,5 +330,4 @@ workflows:
               only: master
           requires:
             - grc-stamp-frontend_release
-          context: git-container-registry
 
