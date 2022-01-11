@@ -278,7 +278,6 @@ workflows:
             - grc-stamp_build
 
       - grc-stamp_release:
-          context: semantic-release
           filters:
             branches:
               only: master
@@ -325,7 +324,6 @@ workflows:
             - grc-stamp-frontend_run_test
             - grc-stamp-frontend_run_typecheck
             - grc-stamp-frontend_run_lint
-          context: semantic-release
       
       - grc-stamp-frontend_build_image:
           filters:
