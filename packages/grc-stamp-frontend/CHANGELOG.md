@@ -1,3 +1,11 @@
+# [grc-stamp-fronted-v1.0.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.0.0...grc-stamp-fronted-v1.0.1) (2022-01-11)
+
+
+### Bug Fixes
+
+* update price per proof in about section ([f2fcd7f](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f2fcd7f5b3bc3aeccbb02693e072faefb22acb08))
+* **github link:** fix github link, make it point to the community repo ([cc8c735](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/cc8c73594edf4732ae7d405f85f314152bc17e1b))
+
 # grc-stamp-fronted-v1.0.0 (2021-11-25)
 
 
