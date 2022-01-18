@@ -21,6 +21,24 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
 
+  React.useEffect(() => {
+    if (localStorage !== undefined) {
+      const storedMode = localStorage.getItem('mode');
+      if (storedMode && storedMode !== mode && ['light', 'dark'].includes(storedMode)) {
+        setMode(storedMode as 'light' | 'dark');
+      }
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (localStorage !== undefined) {
+      const storedMode = localStorage.getItem('mode');
+      if (storedMode !== mode) {
+        localStorage.setItem('mode', mode);
+      }
+    }
+  }, [mode]);
+
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {

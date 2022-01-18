@@ -14,7 +14,7 @@ function ChapterProofOfExistence() {
           To maintain PoE the only timestamp and signature associated with the entity are required to prove in front of the authorized viewers that a particular entity was created at a particular time.
           Blockchain technology gets very handy for this purpose. As proof gets stored on the public ledger, it is public and can never be modified or removed.
         </Typography>
-        <Typography gutterBottom variant="body1" component="p">
+        <Typography gutterBottom variant="body1" component="section">
           Common usecases:
           <ul>
             <li>
