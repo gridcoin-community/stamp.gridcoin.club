@@ -1,3 +1,15 @@
+# [grc-stamp-fronted-v1.1.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.0.1...grc-stamp-fronted-v1.1.0) (2022-01-18)
+
+
+### Bug Fixes
+
+* **html:** list cannot be placed inside paragraph tag, use section instead ([d2f9217](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/d2f92179535b5591f34205b642ac0c1d0a296b37))
+
+
+### Features
+
+* store current mode ([d359a06](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/d359a06751ee4b8f95fe164af27a3f64edf2d12a))
+
 # [grc-stamp-fronted-v1.0.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.0.0...grc-stamp-fronted-v1.0.1) (2022-01-11)
 
 
