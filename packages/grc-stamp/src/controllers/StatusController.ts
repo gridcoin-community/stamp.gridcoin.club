@@ -7,6 +7,7 @@ import { PresenterInterface } from '../presenters/types';
 export interface ServiceInfo {
   name: string,
   version: string,
+  maintenance: boolean,
 }
 
 export class StatusController {
