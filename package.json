@@ -15,10 +15,10 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^15.0.0",
-    "@commitlint/config-conventional": "^15.0.0",
-    "commitizen": "^4.2.4",
+    "@commitlint/cli": "^17.1.1",
+    "@commitlint/config-conventional": "^17.1.0",
+    "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",
-    "lerna": "^4.0.0"
+    "lerna": "^5.4.3"
   }
 }
