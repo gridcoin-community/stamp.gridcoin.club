@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { WalletEntity } from 'entities/WalletEntity';
 import React, { useState, useEffect } from 'react';
 import { WalletRepository } from 'repositories/WalletRepository';
+import { useInterval } from 'hooks';
 
 const walletRepository = new WalletRepository();
 
@@ -18,6 +19,10 @@ export function BalanceComponent() {
   useEffect(() => {
     fetchWalletInfo();
   }, []);
+
+  useInterval(() => {
+    fetchWalletInfo();
+  }, 90000);
 
   return (
     <>
