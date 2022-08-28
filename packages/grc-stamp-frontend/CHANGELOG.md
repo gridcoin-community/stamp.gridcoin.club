@@ -1,3 +1,10 @@
+# [grc-stamp-fronted-v1.2.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.1.0...grc-stamp-fronted-v1.2.0) (2022-08-28)
+
+
+### Features
+
+* **grc-stamp-frontend:** maintenance page ([d01767e](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/d01767e35784b43116eadaf80ed796242e928e0d))
+
 # [grc-stamp-fronted-v1.1.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.0.1...grc-stamp-fronted-v1.1.0) (2022-01-18)
 
 
