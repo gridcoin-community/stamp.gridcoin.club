@@ -1,3 +1,12 @@
 import { Page } from 'routes/notarize';
+import { MaintenanceWrapper } from 'routes/maintenance/MaintananceWrapper';
 
-export default Page;
+function IndexPage() {
+  return (
+    <MaintenanceWrapper>
+      <Page />
+    </MaintenanceWrapper>
+  );
+}
+
+export default IndexPage;

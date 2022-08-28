@@ -2,8 +2,9 @@ import faker from 'faker';
 import path from 'path';
 import util from 'util';
 import { exec } from 'child_process';
-import { getPrisma } from '../../src/lib/prisma';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { StampsType } from '.prisma/client';
+import { getPrisma } from '../../src/lib/prisma';
 import { PROTOCOL } from '../../src/constants';
 
 const execPromise = util.promisify(exec);
@@ -22,7 +23,7 @@ export async function initDatabase(): Promise<void> {
 }
 
 export async function createManyWithSameHash(hash: string, amount = 3): Promise<void> {
-  const data = [];
+  const data: any[] = [];
   for (let i = 0; i < amount; i++) {
     data.push({
       protocol: PROTOCOL,
@@ -38,7 +39,7 @@ export async function createManyWithSameHash(hash: string, amount = 3): Promise<
 }
 
 export async function createManyCompletedStamps(amount = 10): Promise<void> {
-  const data = [];
+  const data: any[] = [];
   for (let i = 0; i < amount; i++) {
     data.push({
       protocol: PROTOCOL,

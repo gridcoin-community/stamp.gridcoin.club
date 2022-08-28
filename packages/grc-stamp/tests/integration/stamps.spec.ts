@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import request from 'supertest';
 import HttpStatus from 'http-status-codes';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { StampsType } from '.prisma/client';
 import { app, server } from '../../src/api';
 import { PROTOCOL } from '../../src/constants';

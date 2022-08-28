@@ -14,8 +14,7 @@ interface Props {
   children: React.ReactElement;
 }
 
-export function ElevationScroll(props: Props) {
-  const { children } = props;
+export function ElevationScroll({ children }: Props) {
   const theme = useTheme();
   const trigger = useScrollTrigger({
     disableHysteresis: true,
@@ -28,7 +27,12 @@ export function ElevationScroll(props: Props) {
   });
 }
 
-export function Header() {
+interface HeaderProps {
+  // eslint-disable-next-line react/require-default-props
+  showLinks?: boolean;
+}
+
+export function Header({ showLinks = true }: HeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -58,6 +62,7 @@ export function Header() {
                 </a>
               </Link>
             </Box>
+
             <Toolbar
               sx={{
                 justifyContent: 'flex-end',
@@ -65,7 +70,11 @@ export function Header() {
               }}
               disableGutters
             >
-              {isMobile ? <NavMenuMobile /> : <NavMenuDesktop />}
+              {showLinks && (
+                <>
+                  {isMobile ? <NavMenuMobile /> : <NavMenuDesktop />}
+                </>
+              )}
             </Toolbar>
           </Container>
         </AppBar>

@@ -1,3 +1,12 @@
 import { Page } from 'routes/about';
+import { MaintenanceWrapper } from 'routes/maintenance/MaintananceWrapper';
 
-export default Page;
+function AboutPage() {
+  return (
+    <MaintenanceWrapper>
+      <Page />
+    </MaintenanceWrapper>
+  );
+}
+
+export default AboutPage;
