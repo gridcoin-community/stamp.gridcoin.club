@@ -28,6 +28,7 @@ const IconWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   marginRight: theme.spacing(4),
+  width: '128px',
   [theme.breakpoints.down('sm')]: {
     display: 'none',
   },

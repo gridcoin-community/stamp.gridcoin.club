@@ -10,6 +10,7 @@ import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
 import { PageWrapper } from 'components/PageWrapper';
+import { RecentStamps } from 'components/Stamps/Recent';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
 import { FilesContext, ErrorContext } from './context';
@@ -54,9 +55,9 @@ export function Page() {
       </Head>
       <PageWrapper>
         <Header />
-        <ErrorContext.Provider value={errorContextValue}>
-          <FilesContext.Provider value={fileContextValue}>
-            <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
+        <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
+          <ErrorContext.Provider value={errorContextValue}>
+            <FilesContext.Provider value={fileContextValue}>
               <Instructions />
               <Box width="100%">
                 <ColorizedSteppers activeStep={activeStep} />
@@ -71,10 +72,11 @@ export function Page() {
                   )}
                 </Box>
               </Box>
-            </Container>
-            <Errors />
-          </FilesContext.Provider>
-        </ErrorContext.Provider>
+              <Errors />
+            </FilesContext.Provider>
+          </ErrorContext.Provider>
+          <RecentStamps />
+        </Container>
         <Footer />
       </PageWrapper>
     </>
