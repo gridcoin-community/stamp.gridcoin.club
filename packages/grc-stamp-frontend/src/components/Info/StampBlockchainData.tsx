@@ -2,6 +2,7 @@ import React from 'react';
 import { Divider } from '@mui/material';
 import { StampEntity } from 'entities/StampEntity';
 import { format } from 'date-fns';
+import { blockUrl, txUrl } from 'lib/explorerLinks';
 import { Info } from './Info';
 
 interface Props {
@@ -14,12 +15,12 @@ export function StampBlockchainData({ stamp }: Props) {
       <Info
         title="TX ID"
         value={stamp.tx}
-        link={process.env.NEXT_PUBLIC_EXPLORER_TX_URL?.replace(/\[data\]/, String(stamp.tx))}
+        link={txUrl(stamp.tx)}
       />
       <Divider variant="fullWidth" component="li" />
       <Info
         title="Block"
-        link={process.env.NEXT_PUBLIC_EXPLORER_BLOCK_URL?.replace(/\[data\]/, String(stamp.block))}
+        link={blockUrl(stamp.block)}
         value={stamp.block}
       />
       <Divider variant="fullWidth" component="li" />

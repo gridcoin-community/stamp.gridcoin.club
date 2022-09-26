@@ -50,4 +50,24 @@ export class StampRepository {
     }
     return null;
   }
+
+  /**
+   * Get the list of 10 recent stamps
+   *
+   */
+  public async getRecentStamps(): Promise<StampEntity[] | null> {
+    const store = new Store();
+    const { data: result } = await this.httpClient.get<ApiResponse & { data: StampRawData[] }>(
+      `${process.env.NEXT_PUBLIC_API_URL}/stamps/`
+      + `?sort=-id&page[size]=${process.env.NEXT_PUBLIC_RECENT_STAMPS_NUMBER}`
+      + '&filter[block][gt]=0',
+    );
+    if (!result?.meta?.count) {
+      return null;
+    }
+    const list: StampRawData[] = store.sync(result);
+    const data = list.map((entity) => new StampEntity(entity));
+    if (data) return data;
+    return null;
+  }
 }
