@@ -1,3 +1,10 @@
+# [grc-stamp-fronted-v1.3.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.2.0...grc-stamp-fronted-v1.3.0) (2022-09-26)
+
+
+### Features
+
+* **recent stamps:** add the most recent stamps list ([1d3916c](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1d3916c13d1dfd79c6ccbc4b5714dd994ebf55d8))
+
 # [grc-stamp-fronted-v1.2.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.1.0...grc-stamp-fronted-v1.2.0) (2022-08-28)
 
 
