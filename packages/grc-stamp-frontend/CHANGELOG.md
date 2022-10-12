@@ -1,3 +1,10 @@
+# [grc-stamp-fronted-v1.4.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.4.0...grc-stamp-fronted-v1.4.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* **env:** do not use full path ([6f28749](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/6f28749a21b058336b1bf76ff3ccf55aa2c6e447))
+
 # [grc-stamp-fronted-v1.4.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.3.0...grc-stamp-fronted-v1.4.0) (2022-10-12)
 
 
