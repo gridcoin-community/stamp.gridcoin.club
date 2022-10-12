@@ -1,3 +1,11 @@
+# [grc-stamp-fronted-v1.4.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.3.0...grc-stamp-fronted-v1.4.0) (2022-10-12)
+
+
+### Features
+
+* **api:** change default api path from subdomain to the folder ([bd0a114](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/bd0a1148baaf2544bfee56be899489177d71f4ac))
+* **onion:** add tor onion address ([cd5c7e0](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/cd5c7e073031f622feae1dfc0ced36ea99f251fd))
+
 # [grc-stamp-fronted-v1.3.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.2.0...grc-stamp-fronted-v1.3.0) (2022-09-26)
 
 
