@@ -58,6 +58,7 @@ export default function MyApp(props: MyAppProps) {
       <ColorModeContext.Provider value={colorMode}>
         <Head>
           <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta httpEquiv="onion-location" content="http://u4embjw2uzwpdubgm72ywbmixte4kqgwurc4r4rp6elhlokutdfsy4id.onion" />
         </Head>
         {process.env.NEXT_PUBLIC_TRACK === 'true' && (
         <Script src="https://daj.pw/js/plausible.js" data-domain="stamp.gridcoin.club" />
