@@ -1,3 +1,15 @@
+# [grc-stamp-fronted-v1.5.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.4.1...grc-stamp-fronted-v1.5.0) (2022-10-21)
+
+
+### Bug Fixes
+
+* **proof:** fix the proof 500 error issue ([10b9323](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/10b9323fa67fc26b058fe2a6ba76e8487766e0cc))
+
+
+### Features
+
+* **proofs:** add link to the proof from the recent stamps list ([94b996b](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/94b996bc993510885cdc4c2281f038f86df2d956))
+
 # [grc-stamp-fronted-v1.4.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.4.0...grc-stamp-fronted-v1.4.1) (2022-10-12)
 
 
