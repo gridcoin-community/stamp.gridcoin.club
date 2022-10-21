@@ -1,3 +1,44 @@
+# [grc-stamp-fronted-v1.5.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.4.1...grc-stamp-fronted-v1.5.0) (2022-10-21)
+
+
+### Bug Fixes
+
+* **proof:** fix the proof 500 error issue ([10b9323](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/10b9323fa67fc26b058fe2a6ba76e8487766e0cc))
+
+
+### Features
+
+* **proofs:** add link to the proof from the recent stamps list ([94b996b](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/94b996bc993510885cdc4c2281f038f86df2d956))
+
+# [grc-stamp-fronted-v1.4.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.4.0...grc-stamp-fronted-v1.4.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* **env:** do not use full path ([6f28749](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/6f28749a21b058336b1bf76ff3ccf55aa2c6e447))
+
+# [grc-stamp-fronted-v1.4.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.3.0...grc-stamp-fronted-v1.4.0) (2022-10-12)
+
+
+### Features
+
+* **api:** change default api path from subdomain to the folder ([bd0a114](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/bd0a1148baaf2544bfee56be899489177d71f4ac))
+* **onion:** add tor onion address ([cd5c7e0](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/cd5c7e073031f622feae1dfc0ced36ea99f251fd))
+
+# [grc-stamp-fronted-v1.3.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.2.0...grc-stamp-fronted-v1.3.0) (2022-09-26)
+
+
+### Features
+
+* **recent stamps:** add the most recent stamps list ([1d3916c](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1d3916c13d1dfd79c6ccbc4b5714dd994ebf55d8))
+
+# [grc-stamp-fronted-v1.2.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.1.0...grc-stamp-fronted-v1.2.0) (2022-08-28)
+
+
+### Features
+
+* **grc-stamp-frontend:** maintenance page ([d01767e](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/d01767e35784b43116eadaf80ed796242e928e0d))
+
 # [grc-stamp-fronted-v1.1.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.0.1...grc-stamp-fronted-v1.1.0) (2022-01-18)
 
 
