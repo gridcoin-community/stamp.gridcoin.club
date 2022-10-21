@@ -2,3 +2,6 @@
 # Gridcoin Stamp Service
 
 Monorepo for the https://stamp.gridcoin.club service.
+
+Tor address: http://u4embjw2uzwpdubgm72ywbmixte4kqgwurc4r4rp6elhlokutdfsy4id.onion
+

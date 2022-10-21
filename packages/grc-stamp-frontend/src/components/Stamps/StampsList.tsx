@@ -71,7 +71,9 @@ export function StampsList({ stamps }: Props) {
                       <span>
                         Hash:
                         {' '}
-                        {stamp.hash}
+                        <Link href={`/proof/${stamp.hash}`}>
+                          {stamp.hash}
+                        </Link>
                       </span>
                       <br />
                       <span>

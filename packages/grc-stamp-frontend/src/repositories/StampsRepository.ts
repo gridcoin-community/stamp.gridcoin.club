@@ -35,11 +35,16 @@ export class StampRepository {
    * Even if somebody will craf the transaction manually,
    * server must return the very first record and ignore the rest
    */
-  public async findStampByHash(hash: string): Promise<StampEntity | null> {
+  public async findStampByHash(hash: string, isServer = false): Promise<StampEntity | null> {
     const store = new Store();
-    const { data: result } = await this.httpClient.get<ApiResponse & { data: StampRawData[] }>(
-      `${process.env.NEXT_PUBLIC_API_URL}/stamps?filter[hash]=${hash}`,
-    );
+    let url = `stamps?filter[hash]=${hash}`;
+    if (isServer) {
+      url = `${process.env.NEXT_PUBLIC_API_URL_SERVER}/${url}`;
+    } else {
+      url = `${process.env.NEXT_PUBLIC_API_URL}/${url}`;
+    }
+    const { data: result } = await this.httpClient.get<ApiResponse & { data: StampRawData[] }>(url);
+
     if (!result?.meta?.count) {
       return null;
     }

@@ -24,7 +24,7 @@ type ServerSideProps = { props: Partial<Props> } | { notFound: boolean };
 export async function getServerSideProps(context: Context): Promise<ServerSideProps> {
   const { hash } = context.params;
   const repository = new StampRepository();
-  const stamp = await repository.findStampByHash(hash);
+  const stamp = await repository.findStampByHash(hash, true);
 
   if (!stamp || !stamp.isFinished()) {
     return {
