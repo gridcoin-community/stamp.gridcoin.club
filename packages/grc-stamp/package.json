@@ -45,6 +45,16 @@
       "pre-commit": "lint-staged"
     }
   },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "release": {
     "plugins": [
       "@semantic-release/commit-analyzer",
