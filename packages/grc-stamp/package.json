@@ -28,10 +28,6 @@
     "commit": "git-cz",
     "semantic-release": "semantic-release -e semantic-release-monorepo"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gridcat/grc-stamp.git"
-  },
   "author": "",
   "license": "ISC",
   "lint-staged": {
