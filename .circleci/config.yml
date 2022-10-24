@@ -294,7 +294,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^v.*/
+              only: /^grc-stamp-v.*/
           # requires:
           #   - grc-stamp_release
 
@@ -332,7 +332,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^v.*/
+              only: /^grc-stamp-fronted-v.*/
           # requires:
           #   - grc-stamp-frontend_release
 
