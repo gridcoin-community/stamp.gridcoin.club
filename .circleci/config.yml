@@ -292,9 +292,11 @@ workflows:
       - grc-stamp_build_image:
           filters:
             branches:
-              only: master
-          requires:
-            - grc-stamp_release
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+          # requires:
+          #   - grc-stamp_release
 
   grc-stamp-frontend_build-and-deploy:
     jobs:
@@ -328,7 +330,9 @@ workflows:
       - grc-stamp-frontend_build_image:
           filters:
             branches:
-              only: master
-          requires:
-            - grc-stamp-frontend_release
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+          # requires:
+          #   - grc-stamp-frontend_release
 
