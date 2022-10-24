@@ -295,8 +295,6 @@ workflows:
               ignore: /.*/
             tags:
               only: /^grc-stamp-v.*/
-          # requires:
-          #   - grc-stamp_release
 
   grc-stamp-frontend_build-and-deploy:
     jobs:
@@ -333,6 +331,4 @@ workflows:
               ignore: /.*/
             tags:
               only: /^grc-stamp-fronted-v.*/
-          # requires:
-          #   - grc-stamp-frontend_release
 
