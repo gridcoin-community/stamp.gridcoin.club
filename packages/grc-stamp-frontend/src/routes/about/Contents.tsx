@@ -35,7 +35,7 @@ export function Contents() {
         <Link href="#protocol-overview" passHref>
           <ListItem disablePadding>
             <ListItemButton>
-              <ListItemText>Protocol Overview</ListItemText>
+              <ListItemText>Protocol Summary</ListItemText>
             </ListItemButton>
           </ListItem>
         </Link>

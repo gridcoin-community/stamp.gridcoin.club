@@ -10,26 +10,26 @@ function ChapterCosts() {
       </Typography>
       <Box component="article">
         <Typography gutterBottom variant="body1" component="p">
-          At the moment of writing this article, the cost of the stamp transaction is relatively low.
-          It consists of the amount burned plus transaction fees.
-          The amount to be burned is
-          {' '}
+          As of the time of writing, the cost of a stamp transaction is low, consisting of a small burned amount
+          (
           <b>0.00000001</b>
           {' '}
-          grc (one Halford), plus a fee (may vary, it depends on the transaction size and network load) is approximately
+          grc or one
           {' '}
-          <b>0.05</b>
+          <b>Halford</b>
+          ) and a transaction fee (approximately
           {' '}
-          grc. So the average price is about
+          <b>0.05 grc</b>
+          ). The average cost is around
           {' '}
           <b>0.06</b>
           {' '}
           grc per proof.
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
-          <b>The service is provided free of charge, </b>
-          although this could be reconsidered in the future if demand will be high.
-          But considering the low price, demand, and amount of donations at the moment of writing this article, the service is ready to remain free for years.
+          <b>The service is currently offered for free</b>
+          , but this may change in the future if demand is high.
+          Currently, the low cost and level of donations suggest that the service will remain free for the foreseeable future.
         </Typography>
       </Box>
     </Box>

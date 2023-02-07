@@ -10,19 +10,24 @@ function ChapterAbout() {
       </Typography>
       <Box component="article">
         <Typography gutterBottom variant="body1" component="p">
-          This service is intended to provide a simple implementation of the Proof of Existence method on the Gridcoin blockchain.
-          You can anonymously and securely store the proof of the existence of any of your documents (images, videos, documents, binaries...) in the distributed ledger.
+          This service provides a straightforward implementation of the Proof of Existence concept on the Gridcoin blockchain.
+          You can securely and anonymously store proof of the existence of any of your documents (e.g. images, videos, documents, binaries)
+          in the decentralized ledger without revealing the actual content of the document.
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
-          <b>We DO NOT store any of your data (except the document hash of course). We store your documents neither in our database nor in the blockchain. Furthermore, your documents are NOT uploaded to the server. </b>
-          The document is required to calculate sha256 of it, these calculations are done in the browser (on the client-side) only.
+          <b>
+            We do not store any of your data (with the exception of the document&apos;s hash).
+            Your documents are not uploaded to our database or stored on the blockchain, and they never leave your device.
+          </b>
+          The document&apos;s SHA-256 hash is calculated client-side, in your browser, to ensure the security of your data.
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
-          We do not use any of the tracking pixels, the only exception is
+          We also prioritize privacy and do not use any tracking pixels.
+          The only exception is
           {' '}
           <Link href="https://github.com/plausible/analytics" rel="nofollow">Plausible</Link>
           {' '}
-          which claims to be the privacy-friendly web analytics alternative to Google Analytics.
+          , which is considered a privacy-friendly alternative to Google Analytics.
         </Typography>
       </Box>
     </Box>

@@ -10,28 +10,28 @@ function ChapterProofOfExistence() {
       </Typography>
       <Box component="article">
         <Typography gutterBottom variant="body1" component="p">
-          The Proof of Existence is all about recording and proving that certain data existed at the given time.
-          To maintain PoE the only timestamp and signature associated with the entity are required to prove in front of the authorized viewers that a particular entity was created at a particular time.
-          Blockchain technology gets very handy for this purpose. As proof gets stored on the public ledger, it is public and can never be modified or removed.
+          Proof of Existence is a method of verifying and recording that specific data existed at a certain time.
+          To establish proof, a timestamp and signature linked to the entity are needed to demonstrate its creation at a particular time.
+          Blockchain technology provides a convenient solution for this purpose, as proof is stored on a public ledger that is transparent, unalterable, and permanent.
         </Typography>
         <Typography gutterBottom variant="body1" component="section">
-          Common usecases:
+          Common Use Cases:
           <ul>
             <li>
               <b>Proof of ownership.</b>
               <br />
-              The owner of the data can prove the ownership of the data without revealing actual data.
+              The owner of the data can confirm ownership without revealing the actual data.
             </li>
             <li>
               <b>Data timestamping.</b>
               <br />
-              You can prove that certain data existed and a given time without a need of a central authority.
+              You can prove the existence of specific data at a particular time without relying on a central authority.
             </li>
             <li>
-              <b>Checking for data integrity.</b>
+              <b>Data Integrity Checking.</b>
               <br />
-              The slightest change in the document (even one bit is enough) will result in generating a completely different file hash.
-              So if you create a stamp of your data and then re-check it later, you can be sure that data wasn&apos;t changed.
+              If there is even the slightest change in the document (even a single bit), it will result in a different file hash.
+              By creating a stamp of your data and verifying it later, you can ensure that the data has not been altered.
             </li>
           </ul>
         </Typography>
