@@ -1,3 +1,10 @@
+# [grc-stamp-fronted-v1.5.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.5.0...grc-stamp-fronted-v1.5.1) (2023-02-07)
+
+
+### Bug Fixes
+
+* **language:** fix broken english language ([bb5080a](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/bb5080ad322eb4e87092ca638982fd0c898a6617))
+
 # [grc-stamp-fronted-v1.5.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.4.1...grc-stamp-fronted-v1.5.0) (2022-10-21)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "grc-stamp-fronted",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -39,9 +39,12 @@
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
       "@semantic-release/npm",
-      ["@semantic-release/git", {
-        "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
-      }],
+      [
+        "@semantic-release/git",
+        {
+          "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
+        }
+      ],
       "@semantic-release/github"
     ]
   },
