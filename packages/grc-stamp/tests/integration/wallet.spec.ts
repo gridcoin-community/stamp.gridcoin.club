@@ -3,10 +3,10 @@ import { expect } from 'chai';
 import request from 'supertest';
 import { rpc } from '../../src/lib/gridcoin';
 import { app, server } from '../../src/api';
+import { EntityType } from '../../src/presenters/types';
 
 const ADDRESS = 'S74mjeRTQbpPzDoibmnMz23hThXCxRUMhn';
 const AMOUNT = '10.221';
-const TYPE = 'wallet';
 
 jest.mock('../../src/lib/gridcoin', () => ({
   connect: () => Promise.resolve(true),
@@ -30,7 +30,7 @@ describe('Wallet endpoints', () => {
     const { attributes } = data;
     expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data.id).to.be.equal(ADDRESS);
-    expect(data.type).to.be.equal(TYPE);
+    expect(data.type).to.be.equal(EntityType.WALLET);
     expect(attributes.address).to.be.equal(ADDRESS);
     expect(attributes.balance).to.be.equal(AMOUNT);
   });

@@ -260,7 +260,7 @@ export class Controller {
 
   public hasFilter(filter: string): boolean {
     if ('where' in this.useFilters) {
-      const filtersLength = this.useFilters.length;
+      const filtersLength = Object.keys(this.useFilters).length;
       for (let i = 0; i < filtersLength; i++) {
         if (Object.keys(this.useFilters.where[i]).includes(filter)) return true;
       }
@@ -273,7 +273,7 @@ export class Controller {
 
   public getFilter(filter: string): string | null {
     if ('where' in this.useFilters) {
-      const filtersLength = this.useFilters.length;
+      const filtersLength = Object.keys(this.useFilters).length;
       for (let i = 0; i < filtersLength; i++) {
         if (Object.keys(this.useFilters.where[i]).includes(filter)) {
           return this.useFilters.where[i][filter];
@@ -297,7 +297,7 @@ export class Controller {
    * @returns {boolean}
    * @memberof Controller
    */
-  public isObject(value): boolean { // eslint-disable-line
+  public isObject(value: any): value is typeof Object { // eslint-disable-line
     return value === Object(value);
     // return value && typeof value === 'object' && value.constructor === Object;
   }
@@ -311,7 +311,7 @@ export class Controller {
       const meta = {
         count: 0,
       };
-      if (data.count) {
+      if ('count' in data) {
         meta.count = data.count as number;
       }
       return presenter.render(data.rows, { meta });

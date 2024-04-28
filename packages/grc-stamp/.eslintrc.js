@@ -27,6 +27,9 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'no-useless-constructor': 0,
     '@typescript-eslint/no-useless-constructor': ['error'],
+    'no-empty-function': 0,
+    '@typescript-eslint/no-empty-function': ['error'],
+    '@typescript-eslint/no-explicit-any': ['warn'],
   },
   overrides: [
     {
