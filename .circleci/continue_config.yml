@@ -70,7 +70,7 @@ jobs:
     <<: *defaults
     docker:
       - image: cimg/node:20.12.2
-      - image: circleci/mysql:5.7
+      - image: cimg/mysql:5.7
         environment:
           MYSQL_RANDOM_ROOT_PASSWORD: true
           MYSQL_USER: test
