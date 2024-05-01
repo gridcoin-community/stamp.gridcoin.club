@@ -302,8 +302,8 @@ workflows:
 
       - grc-stamp_build_image:
           filters:
-            branches:
-              ignore: /.*/
+            # branches:
+            #   ignore: /.*/
             tags:
               only: /^grc-stamp-v.*/
 
