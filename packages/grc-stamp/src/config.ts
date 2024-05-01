@@ -64,7 +64,7 @@ nconf
     isTesting: process.env.NODE_ENV === 'testing',
     isProduction: process.env.NODE_ENV === 'production',
     START_BLOCK: 1581500,
-    BLOCK_GROUPS: 500,
+    BLOCK_GROUPS: 1500,
     // Run scraper once per minute by default
     SCRAPER_TIMEOUT: 60000,
     // SCRAPER_TIMEOUT: 10 * 1000,
