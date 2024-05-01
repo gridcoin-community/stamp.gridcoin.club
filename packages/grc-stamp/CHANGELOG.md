@@ -1,3 +1,10 @@
+# [grc-stamp-v1.1.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.0.0...grc-stamp-v1.1.0) (2024-05-01)
+
+
+### Features
+
+* **upgrade:** upgrade node and dependncies ([f248035](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f248035670260a36c84a7b54eb0a7eb34cb8c3b9))
+
 # grc-stamp-v1.0.0 (2022-10-22)
 
 
