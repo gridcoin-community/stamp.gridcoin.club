@@ -30,9 +30,7 @@ describe('GET /hashes', () => {
   it('should select the very first hash out of many if present', async () => {
     const hash = '87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7';
     await createManyWithSameHash(hash, 13);
-    const res = await request(app)
-      .get(`/hashes/${hash}`)
-      .send();
+    const res = await request(app).get(`/hashes/${hash}`).send();
     const { data } = res.body;
     expect(res.status).to.be.equal(HttpStatus.OK);
     expect(data).to.be.an('object')
