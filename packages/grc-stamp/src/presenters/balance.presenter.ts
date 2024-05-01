@@ -1,9 +1,11 @@
 import yayson from 'yayson';
-import { Attributes } from './types';
+import { Attributes, EntityType, PresenterInterface } from './types';
 
 const { Presenter } = yayson();
 
-export class BalancePresenter extends Presenter {
+export class BalancePresenter extends Presenter implements PresenterInterface {
+  public static type = EntityType.BALANCE;
+
   public selfLinks(): string {
     return '/wallet/balance';
   }
@@ -14,5 +16,3 @@ export class BalancePresenter extends Presenter {
     };
   }
 }
-
-BalancePresenter.prototype.type = 'balance';

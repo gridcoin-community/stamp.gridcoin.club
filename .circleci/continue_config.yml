@@ -69,8 +69,8 @@ jobs:
   grc-stamp_test-integration:
     <<: *defaults
     docker:
-      - image: circleci/node:12
-      - image: circleci/mysql:5.7
+      - image: cimg/node:20.12.2
+      - image: cimg/mysql:5.7
         environment:
           MYSQL_RANDOM_ROOT_PASSWORD: true
           MYSQL_USER: test

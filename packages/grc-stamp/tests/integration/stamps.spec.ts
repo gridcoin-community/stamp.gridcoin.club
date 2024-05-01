@@ -8,6 +8,7 @@ import { PROTOCOL } from '../../src/constants';
 import { rpc } from '../../src/lib/gridcoin';
 import { disconnect, getPrisma } from '../../src/lib/prisma';
 import { cleanUp, initDatabase } from './helpers';
+import { EntityType } from '../../src/presenters/types';
 
 const AMOUNT = '10.221';
 const HASH = '87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7';
@@ -49,6 +50,7 @@ describe('POST /stamps', () => {
     const { data } = res.body;
     const { attributes } = data;
     const { id } = data;
+    expect(data.type).to.be.equal(EntityType.STAMPS);
     expect(attributes).to.have.property('hash')
       .that.equal(HASH);
     expect(data).to.have.property('id');

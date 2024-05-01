@@ -1,10 +1,12 @@
 import { stamps } from '@prisma/client';
 import yayson from 'yayson';
-import { Attributes } from './types';
+import { Attributes, EntityType, PresenterInterface } from './types';
 
 const { Presenter } = yayson();
 
-export class StampPresenter extends Presenter {
+export class StampPresenter extends Presenter implements PresenterInterface {
+  static type = EntityType.STAMPS;
+
   public selfLinks(instance: stamps): string {
     return `/stamps/${this.id(instance)}`;
   }
@@ -27,5 +29,3 @@ export class StampPresenter extends Presenter {
     return instance.id.toString();
   }
 }
-
-StampPresenter.prototype.type = 'stamps';
