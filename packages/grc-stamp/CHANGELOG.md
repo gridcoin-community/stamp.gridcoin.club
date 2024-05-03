@@ -1,3 +1,10 @@
+# [grc-stamp-v1.1.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.0...grc-stamp-v1.1.1) (2024-05-03)
+
+
+### Bug Fixes
+
+* increase blocks number to process all at once to 1500 ([ffd4ee3](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/ffd4ee3bb19e2e3a31ad2a9d593ca07186f241f2))
+
 # [grc-stamp-v1.1.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.0.0...grc-stamp-v1.1.0) (2024-05-01)
 
 
