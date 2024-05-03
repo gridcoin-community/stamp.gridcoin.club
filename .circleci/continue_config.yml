@@ -268,6 +268,27 @@ jobs:
             docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):latest"
 
 workflows:
+  # Unconditional jobs, firing when new tag is released
+  grc-stamp_deploy-tag:
+    jobs:
+      - grc-stamp_build_image:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^grc-stamp-v.*/
+
+  # Unconditional jobs, firing when new tag is released
+  grc-stamp-frontend_deploy-tag:
+    jobs:
+      - grc-stamp-frontend_build_image:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^grc-stamp-fronted-v.*/
+
+
   grc-stamp_build-and-deploy:
     when: << pipeline.parameters.run-build-grc-stamp >>
     jobs:
@@ -300,13 +321,6 @@ workflows:
             - grc-stamp_test-unit
             - grc-stamp_test-lint
 
-      - grc-stamp_build_image:
-          filters:
-            # branches:
-            #   ignore: /.*/
-            tags:
-              only: /^grc-stamp-v.*/
-
   grc-stamp-frontend_build-and-deploy:
     when: << pipeline.parameters.run-build-grc-stamp-frontend >>
     jobs:
@@ -336,11 +350,5 @@ workflows:
             - grc-stamp-frontend_run_test
             - grc-stamp-frontend_run_typecheck
             - grc-stamp-frontend_run_lint
-      
-      - grc-stamp-frontend_build_image:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^grc-stamp-fronted-v.*/
+
 
