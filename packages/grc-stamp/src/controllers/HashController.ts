@@ -14,10 +14,10 @@ export class HashController extends Controller {
     req: Request,
     res: Response,
     private repository = StampsRepository,
+    protected model = new Stamp(),
+    protected presenter = StampPresenter,
   ) {
     super(req, res);
-    this.presenter = StampPresenter;
-    this.model = new Stamp();
     this.init();
   }
 
