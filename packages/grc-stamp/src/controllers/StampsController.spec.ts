@@ -27,6 +27,7 @@ describe('StampsController', () => {
     getBalance: jest.Mock;
   };
   const stampMock = jest.fn();
+  let controller: StampsController;
 
   beforeEach(() => {
     req = {} as Request;
@@ -43,6 +44,13 @@ describe('StampsController', () => {
     walletRepository = {
       getBalance: jest.fn(),
     };
+    controller = new StampsController(
+      req,
+      res,
+      stampsRepository as unknown as StampsRepositoryClass,
+      walletRepository as unknown as WalletRepositoryClass,
+      stampMock as unknown as Stamp,
+    );
   });
 
   describe('getById', () => {
@@ -51,13 +59,6 @@ describe('StampsController', () => {
       const stampData = { id: 1, hash: validHash };
       stampsRepository.getById.mockResolvedValue(stampData);
 
-      const controller = new StampsController(
-        req,
-        res,
-        stampsRepository as unknown as StampsRepositoryClass,
-        walletRepository as unknown as WalletRepositoryClass,
-        stampMock as unknown as Stamp,
-      );
       await controller.getById(id);
 
       expect(stampsRepository.getById).toHaveBeenCalledWith(
@@ -79,13 +80,6 @@ describe('StampsController', () => {
       const id = 1;
       stampsRepository.getById.mockResolvedValue(null);
 
-      const controller = new StampsController(
-        req,
-        res,
-        stampsRepository as unknown as StampsRepositoryClass,
-        walletRepository as unknown as WalletRepositoryClass,
-        stampMock as unknown as Stamp,
-      );
       await controller.getById(id);
 
       expect(stampsRepository.getById).toHaveBeenCalledWith(
@@ -108,13 +102,6 @@ describe('StampsController', () => {
       const error = new Error('Database error');
       stampsRepository.getById.mockRejectedValue(error);
 
-      const controller = new StampsController(
-        req,
-        res,
-        stampsRepository as unknown as StampsRepositoryClass,
-        walletRepository as unknown as WalletRepositoryClass,
-        stampMock as unknown as Stamp,
-      );
       await controller.getById(id);
 
       expect(stampsRepository.getById).toHaveBeenCalledWith(
@@ -138,13 +125,6 @@ describe('StampsController', () => {
       const stampsData = [{ id: 1, hash: validHash }];
       stampsRepository.listStamps.mockResolvedValue(stampsData);
 
-      const controller = new StampsController(
-        req,
-        res,
-        stampsRepository as unknown as StampsRepositoryClass,
-        walletRepository as unknown as WalletRepositoryClass,
-        stampMock as unknown as Stamp,
-      );
       await controller.listStamps();
 
       expect(stampsRepository.listStamps).toHaveBeenCalledWith({
@@ -172,13 +152,6 @@ describe('StampsController', () => {
       const error = new Error('Database error');
       stampsRepository.listStamps.mockRejectedValue(error);
 
-      const controller = new StampsController(
-        req,
-        res,
-          stampsRepository as unknown as StampsRepositoryClass,
-          walletRepository as unknown as WalletRepositoryClass,
-          stampMock as unknown as Stamp,
-      );
       await controller.listStamps();
 
       expect(stampsRepository.listStamps).toHaveBeenCalledWith({
@@ -218,13 +191,6 @@ describe('StampsController', () => {
       stampsRepository.getByHash.mockResolvedValue(null);
       stampsRepository.createStamp.mockResolvedValue(validStampData);
 
-      const controller = new StampsController(
-        req,
-        res,
-        stampsRepository as unknown as StampsRepositoryClass,
-        walletRepository as unknown as WalletRepositoryClass,
-        stampMock as unknown as Stamp,
-      );
       await controller.createStamp(validInput);
 
       expect(walletRepository.getBalance).toHaveBeenCalled();
@@ -244,13 +210,6 @@ describe('StampsController', () => {
     it('should return 406 if wallet balance is insufficient', async () => {
       walletRepository.getBalance.mockResolvedValue(0);
 
-      const controller = new StampsController(
-        req,
-        res,
-          stampsRepository as unknown as StampsRepositoryClass,
-          walletRepository as unknown as WalletRepositoryClass,
-          stampMock as unknown as Stamp,
-      );
       await controller.createStamp(validInput);
 
       expect(walletRepository.getBalance).toHaveBeenCalled();
@@ -269,13 +228,6 @@ describe('StampsController', () => {
       const input = { data: { type: 'stamps', attributes: { hash: 'invalidHash' } } };
       walletRepository.getBalance.mockResolvedValue(100);
 
-      const controller = new StampsController(
-        req,
-        res,
-        stampsRepository as unknown as StampsRepositoryClass,
-        walletRepository as unknown as WalletRepositoryClass,
-        stampMock as unknown as Stamp,
-      );
       await controller.createStamp(input);
 
       expect(walletRepository.getBalance).toHaveBeenCalled();
@@ -294,13 +246,6 @@ describe('StampsController', () => {
       walletRepository.getBalance.mockResolvedValue(100);
       stampsRepository.createStamp.mockRejectedValue(error);
 
-      const controller = new StampsController(
-        req,
-        res,
-            stampsRepository as unknown as StampsRepositoryClass,
-            walletRepository as unknown as WalletRepositoryClass,
-            stampMock as unknown as Stamp,
-      );
       await controller.createStamp(validInput);
 
       expect(walletRepository.getBalance).toHaveBeenCalled();
@@ -310,7 +255,6 @@ describe('StampsController', () => {
         errors: [
           expect.objectContaining({
             status: HttpStatus.INTERNAL_SERVER_ERROR,
-            // title: 'Not Found',
           }),
         ],
       });
