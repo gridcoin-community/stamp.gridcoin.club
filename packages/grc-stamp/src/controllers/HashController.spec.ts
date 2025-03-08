@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
+import HttpStatus from 'http-status-codes';
 import { HashController } from './HashController';
+import { StampsRepositoryClass } from '../repositories/StampsRepository';
+import { Stamp } from '../models/Stamp';
 
 // jest.mock('../repositories/StampsRepository');
 jest.mock('../models/Stamp');
@@ -33,13 +36,13 @@ describe('HashController', () => {
       const controller = new HashController(
         req,
         res,
-        stampsRepository as any,
-        stampMock as any,
+        stampsRepository as unknown as StampsRepositoryClass,
+        stampMock as unknown as Stamp,
       );
       await controller.getById(hash);
 
       expect(stampsRepository.getByHash).toHaveBeenCalledWith(hash);
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.send).toHaveBeenCalledWith(expect.objectContaining({
         data: expect.objectContaining({
           attributes: expect.objectContaining({
@@ -57,17 +60,17 @@ describe('HashController', () => {
       const controller = new HashController(
         req,
         res,
-        stampsRepository as any,
-        stampMock as any,
+        stampsRepository as unknown as StampsRepositoryClass,
+        stampMock as unknown as Stamp,
       );
       await controller.getById(hash);
 
       expect(stampsRepository.getByHash).toHaveBeenCalledWith(hash);
-      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
       expect(res.send).toHaveBeenCalledWith({
         errors: [
           expect.objectContaining({
-            status: 404,
+            status: HttpStatus.NOT_FOUND,
             title: 'Not Found',
           }),
         ],
@@ -82,17 +85,17 @@ describe('HashController', () => {
       const controller = new HashController(
         req,
         res,
-        stampsRepository as any,
-        stampMock as any,
+        stampsRepository as unknown as StampsRepositoryClass,
+        stampMock as unknown as Stamp,
       );
       await controller.getById(hash);
 
       expect(stampsRepository.getByHash).toHaveBeenCalledWith(hash);
-      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
       expect(res.send).toHaveBeenCalledWith({
         errors: [
           expect.objectContaining({
-            status: 404,
+            status: HttpStatus.NOT_FOUND,
             title: 'Not Found',
           }),
         ],
