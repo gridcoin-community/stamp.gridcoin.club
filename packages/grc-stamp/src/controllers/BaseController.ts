@@ -174,11 +174,9 @@ export class Controller {
   }
 
   public hasField(entry: string, field: string): boolean {
-    if ('fields' in this.useFields) {
-      return entry in this.useFields.fields
-        && this.useFields.fields[entry].includes(field);
-    }
-    return false;
+    return entry in this.useFields
+        && this.useFields[entry]
+        && this.useFields[entry].includes(field);
   }
 
   private discoverSorting(): void {
