@@ -21,10 +21,10 @@ export class StampsController extends Controller {
     res: Response,
     private repository = StampsRepository,
     private walletRepository = WalletRepository,
+    protected model = new Stamp(),
+    protected presenter = StampPresenter,
   ) {
     super(req, res);
-    this.presenter = StampPresenter;
-    this.model = new Stamp();
     this.init();
   }
 
@@ -141,14 +141,26 @@ export class StampsController extends Controller {
       return;
     }
 
-    const result = await this.repository.createStamp(
-      data.hash,
-      data.hashType
-        ? data.hashType as StampsType
-        : StampsType.sha256,
-    );
-    this.res
-      .status(HttpStatus.CREATED)
-      .send(this.render<stamps>(result));
+    try {
+      const result = await this.repository.createStamp(
+        data.hash,
+        data.hashType
+          ? data.hashType as StampsType
+          : StampsType.sha256,
+      );
+      this.res
+        .status(HttpStatus.CREATED)
+        .send(this.render<stamps>(result));
+    } catch (e) {
+      log.error(e);
+      this.res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
+        errors: [
+          new ErrorModel(
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
+          ),
+        ],
+      });
+    }
   }
 }
