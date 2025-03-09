@@ -9,7 +9,6 @@ import { StampInput } from './schemas/StampSchema';
 
 const validHash = 'abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789';
 
-// jest.mock('../repositories/StampsRepository');
 jest.mock('../repositories/WalletRepository');
 jest.mock('../models/Stamp');
 jest.mock('.prisma/client');

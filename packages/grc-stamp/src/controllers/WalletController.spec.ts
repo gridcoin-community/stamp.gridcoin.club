@@ -26,8 +26,6 @@ describe('WalletController', () => {
       req,
       res,
       walletRepository as unknown as WalletRepositoryClass,
-      // balancePresenterMock as unknown as BalancePresenter,
-      // walletPresenterMock as unknown as WalletPresenter,
     );
   });
 
