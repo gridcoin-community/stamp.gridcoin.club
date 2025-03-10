@@ -9,7 +9,7 @@ import { Stamp } from '../models/Stamp';
 import { RepoListResults } from './types';
 import { PROTOCOL } from '../constants';
 
-interface SelectOptions {
+export interface SelectOptions {
   sort?: Sorting;
   filters?: Filters;
   fields?: Fields;
@@ -85,7 +85,7 @@ export class StampsRepositoryClass {
     return {
       rows: res,
       count: await this.stamp.model.count({
-        where: options.filters || {},
+        where: (options && options.filters) ? options.filters : {},
       }),
     };
   }

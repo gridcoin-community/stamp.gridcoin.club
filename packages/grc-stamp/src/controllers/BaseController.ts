@@ -35,7 +35,7 @@ enum MapFilterTypes {
   // 'like',
   // 'notLike',
 }
-enum SortOrder {
+export enum SortOrder {
   asc = 'asc',
   desc = 'desc',
 }
