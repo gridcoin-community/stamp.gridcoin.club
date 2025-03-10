@@ -18,7 +18,7 @@
     "start": "node dist/index.js",
     "start:dev": "nodemon dist/index.js",
     "test:lint": "eslint .",
-    "test:integration": "NODE_ENV=testing jest --runInBand --verbose ./tests/integration/**/*.spec.ts",
+    "test:integration": "NODE_ENV=testing jest --runInBand --verbose --testMatch '**/*.test.ts'",
     "test:unit": "NODE_ENV=testing jest --verbose --testMatch '**/src/**/*.spec.ts'",
     "typecheck": "tsc --project tsconfig.json --noEmit --pretty false",
     "test": "npm run test:integration && npm run test:unit && npm run test:lint && npm run typecheck",
