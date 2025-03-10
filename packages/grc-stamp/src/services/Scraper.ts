@@ -14,6 +14,7 @@ export class Scraper {
   public constructor(
     private redis = redisConn,
     private grcRpc = rpc,
+    private blockPrefix = PREFIX,
   ) {}
 
   private async readBlockInfo() {
@@ -41,7 +42,10 @@ export class Scraper {
     await this.readBlockInfo();
     log.debug(`Processing block #${this.currentBlock + 1}`);
     try {
-      const block = await this.grcRpc.getBlockByNumber(this.currentBlock + 1, true);
+      const block = await this.grcRpc.getBlockByNumber(
+        this.currentBlock + 1,
+        true,
+      );
       // go through transactions
       const { tx: txs } = block;
       txs.forEach((tx) => {
@@ -54,7 +58,7 @@ export class Scraper {
           const script = vout.scriptPubKey;
           const { hex: hexString, asm } = script;
           const hex = Buffer.from(hexString);
-          const re = new RegExp(`${OP_RETURN} ${PREFIX}`);
+          const re = new RegExp(`${OP_RETURN} ${this.blockPrefix}`);
           if (re.test(asm)) {
             log.info('We have found transaction');
             // console.log(hex.toString('utf8'));
