@@ -27,11 +27,11 @@ export const StampSchema = Joi.object<StampData>({
     .max(64)
     .regex(/^[a-fA-F0-9]{64}$/),
   protocol: Joi.string()
-    .allow('0.0.1')
+    .valid('0.0.1')
     .default('0.0.1')
     .optional(),
   hashType: Joi.string()
-    .allow('sha256')
+    .valid('sha256')
     .default('sha256')
     .optional(),
 });
