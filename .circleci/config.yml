@@ -6,7 +6,7 @@ setup: true
 # the path-filtering orb is required to continue a pipeline based on
 # the path of an updated fileset
 orbs:
-  path-filtering: circleci/path-filtering@0.1.1
+  path-filtering: circleci/path-filtering@2.0.4
 
 defaults: &defaults
   working_directory: ~/app
