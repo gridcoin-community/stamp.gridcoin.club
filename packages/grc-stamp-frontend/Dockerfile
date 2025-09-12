@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM node:16-alpine3.15 AS deps
+FROM node:22.16.0-alpine3.22 AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -7,14 +7,14 @@ COPY package.json package-lock.json ./
 RUN npm install --frozen-lockfile
 
 # Rebuild the source code only when needed
-FROM node:16-alpine3.15 AS builder
+FROM node:22.16.0-alpine3.22 AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 RUN npm run build && npm install --production --ignore-scripts --prefer-offline
 
 # Production image, copy all the files and run next
-FROM node:16-alpine3.15 AS runner
+FROM node:22.16.0-alpine3.22 AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
