@@ -11,20 +11,20 @@ orbs:
 defaults: &defaults
   working_directory: ~/app
   docker:
-    - image: cimg/node:20.12.2
+    - image: cimg/node:22.16
 
 jobs:
   grc-stamp_build_image:
     <<: *defaults
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: docker:24.0.0-git
     steps:
       - checkout
       - run:
           name: Get the recent changes
           command: git pull origin master
       - setup_remote_docker:
-          version: 19.03.13
+          version: 24.0.0
       - run:
           name: Install dependencies
           command: apk add --no-cache jq
@@ -60,13 +60,14 @@ jobs:
   grc-stamp-frontend_build_image:
     <<: *defaults
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: docker:24.0.0-git
     steps:
       - checkout
       - run:
           name: Get the recent changes
           command: git pull origin master
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 24.0.0
       - run:
           name: Install dependencies
           command: apk add --no-cache jq
