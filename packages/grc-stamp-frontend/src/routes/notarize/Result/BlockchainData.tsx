@@ -15,13 +15,13 @@ interface Props {
 
 export function BlockchainData({ isUploading }: Props) {
   const { state, dispatch } = React.useContext(FilesContext);
-  const idRef = React.useRef<NodeJS.Timer | 0>(0);
+  const idRef = React.useRef<NodeJS.Timeout | 0>(0);
 
   const fileData = getFirstFromTheStore(state);
   const stamp = new StampEntity(fileData.blockchainData);
 
   if (stamp.isFinished()) {
-    clearInterval(idRef.current as NodeJS.Timer);
+    clearInterval(idRef.current as NodeJS.Timeout);
     idRef.current = 0;
   }
 
@@ -53,7 +53,7 @@ export function BlockchainData({ isUploading }: Props) {
       }, 5000);
     }
     return () => {
-      clearInterval(idRef.current as NodeJS.Timer);
+      clearInterval(idRef.current as NodeJS.Timeout);
       idRef.current = 0;
     };
   });

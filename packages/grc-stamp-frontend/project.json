@@ -1,0 +1,29 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "grc-stamp-frontend",
+  "root": "packages/grc-stamp-frontend",
+  "projectType": "application",
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run typecheck",
+        "cwd": "packages/grc-stamp-frontend"
+      }
+    },
+    "test:lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run test:lint",
+        "cwd": "packages/grc-stamp-frontend"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build",
+        "cwd": "packages/grc-stamp-frontend"
+      }
+    }
+  }
+}

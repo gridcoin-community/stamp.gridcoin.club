@@ -24,27 +24,25 @@ function FilePreviewComponent({ file, preview }: Props) {
   // console.log('📙 FilePreview re-renders 📙');
   // console.log(file.type);
   return (
-    <>
-      {(isImage(file) && preview) ? (
-        <CardMedia
-          component="img"
-          sx={{ width: 250, height: 250 }}
-          image={preview}
-          alt={file.name}
+    (isImage(file) && preview) ? (
+      <CardMedia
+        component="img"
+        sx={{ width: 250, height: 250 }}
+        image={preview}
+        alt={file.name}
+      />
+    ) : (
+      <CardMedia
+        component="div"
+        sx={{ width: 250, height: 250 }}
+      >
+        <FileType
+          type={file.type}
+          sx={{ fontSize: 250 }}
+          color="disabled"
         />
-      ) : (
-        <CardMedia
-          component="div"
-          sx={{ width: 250, height: 250 }}
-        >
-          <FileType
-            type={file.type}
-            sx={{ fontSize: 250 }}
-            color="disabled"
-          />
-        </CardMedia>
-      )}
-    </>
+      </CardMedia>
+    )
   );
 }
 

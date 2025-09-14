@@ -31,9 +31,5 @@ export function MaintenanceWrapper({ children }: Props) {
   if (statusData && statusData.maintenance) {
     return <Page />;
   }
-  return (
-    <>
-      {children}
-    </>
-  );
+  return children;
 }

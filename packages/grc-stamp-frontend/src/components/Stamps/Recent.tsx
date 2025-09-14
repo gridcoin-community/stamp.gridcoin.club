@@ -41,6 +41,7 @@ export function RecentStamps() {
       stampsList = <LinearProgress color="secondary" />;
       break;
     case null:
+      // eslint-disable-next-line react/jsx-no-useless-fragment
       stampsList = <></>;
       break;
     default:
