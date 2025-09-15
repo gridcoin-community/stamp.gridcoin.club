@@ -2,9 +2,9 @@ import {
   List, Divider,
 } from '@mui/material';
 import React from 'react';
-import { Info } from 'components/Info/Info';
-import { StampEntity } from 'entities/StampEntity';
-import { StampBlockchainData } from 'components/Info/StampBlockchainData';
+import { Info } from '@/components/Info/Info';
+import { StampEntity } from '@/entities/StampEntity';
+import { StampBlockchainData } from '@/components/Info/StampBlockchainData';
 import { getFirstFromTheStore, getStampInfoById } from '../actions';
 import { FilesContext } from '../context';
 import { ActionType } from '../reducer';

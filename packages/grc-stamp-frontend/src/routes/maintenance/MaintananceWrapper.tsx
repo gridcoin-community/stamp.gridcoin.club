@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { StatusRepository } from 'repositories/StatusRepository';
-import { useInterval } from 'hooks';
-import { StatusEntity } from 'entities/StatusEntity';
+import { StatusRepository } from '@/repositories/StatusRepository';
+import { useInterval } from '@/hooks';
+import { StatusEntity } from '@/entities/StatusEntity';
 import { Page } from './index';
 
 interface Props {

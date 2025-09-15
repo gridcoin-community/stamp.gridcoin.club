@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import axios from 'axios';
-import { StampEntity } from 'entities/StampEntity';
-import { StampRepository } from '../../src/repositories/StampsRepository';
+import { StampEntity } from '@/entities/StampEntity';
+import { StampRepository } from '@/repositories/StampsRepository';
 import { getDataMock, HashListMock } from './mocks';
 
 jest.mock('axios');

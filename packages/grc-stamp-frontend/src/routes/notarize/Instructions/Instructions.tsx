@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { StampIcon } from 'icons/StampIcon';
 import { styled } from '@mui/material/styles';
 import MLink from '@mui/material/Link';
 import Link from 'next/link';
-import { GradientLine } from 'components/GradientLine';
+import { StampIcon } from '@/icons/StampIcon';
+import { GradientLine } from '@/components/GradientLine';
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',

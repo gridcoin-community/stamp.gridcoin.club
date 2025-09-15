@@ -1,9 +1,9 @@
 import { Typography } from '@mui/material';
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { StampEntity } from 'entities/StampEntity';
 import Link from 'next/link';
 import MLink from '@mui/material/Link';
+import { StampEntity } from '@/entities/StampEntity';
 import { FileData } from '../reducer';
 
 interface Props {

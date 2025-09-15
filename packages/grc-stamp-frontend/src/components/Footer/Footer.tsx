@@ -4,10 +4,10 @@ import {
   Typography,
   Grid,
 } from '@mui/material';
-import { Balance } from 'components/Footer/Balance';
 import GithubIcon from '@mui/icons-material/GitHub';
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import { Balance } from '@/components/Footer/Balance';
 
 const SubFooterTypography = styled(Typography)(({ theme }) => ({
   textAlign: 'left',

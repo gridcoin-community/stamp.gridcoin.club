@@ -1,5 +1,4 @@
 import React from 'react';
-import { StampEntity } from 'entities/StampEntity';
 import {
   Avatar,
   Box,
@@ -13,7 +12,8 @@ import {
 import { styled } from '@mui/material/styles';
 import Identicon from 'identicon.js';
 import { format } from 'date-fns';
-import { blockUrl, txUrl } from 'lib/explorerLinks';
+import { blockUrl, txUrl } from '@/lib/explorerLinks';
+import { StampEntity } from '@/entities/StampEntity';
 
 interface Props {
   stamps: StampEntity[];

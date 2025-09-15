@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material';
-import { WalletEntity } from 'entities/WalletEntity';
 import React, { useState, useEffect } from 'react';
-import { WalletRepository } from 'repositories/WalletRepository';
-import { useInterval } from 'hooks';
+import { useInterval } from '@/hooks';
+import { WalletEntity } from '@/entities/WalletEntity';
+import { WalletRepository } from '@/repositories/WalletRepository';
 
 const walletRepository = new WalletRepository();
 
@@ -39,7 +39,7 @@ export function BalanceComponent() {
         <Typography variant="caption">
           Address:
           {' '}
-          { process.env.NEXT_PUBLIC_WALLET_ADDRESS }
+          {process.env.NEXT_PUBLIC_WALLET_ADDRESS}
         </Typography>
       </Box>
     </>

@@ -3,7 +3,7 @@ import yayson from 'yayson';
 import {
   StampEntity,
   StampRawData,
-} from '../entities/StampEntity';
+} from '@/entities/StampEntity';
 
 const { Store } = yayson();
 

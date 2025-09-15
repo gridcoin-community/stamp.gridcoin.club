@@ -21,11 +21,12 @@ module.exports = {
     'import/prefer-default-export': 0,
     'no-case-declarations': 0,
     'jsx-a11y/anchor-is-valid': 0,
-    'no-plusplus': 0
+    'no-plusplus': 0,
+    'import/extensions': 0
   },
   overrides: [
     {
-      files: ['.eslintrc.js'],
+      files: ['.eslintrc.js', 'next.config.js'],
       parser: 'espree',
       parserOptions: {
         ecmaVersion: 2020,

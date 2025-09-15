@@ -159,7 +159,7 @@ jobs:
           at: ~/app
       - run:
           name: Run JS Linter
-          command: cd ~/app/packages/grc-stamp-frontend && npm run lint
+          command: cd ~/app/packages/grc-stamp-frontend && npm run test:lint
 
   grc-stamp-frontend_run_typecheck:
     <<: *defaults
