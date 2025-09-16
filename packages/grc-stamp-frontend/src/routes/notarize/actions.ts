@@ -1,7 +1,7 @@
 import { sha256 } from 'js-sha256';
 import axios from 'axios';
-import { StampRepository } from 'repositories/StampsRepository';
-import { StampEntity } from 'entities/StampEntity';
+import { StampRepository } from '@/repositories/StampsRepository';
+import { StampEntity } from '@/entities/StampEntity';
 import {
   FileData, StateInterface,
 } from './reducer';

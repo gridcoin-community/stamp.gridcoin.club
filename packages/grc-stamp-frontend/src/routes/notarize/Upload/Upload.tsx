@@ -76,20 +76,18 @@ export function Upload({ next }: Props) {
   });
 
   return (
-    <>
-      <Box sx={{
-        my: 4,
-        display: 'flex',
-        justifyContent: 'center',
-      }}
-      >
-        <DropBox {...getRootProps()}>
-          <input {...getInputProps()} />
-          <Typography variant="body1" gutterBottom pl={1} pr={1} textAlign="center">
-            Drag n drop your file here, or click to select.
-          </Typography>
-        </DropBox>
-      </Box>
-    </>
+    <Box sx={{
+      my: 4,
+      display: 'flex',
+      justifyContent: 'center',
+    }}
+    >
+      <DropBox {...getRootProps()}>
+        <input {...getInputProps()} />
+        <Typography variant="body1" gutterBottom pl={1} pr={1} textAlign="center">
+          Drag n drop your file here, or click to select.
+        </Typography>
+      </DropBox>
+    </Box>
   );
 }

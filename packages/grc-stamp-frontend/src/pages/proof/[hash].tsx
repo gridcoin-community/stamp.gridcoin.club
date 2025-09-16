@@ -1,17 +1,17 @@
-import { StampEntity, StampRawData } from 'entities/StampEntity';
-import { StampRepository } from 'repositories/StampsRepository';
-import { Page } from 'routes/proof';
+import { StampEntity, StampRawData } from '@/entities/StampEntity';
+import { StampRepository } from '@/repositories/StampsRepository';
+import { Page } from '@/routes/proof';
 
 interface Props {
   stampData: Partial<StampRawData>;
 }
 
-const Post = ({ stampData }: Props) => {
+function Post({ stampData }: Props) {
   const stamp = new StampEntity(stampData);
   return (
     <Page stamp={stamp} />
   );
-};
+}
 
 interface Context {
   params: {

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src/",
+    "baseUrl": ".",
     "target": "es5",
     "lib": [
       "dom",
@@ -18,7 +18,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",

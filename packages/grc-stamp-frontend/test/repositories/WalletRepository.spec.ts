@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import axios from 'axios';
-import { WalletEntity } from 'entities/WalletEntity';
-import { WalletRepository } from '../../src/repositories/WalletRepository';
+import { WalletEntity } from '@/entities/WalletEntity';
+import { WalletRepository } from '@/repositories/WalletRepository';
 import { walletMock } from './mocks';
 
 jest.mock('axios');

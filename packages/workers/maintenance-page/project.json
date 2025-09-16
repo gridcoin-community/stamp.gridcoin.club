@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "name": "workers-maintenance-page",
+  "root": "packages/workers/maintenance-page",
+  "projectType": "application",
+  "targets": {
+    "test:lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run test:lint",
+        "cwd": "packages/workers/maintenance-page"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build",
+        "cwd": "packages/workers/maintenance-page"
+      }
+    }
+  }
+}

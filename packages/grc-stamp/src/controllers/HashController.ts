@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { stamps } from '.prisma/client';
+import { stamps } from '@prisma/client';
 import { Stamp } from '../models/Stamp';
 import { StampPresenter } from '../presenters/stamp.presenter';
 import { StampsRepository } from '../repositories/StampsRepository';

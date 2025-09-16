@@ -1,10 +1,10 @@
 import { Container, Typography } from '@mui/material';
-import { GradientLine } from 'components/GradientLine';
-import { Header } from 'components/Header/Header';
-import { PageWrapper } from 'components/PageWrapper';
 import Head from 'next/head';
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import { GradientLine } from '@/components/GradientLine';
+import { Header } from '@/components/Header/Header';
+import { PageWrapper } from '@/components/PageWrapper';
 
 const Centered = styled('div')(() => ({
   width: '100%',

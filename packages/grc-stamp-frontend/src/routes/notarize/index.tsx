@@ -6,11 +6,11 @@ import React, {
 } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import { Header } from 'components/Header/Header';
-import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
-import { PageWrapper } from 'components/PageWrapper';
-import { RecentStamps } from 'components/Stamps/Recent';
+import { Header } from '@/components/Header/Header';
+import { Footer } from '@/components/Footer/Footer';
+import { PageWrapper } from '@/components/PageWrapper';
+import { RecentStamps } from '@/components/Stamps/Recent';
 import { Upload } from './Upload/Upload';
 import { InitialState, reducer } from './reducer';
 import { FilesContext, ErrorContext } from './context';

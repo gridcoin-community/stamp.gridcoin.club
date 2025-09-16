@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import {
   readableFileSize,
-} from 'routes/notarize/actions';
+} from '@/routes/notarize/actions';
 
 describe('Notarize actions', () => {
   describe('readableFileSize', () => {
