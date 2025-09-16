@@ -149,7 +149,7 @@ jobs:
           at: ~/app
       - run:
           name: run tests
-          command: cd ~/app/packages/grc-stamp-frontend && npm run test
+          command: cd ~/app/packages/grc-stamp-frontend && npm run test:unit
 
 
   grc-stamp-frontend_run_lint:

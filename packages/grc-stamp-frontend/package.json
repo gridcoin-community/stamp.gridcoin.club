@@ -100,7 +100,7 @@
     "dev": "next dev",
     "semantic-release": "semantic-release -e semantic-release-monorepo",
     "start": "next start",
-    "test": "jest",
+    "test:unit": "jest",
     "test:lint": "next lint",
     "typecheck": "tsc --project ./tsconfig.json --noEmit --pretty false"
   }

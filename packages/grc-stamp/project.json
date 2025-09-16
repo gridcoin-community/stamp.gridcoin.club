@@ -18,6 +18,13 @@
         "cwd": "packages/grc-stamp"
       }
     },
+    "test:unit": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run test:unit",
+        "cwd": "packages/grc-stamp"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
