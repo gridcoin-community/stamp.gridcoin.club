@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, LinearProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { StampEntity } from 'entities/StampEntity';
-import { StampRepository } from 'repositories/StampsRepository';
+import { StampEntity } from '@/entities/StampEntity';
+import { StampRepository } from '@/repositories/StampsRepository';
 import { StampsList } from './StampsList';
 
 const Wrapper = styled(Box)((() => ({
@@ -41,6 +41,7 @@ export function RecentStamps() {
       stampsList = <LinearProgress color="secondary" />;
       break;
     case null:
+      // eslint-disable-next-line react/jsx-no-useless-fragment
       stampsList = <></>;
       break;
     default:

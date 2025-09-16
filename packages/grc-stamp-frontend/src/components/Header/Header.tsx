@@ -6,8 +6,8 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Image from 'next/image';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
-import { NavMenuMobile } from 'components/Navigation/NavMenuMobile';
 import Link from 'next/link';
+import { NavMenuMobile } from '@/components/Navigation/NavMenuMobile';
 import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
 interface Props {
@@ -70,11 +70,7 @@ export function Header({ showLinks = true }: HeaderProps) {
               }}
               disableGutters
             >
-              {showLinks && (
-                <>
-                  {isMobile ? <NavMenuMobile /> : <NavMenuDesktop />}
-                </>
-              )}
+              {showLinks && (isMobile ? <NavMenuMobile /> : <NavMenuDesktop />)}
             </Toolbar>
           </Container>
         </AppBar>

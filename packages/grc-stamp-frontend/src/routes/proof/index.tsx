@@ -1,6 +1,4 @@
 import React from 'react';
-import { Header } from 'components/Header/Header';
-import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
 import {
   Container,
@@ -9,12 +7,14 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-import { StampEntity } from 'entities/StampEntity';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { Info } from 'components/Info/Info';
-import { PageWrapper } from 'components/PageWrapper';
-import { StampBlockchainData } from 'components/Info/StampBlockchainData';
 import { styled } from '@mui/material/styles';
+import { StampEntity } from '@/entities/StampEntity';
+import { Info } from '@/components/Info/Info';
+import { PageWrapper } from '@/components/PageWrapper';
+import { StampBlockchainData } from '@/components/Info/StampBlockchainData';
+import { Footer } from '@/components/Footer/Footer';
+import { Header } from '@/components/Header/Header';
 
 const Message = styled(Typography)(({ theme }) => ({
   textAlign: 'center',

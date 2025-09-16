@@ -1,9 +1,9 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Chance from 'chance';
 import path from 'path';
 import util from 'util';
 import { exec } from 'child_process';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { StampsType } from '.prisma/client';
+import { StampsType } from '@prisma/client';
 import { getPrisma } from '../../src/lib/prisma';
 import { PROTOCOL } from '../../src/constants';
 

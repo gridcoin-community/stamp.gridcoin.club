@@ -6,7 +6,7 @@ import { Stamp } from '../models/Stamp';
 
 // jest.mock('../repositories/StampsRepository');
 jest.mock('../models/Stamp');
-jest.mock('.prisma/client');
+jest.mock('@prisma/client');
 
 describe('HashController', () => {
   let req: Request;

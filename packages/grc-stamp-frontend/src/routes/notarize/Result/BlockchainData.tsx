@@ -2,9 +2,9 @@ import {
   List, Divider,
 } from '@mui/material';
 import React from 'react';
-import { Info } from 'components/Info/Info';
-import { StampEntity } from 'entities/StampEntity';
-import { StampBlockchainData } from 'components/Info/StampBlockchainData';
+import { Info } from '@/components/Info/Info';
+import { StampEntity } from '@/entities/StampEntity';
+import { StampBlockchainData } from '@/components/Info/StampBlockchainData';
 import { getFirstFromTheStore, getStampInfoById } from '../actions';
 import { FilesContext } from '../context';
 import { ActionType } from '../reducer';
@@ -15,13 +15,13 @@ interface Props {
 
 export function BlockchainData({ isUploading }: Props) {
   const { state, dispatch } = React.useContext(FilesContext);
-  const idRef = React.useRef<NodeJS.Timer | 0>(0);
+  const idRef = React.useRef<NodeJS.Timeout | 0>(0);
 
   const fileData = getFirstFromTheStore(state);
   const stamp = new StampEntity(fileData.blockchainData);
 
   if (stamp.isFinished()) {
-    clearInterval(idRef.current as NodeJS.Timer);
+    clearInterval(idRef.current as NodeJS.Timeout);
     idRef.current = 0;
   }
 
@@ -53,7 +53,7 @@ export function BlockchainData({ isUploading }: Props) {
       }, 5000);
     }
     return () => {
-      clearInterval(idRef.current as NodeJS.Timer);
+      clearInterval(idRef.current as NodeJS.Timeout);
       idRef.current = 0;
     };
   });

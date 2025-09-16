@@ -1,13 +1,13 @@
 import React from 'react';
-import { Header } from 'components/Header/Header';
-import { Footer } from 'components/Footer/Footer';
 import Head from 'next/head';
 import {
   Container, Grid,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { GradientLine } from 'components/GradientLine';
+import { Header } from '@/components/Header/Header';
+import { Footer } from '@/components/Footer/Footer';
+import { GradientLine } from '@/components/GradientLine';
 import { PageWrapper } from '../../components/PageWrapper';
 import { Contents } from './Contents';
 import {

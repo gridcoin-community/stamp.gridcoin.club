@@ -10,10 +10,11 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "sourceMap": false,
+    "skipLibCheck": true
     // "strict": true,
   },
   "include": [
-    "src/**/*"
+    "src"
   ],
   "exclude": [
     "node_modules",

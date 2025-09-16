@@ -3,7 +3,7 @@ import yayson from 'yayson';
 import {
   WalletEntity,
   WalletRawData,
-} from 'entities/WalletEntity';
+} from '@/entities/WalletEntity';
 
 const { Store } = yayson();
 

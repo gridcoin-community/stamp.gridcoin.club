@@ -1,8 +1,8 @@
 import React from 'react';
 import { Divider } from '@mui/material';
-import { StampEntity } from 'entities/StampEntity';
 import { format } from 'date-fns';
-import { blockUrl, txUrl } from 'lib/explorerLinks';
+import { StampEntity } from '@/entities/StampEntity';
+import { blockUrl, txUrl } from '@/lib/explorerLinks';
 import { Info } from './Info';
 
 interface Props {

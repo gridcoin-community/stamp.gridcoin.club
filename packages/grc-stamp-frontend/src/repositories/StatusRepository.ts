@@ -3,7 +3,7 @@ import yayson from 'yayson';
 import {
   StatusEntity,
   StatusRawData,
-} from 'entities/StatusEntity';
+} from '@/entities/StatusEntity';
 
 const { Store } = yayson();
 
