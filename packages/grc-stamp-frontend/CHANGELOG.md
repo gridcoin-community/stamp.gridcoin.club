@@ -1,3 +1,11 @@
+# [grc-stamp-fronted-v1.6.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.6.0...grc-stamp-fronted-v1.6.1) (2025-09-17)
+
+
+### Bug Fixes
+
+* technical update dependencies ([5328c8a](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/5328c8a5f0f4770ab2af695276e9d2a80c5a0582))
+* technical update, nextjs to 13 ([4090866](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/4090866b049992d01553b7830005f1d01fb4b744))
+
 # [grc-stamp-fronted-v1.6.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-fronted-v1.5.1...grc-stamp-fronted-v1.6.0) (2025-09-16)
 
 
