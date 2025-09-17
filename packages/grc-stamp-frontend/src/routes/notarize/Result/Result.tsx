@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {
-  Button, CardActions, Grid, Stack, useMediaQuery, useTheme,
+  Button, CardActions, Grid2, Stack, useMediaQuery, useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { getFirstFromTheStore, storeToBlockchain } from '../actions';
@@ -99,11 +99,11 @@ export function Result({ back, next, activeStep }: Props) {
           </Box>
         </Box>
         <CardActions>
-          <Grid container alignItems="center">
-            <Grid item xs={12} sm={4}>
+          <Grid2 container alignItems="center" sx={{ width: '100%' }}>
+            <Grid2>
               <Progress fileData={fileData} isUploading={isUploading} />
-            </Grid>
-            <Grid item xs={12} sm={8}>
+            </Grid2>
+            <Grid2 sx={{ width: '100%' }}>
               <Stack
                 direction="row"
                 justifyContent="flex-end"
@@ -139,8 +139,8 @@ export function Result({ back, next, activeStep }: Props) {
                   </>
                 )}
               </Stack>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </CardActions>
       </MainCard>
     </Box>

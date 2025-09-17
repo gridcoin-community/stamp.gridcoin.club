@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import MLink from '@mui/material/Link';
 import Link from 'next/link';
 import { StampIcon } from '@/icons/StampIcon';
 import { GradientLine } from '@/components/GradientLine';
@@ -51,9 +50,7 @@ function InstructionsComponent() {
           This ensures that there is no possibility of malicious
           modifications being made at a later time. To learn more, click
           {' '}
-          <Link href="/about" passHref>
-            <MLink>here</MLink>
-          </Link>
+          <Link href="/about" passHref>here</Link>
           .
         </Text>
         <Text variant="body1" gutterBottom>

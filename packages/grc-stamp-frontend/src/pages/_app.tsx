@@ -28,7 +28,7 @@ export default function MyApp(props: MyAppProps) {
         setMode(storedMode as 'light' | 'dark');
       }
     }
-  }, []);
+  }, [mode]);
 
   React.useEffect(() => {
     if (localStorage !== undefined) {
@@ -61,7 +61,7 @@ export default function MyApp(props: MyAppProps) {
           <meta httpEquiv="onion-location" content="http://u4embjw2uzwpdubgm72ywbmixte4kqgwurc4r4rp6elhlokutdfsy4id.onion" />
         </Head>
         {process.env.NEXT_PUBLIC_TRACK === 'true' && (
-        <Script src="https://daj.pw/js/plausible.js" data-domain="stamp.gridcoin.club" />
+          <Script src="https://daj.pw/js/plausible.js" data-domain="stamp.gridcoin.club" />
         )}
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}

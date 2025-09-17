@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { NavMenuMobile } from '@/components/Navigation/NavMenuMobile';
 import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
@@ -35,6 +36,11 @@ interface HeaderProps {
 export function Header({ showLinks = true }: HeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -43,23 +49,21 @@ export function Header({ showLinks = true }: HeaderProps) {
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
             <Box>
               <Link passHref href="/">
-                <a>
-                  {isMobile ? (
-                    <Image
-                      src="/ic-logo-mobile.svg"
-                      width={140}
-                      height={32}
-                      alt="Gridcoin stamp"
-                    />
-                  ) : (
-                    <Image
-                      src="/ic-logo-desktop.svg"
-                      width={158}
-                      height={50}
-                      alt="Gridcoin stamp"
-                    />
-                  )}
-                </a>
+                {isMobile && mounted ? (
+                  <Image
+                    src="/ic-logo-mobile.svg"
+                    width={140}
+                    height={32}
+                    alt="Gridcoin stamp"
+                  />
+                ) : (
+                  <Image
+                    src="/ic-logo-desktop.svg"
+                    width={158}
+                    height={50}
+                    alt="Gridcoin stamp"
+                  />
+                )}
               </Link>
             </Box>
 
@@ -70,7 +74,7 @@ export function Header({ showLinks = true }: HeaderProps) {
               }}
               disableGutters
             >
-              {showLinks && (isMobile ? <NavMenuMobile /> : <NavMenuDesktop />)}
+              {showLinks && mounted ? <NavMenuMobile /> : <NavMenuDesktop />}
             </Toolbar>
           </Container>
         </AppBar>
