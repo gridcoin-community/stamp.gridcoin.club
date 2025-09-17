@@ -1,7 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 import {
-  Container, Grid,
+  Container,
+  Grid2,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -32,18 +33,18 @@ export function Page() {
         <Header />
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
           <GradientLine />
-          <Grid container spacing={3}>
-            <Grid item sm={3} xs={12} sx={{ display: isMobile ? 'none' : 'flex' }}>
+          <Grid2 container spacing={3}>
+            <Grid2 size={{ sm: 3, xs: 12 }} sx={{ display: isMobile ? 'none' : 'flex' }}>
               <Contents />
-            </Grid>
-            <Grid item sm={9} xs={12}>
+            </Grid2>
+            <Grid2 size={{ sm: 9, xs: 12 }}>
               <ProofOfExistence />
               <About />
               <Protocol />
               <Costs />
               {/* <Credits /> */}
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </Container>
         <Footer />
       </PageWrapper>

@@ -86,9 +86,7 @@ export function NavMenuDesktop() {
         <Nav>
           {Object.entries(menuItems).map(([uri, name]: [string, string]) => (
             <NavItem key={`dmenu-item-${uri.replace('/', '')}`} className={router.pathname === uri ? 'itemActive' : undefined}>
-              <Link href={uri}>
-                <a>{name}</a>
-              </Link>
+              <Link href={uri}>{name}</Link>
             </NavItem>
           ))}
         </Nav>

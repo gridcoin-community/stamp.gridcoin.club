@@ -28,14 +28,11 @@ interface Props {
 }
 
 export function Page({ stamp }: Props) {
+  const title = `Gridcoin blockchain stamping :: Proof of ${stamp.hash}`;
   return (
     <>
       <Head>
-        <title>
-          Gridcoin blockchain stamping :: Proof of
-          {' '}
-          {stamp.hash}
-        </title>
+        <title>{title}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <PageWrapper>

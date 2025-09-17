@@ -71,8 +71,8 @@ export function Info({ title, value, link }: Props) {
     <ListItem disableGutters>
       <ListItemTextResponsive
         primary={title}
-        primaryTypographyProps={{
-          fontWeight: '600',
+        slotProps={{
+          primary: { fontWeight: '600' },
         }}
         secondary={<SecondaryText value={value} link={link} />}
       />
