@@ -17,7 +17,7 @@ jobs:
   grc-stamp_build_image:
     <<: *defaults
     docker:
-      - image: docker:24.0.0-git
+      - image: docker:git
     steps:
       - checkout
       - run:
@@ -60,7 +60,7 @@ jobs:
   grc-stamp-frontend_build_image:
     <<: *defaults
     docker:
-      - image: docker:24.0.0-git
+      - image: docker:git
     steps:
       - checkout
       - run:
