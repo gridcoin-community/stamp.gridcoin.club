@@ -1,3 +1,10 @@
+# [grc-stamp-v1.1.4](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.3...grc-stamp-v1.1.4) (2025-09-17)
+
+
+### Bug Fixes
+
+* fix production dockerfile ([51798b4](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/51798b40292251d8d2de189aad1e657b9592cd15))
+
 # [grc-stamp-v1.1.3](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.2...grc-stamp-v1.1.3) (2025-09-17)
 
 
