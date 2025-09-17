@@ -1,3 +1,10 @@
+# [grc-stamp-v1.1.3](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.2...grc-stamp-v1.1.3) (2025-09-17)
+
+
+### Bug Fixes
+
+* technical update dependencies ([f08fd89](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f08fd89753caf33124df04366440f20febe24b8d))
+
 # [grc-stamp-v1.1.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.1...grc-stamp-v1.1.2) (2025-09-17)
 
 
