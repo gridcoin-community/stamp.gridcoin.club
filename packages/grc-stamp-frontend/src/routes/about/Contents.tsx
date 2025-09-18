@@ -2,8 +2,8 @@ import {
   List, ListItem, ListItemButton, ListItemText, Box,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Link from 'next/link';
 import React from 'react';
+import { NextMuiLink } from '@/components/NextMuiLink';
 
 const ContentsContainer = styled(Box)(({ theme }) => ({
   paddingTop: theme.spacing(7),
@@ -14,7 +14,7 @@ export function Contents() {
   return (
     <ContentsContainer>
       <List disablePadding dense>
-        <Link href="#proof-of-existence" passHref>
+        <NextMuiLink href="#proof-of-existence" passHref>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemText>
@@ -22,8 +22,8 @@ export function Contents() {
               </ListItemText>
             </ListItemButton>
           </ListItem>
-        </Link>
-        <Link href="#about-the-service" passHref>
+        </NextMuiLink>
+        <NextMuiLink href="#about-the-service" passHref>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemText>
@@ -31,28 +31,28 @@ export function Contents() {
               </ListItemText>
             </ListItemButton>
           </ListItem>
-        </Link>
-        <Link href="#protocol-overview" passHref>
+        </NextMuiLink>
+        <NextMuiLink href="#protocol-overview" passHref>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemText>Protocol Summary</ListItemText>
             </ListItemButton>
           </ListItem>
-        </Link>
-        <Link href="#costs" passHref>
+        </NextMuiLink>
+        <NextMuiLink href="#costs" passHref>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemText>Costs</ListItemText>
             </ListItemButton>
           </ListItem>
-        </Link>
-        {/* <Link href="#credits" passHref>
+        </NextMuiLink>
+        {/* <NextMuiLink href="#credits" passHref>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemText>Credits</ListItemText>
             </ListItemButton>
           </ListItem>
-        </Link> */}
+        </NextMuiLink> */}
       </List>
     </ContentsContainer>
   );

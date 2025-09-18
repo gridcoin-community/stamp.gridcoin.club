@@ -2,7 +2,7 @@ import {
   Container,
   Divider,
   Typography,
-  Grid2,
+  Grid,
 } from '@mui/material';
 import GithubIcon from '@mui/icons-material/GitHub';
 import React from 'react';
@@ -38,13 +38,13 @@ export function Footer() {
       <div>
         <Divider />
       </div>
-      <Grid2 container spacing={0} mt={2} mb={2}>
-        <Grid2 size={{ xs: 12, md: 6 }}>
+      <Grid container spacing={0} mt={2} mb={2}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <FooterTextTypography variant="caption">
             <Balance />
           </FooterTextTypography>
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 6 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
           <FooterTextTypography variant="caption" textAlign="right">
             <a
               href="https://github.com/gridcoin-community/stamp.gridcoin.club"
@@ -55,8 +55,8 @@ export function Footer() {
               <GithubIcon color="primary" sx={{ fontSize: 40 }} />
             </a>
           </FooterTextTypography>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
       <Divider />
       <SubFooterTypography variant="caption">
         Made with

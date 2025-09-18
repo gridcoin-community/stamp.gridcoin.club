@@ -1,11 +1,11 @@
 import { styled } from '@mui/material/styles';
 import React from 'react';
-import Link from 'next/link';
 import { Box, IconButton } from '@mui/material';
 import AppsIcon from '@mui/icons-material/Apps';
 import { useRouter } from 'next/router';
 import { ModeToggle } from './Mode';
 import { menuItems } from './constants';
+import { NextMuiLink } from '../NextMuiLink';
 
 const itemHorzPadding = 1;
 const gutter = 2;
@@ -86,7 +86,7 @@ export function NavMenuDesktop() {
         <Nav>
           {Object.entries(menuItems).map(([uri, name]: [string, string]) => (
             <NavItem key={`dmenu-item-${uri.replace('/', '')}`} className={router.pathname === uri ? 'itemActive' : undefined}>
-              <Link href={uri}>{name}</Link>
+              <NextMuiLink href={uri}>{name}</NextMuiLink>
             </NavItem>
           ))}
         </Nav>

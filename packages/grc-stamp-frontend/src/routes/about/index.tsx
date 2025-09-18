@@ -2,9 +2,9 @@ import React from 'react';
 import Head from 'next/head';
 import {
   Container,
-  Grid2,
   useMediaQuery,
   useTheme,
+  Grid,
 } from '@mui/material';
 import { Header } from '@/components/Header/Header';
 import { Footer } from '@/components/Footer/Footer';
@@ -33,18 +33,18 @@ export function Page() {
         <Header />
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
           <GradientLine />
-          <Grid2 container spacing={3}>
-            <Grid2 size={{ sm: 3, xs: 12 }} sx={{ display: isMobile ? 'none' : 'flex' }}>
+          <Grid container spacing={3}>
+            <Grid size={{ sm: 3, xs: 12 }} sx={{ display: isMobile ? 'none' : 'flex' }}>
               <Contents />
-            </Grid2>
-            <Grid2 size={{ sm: 9, xs: 12 }}>
+            </Grid>
+            <Grid size={{ sm: 9, xs: 12 }}>
               <ProofOfExistence />
               <About />
               <Protocol />
               <Costs />
               {/* <Credits /> */}
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Container>
         <Footer />
       </PageWrapper>

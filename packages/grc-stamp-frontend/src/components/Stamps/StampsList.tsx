@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Avatar,
   Box,
-  Link,
   List,
   ListItem,
   ListItemAvatar,
@@ -14,6 +13,7 @@ import Identicon from 'identicon.js';
 import { format } from 'date-fns';
 import { blockUrl, txUrl } from '@/lib/explorerLinks';
 import { StampEntity } from '@/entities/StampEntity';
+import { NextMuiLink } from '../NextMuiLink';
 
 interface Props {
   stamps: StampEntity[];
@@ -71,21 +71,21 @@ export function StampsList({ stamps }: Props) {
                       <span>
                         Hash:
                         {' '}
-                        <Link href={`/proof/${stamp.hash}`}>
+                        <NextMuiLink href={`/proof/${stamp.hash}`}>
                           {stamp.hash}
-                        </Link>
+                        </NextMuiLink>
                       </span>
                       <br />
                       <span>
                         Tx:
                         {' '}
-                        <Link
-                          href={txUrl(stamp.tx)}
+                        <NextMuiLink
+                          href={txUrl(stamp.tx) || ''}
                           target="_blank"
                           rel="nofollow"
                         >
                           {stamp.tx}
-                        </Link>
+                        </NextMuiLink>
                       </span>
                     </>
                     )}
@@ -99,13 +99,13 @@ export function StampsList({ stamps }: Props) {
                       >
                         In block
                         {' '}
-                        <Link
-                          href={blockUrl(stamp.block)}
+                        <NextMuiLink
+                          href={blockUrl(stamp.block) || ''}
                           target="_blank"
                           rel="nofollow"
                         >
                           {stamp.block}
-                        </Link>
+                        </NextMuiLink>
                       </Typography>
                       <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
                         {` — ${format(new Date(stamp.time! * 1000), 'PPpp ')}`}

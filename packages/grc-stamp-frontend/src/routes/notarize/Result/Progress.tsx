@@ -1,9 +1,8 @@
 import { Typography } from '@mui/material';
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import Link from 'next/link';
-import MLink from '@mui/material/Link';
 import { StampEntity } from '@/entities/StampEntity';
+import { NextMuiLink } from '@/components/NextMuiLink';
 import { FileData } from '../reducer';
 
 interface Props {
@@ -33,9 +32,9 @@ export function Progress({ fileData, isUploading }: Props) {
       <span>
         All Done.
         {' '}
-        <Link passHref href={`/proof/${stamp.hash}`}>
-          <MLink>Permalink to the proof.</MLink>
-        </Link>
+        <NextMuiLink passHref href={`/proof/${stamp.hash}`}>
+          Permalink to the proof.
+        </NextMuiLink>
       </span>
     );
   } else if (!stamp.tx && !stamp.block) {
