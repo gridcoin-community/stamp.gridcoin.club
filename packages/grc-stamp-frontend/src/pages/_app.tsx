@@ -20,24 +20,21 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+  const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
-    if (localStorage !== undefined) {
-      const storedMode = localStorage.getItem('mode');
-      if (storedMode && storedMode !== mode && ['light', 'dark'].includes(storedMode)) {
-        setMode(storedMode as 'light' | 'dark');
-      }
+    const storedMode = localStorage.getItem('mode');
+    if (storedMode && ['light', 'dark'].includes(storedMode)) {
+      setMode(storedMode as 'light' | 'dark');
     }
-  }, [mode]);
+    setIsMounted(true);
+  }, []);
 
   React.useEffect(() => {
-    if (localStorage !== undefined) {
-      const storedMode = localStorage.getItem('mode');
-      if (storedMode !== mode) {
-        localStorage.setItem('mode', mode);
-      }
+    if (isMounted) {
+      localStorage.setItem('mode', mode);
     }
-  }, [mode]);
+  }, [mode, isMounted]);
 
   const colorMode = React.useMemo(
     () => ({
@@ -52,6 +49,10 @@ export default function MyApp(props: MyAppProps) {
     () => themeCreator(mode),
     [mode],
   );
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <CacheProvider value={emotionCache}>
