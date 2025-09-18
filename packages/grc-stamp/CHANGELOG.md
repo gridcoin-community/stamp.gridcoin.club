@@ -1,3 +1,10 @@
+# [grc-stamp-v1.1.7](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.6...grc-stamp-v1.1.7) (2025-09-18)
+
+
+### Bug Fixes
+
+* node debian for grc-stamp ([86afc36](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/86afc3608c67b9c0392cef9242f565c1106ec077))
+
 # [grc-stamp-v1.1.6](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.5...grc-stamp-v1.1.6) (2025-09-18)
 
 
