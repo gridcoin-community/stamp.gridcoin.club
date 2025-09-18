@@ -1,3 +1,10 @@
+# [grc-stamp-v1.1.5](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.4...grc-stamp-v1.1.5) (2025-09-18)
+
+
+### Bug Fixes
+
+* fix prisma on start ([98d60b7](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/98d60b79d086e5fb53637a323798b7e66f6f8f52))
+
 # [grc-stamp-v1.1.4](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.3...grc-stamp-v1.1.4) (2025-09-17)
 
 
