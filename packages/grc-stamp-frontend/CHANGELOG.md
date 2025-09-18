@@ -1,3 +1,11 @@
+# [grc-stamp-frontend-v1.0.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.0.0...grc-stamp-frontend-v1.0.1) (2025-09-18)
+
+
+### Bug Fixes
+
+* fix header ([1f9d5cd](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1f9d5cdc7adbe0aa44c4fa60d0fc96036744af0b))
+* remove blinky mode, fix header ([95f29e1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/95f29e1e9e65960cbbc305600b0287c5b34fdbfd))
+
 # grc-stamp-frontend-v1.0.0 (2025-09-18)
 
 
