@@ -1,3 +1,11 @@
+# [grc-stamp-frontend-v1.0.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.0.1...grc-stamp-frontend-v1.0.2) (2025-09-18)
+
+
+### Bug Fixes
+
+* technical update to next 14 and mui 7 ([9d2c86b](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/9d2c86b970d29d792261e48cd894f2e85a94d9cd))
+* technical update to nextjs 14 and mui 7 ([2efd187](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/2efd187e5707c1d7e5860392c71604128157cce4))
+
 # [grc-stamp-frontend-v1.0.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.0.0...grc-stamp-frontend-v1.0.1) (2025-09-18)
 
 
