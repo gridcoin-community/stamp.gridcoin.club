@@ -74,7 +74,7 @@ export function Header({ showLinks = true }: HeaderProps) {
               }}
               disableGutters
             >
-              {isMobile ? <NavMenuMobile /> : <NavMenuDesktop />}
+              {showLinks && (isMobile ? <NavMenuMobile /> : <NavMenuDesktop />)}
             </Toolbar>
           </Container>
         </AppBar>
