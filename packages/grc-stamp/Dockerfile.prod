@@ -33,7 +33,7 @@ COPY --from=builder /usr/src/app/prisma ./prisma
 RUN npm run prisma
 
 # Create non-root user
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup && \
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser && \
     chown -R appuser:appgroup /usr/src/app
 USER appuser
 
