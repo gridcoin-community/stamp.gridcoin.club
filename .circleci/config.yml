@@ -32,12 +32,12 @@ jobs:
           keys:
             - v1-{{ .Branch }}
           paths:
-            - /caches/app.tar
+            - /caches/grc-stamp.tar
       - run:
           name: Load Docker image layer cache
           command: |
             set +o pipefail
-            docker load -i /caches/app.tar | true
+            docker load -i /caches/grc-stamp.tar | true
       - run:
           name: Build application Docker image
           command: |
@@ -46,7 +46,7 @@ jobs:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            cd ~/app/packages/grc-stamp && docker save -o /caches/app.tar app
+            cd ~/app/packages/grc-stamp && docker save -o /caches/grc-stamp.tar app
       - deploy:
           name: Push application Docker image
           command: |
@@ -75,12 +75,12 @@ jobs:
           keys:
             - v1-{{ .Branch }}
           paths:
-            - /caches/app.tar
+            - /caches/grc-stamp-frontend.tar
       - run:
           name: Load Docker image layer cache
           command: |
             set +o pipefail
-            docker load -i /caches/app.tar | true
+            docker load -i /caches/grc-stamp-frontend.tar | true
       - run:
           name: Build application Docker image
           command: |
@@ -89,7 +89,7 @@ jobs:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            cd ~/app/packages/grc-stamp-frontend && docker save -o /caches/app.tar app
+            cd ~/app/packages/grc-stamp-frontend && docker save -o /caches/grc-stamp-frontend.tar app
       - deploy:
           name: Push application Docker image
           command: |
@@ -119,7 +119,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^grc-stamp-fronted-v.*/
+              only: /^grc-stamp-frontend-v.*/
 
   # the always-run workflow is always triggered, regardless of the pipeline parameters.
   always-run:

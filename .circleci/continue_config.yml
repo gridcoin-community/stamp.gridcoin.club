@@ -247,4 +247,6 @@ workflows:
             - grc-stamp-frontend_run_typecheck
             - grc-stamp-frontend_run_lint
 
-
+  # commit-lint:
+  #   jobs:
+  #     - lint_commit_message
