@@ -100,7 +100,7 @@ export function NavMenuMobile() {
                     <MenuButton
                       variant={isCurrent ? 'contained' : 'text'}
                       disableElevation
-                      color={isCurrent ? 'primary' : 'inherit'}
+                      color="primary"
                       onClick={handleClose}
                     >
                       {name}

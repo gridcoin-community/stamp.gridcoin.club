@@ -31,7 +31,7 @@ export function Upload({ next }: Props) {
 
   const onDrop = (acceptedFiles: File[]) => {
     setError(undefined);
-    const file = acceptedFiles.shift();
+    const file = acceptedFiles[0];
     if (file) {
       dispatch({ type: ActionType.add, payload: { file } });
       hashFiles(file)
@@ -56,9 +56,9 @@ export function Upload({ next }: Props) {
 
   const onDropRejected = (rejection: FileRejection[]) => {
     // We only accept single file
-    const errors = rejection.shift();
+    const errors = rejection[0];
     if (errors) {
-      const err = errors.errors.shift();
+      const err = errors.errors[0];
       if (err) {
         setError(err.code);
       }

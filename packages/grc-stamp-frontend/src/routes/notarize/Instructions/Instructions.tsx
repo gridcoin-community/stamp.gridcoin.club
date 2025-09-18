@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Link from 'next/link';
 import { StampIcon } from '@/icons/StampIcon';
 import { GradientLine } from '@/components/GradientLine';
+import { NextMuiLink } from '@/components/NextMuiLink';
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -50,7 +50,7 @@ function InstructionsComponent() {
           This ensures that there is no possibility of malicious
           modifications being made at a later time. To learn more, click
           {' '}
-          <Link href="/about" passHref>here</Link>
+          <NextMuiLink href="/about" passHref legacyBehavior>here</NextMuiLink>
           .
         </Text>
         <Text variant="body1" gutterBottom>

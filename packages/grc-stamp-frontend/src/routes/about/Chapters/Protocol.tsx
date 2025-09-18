@@ -1,9 +1,10 @@
 /* eslint-disable max-len */
 import {
-  Typography, Box, Paper, Link,
+  Typography, Box, Paper,
 } from '@mui/material';
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import { NextMuiLink } from '@/components/NextMuiLink';
 
 const CodePaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -59,7 +60,7 @@ function ChapterProtocol() {
           {' '}
           - The protocol version. The current version at the time of writing is 0.0.1, using
           {' '}
-          <Link rel="nofollow" href="https://semver.org/">semantic versioning</Link>
+          <NextMuiLink rel="nofollow" href="https://semver.org/">semantic versioning</NextMuiLink>
           . All future versions shall support legacy protocols.
           <br />
           <br />

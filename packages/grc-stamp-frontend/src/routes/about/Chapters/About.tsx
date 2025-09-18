@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
-import { Typography, Box, Link } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import React from 'react';
+import { NextMuiLink } from '@/components/NextMuiLink';
 
 function ChapterAbout() {
   return (
@@ -25,7 +26,7 @@ function ChapterAbout() {
           We also prioritize privacy and do not use any tracking pixels.
           The only exception is
           {' '}
-          <Link href="https://github.com/plausible/analytics" rel="nofollow">Plausible</Link>
+          <NextMuiLink href="https://github.com/plausible/analytics" rel="nofollow" color="primary">Plausible</NextMuiLink>
           {' '}
           , which is considered a privacy-friendly alternative to Google Analytics.
         </Typography>

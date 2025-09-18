@@ -2,10 +2,10 @@ import {
   LinearProgress,
   ListItem,
   ListItemText,
-  Link,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
+import { NextMuiLink } from '../NextMuiLink';
 
 const ListItemTextResponsive = styled(ListItemText)(({ theme }) => ({
   '& .MuiListItemText-secondary': {
@@ -54,13 +54,13 @@ function SecondaryText({ value, link }: Omit<Props, 'title'>) {
   }
   if (link) {
     return (
-      <Link
+      <NextMuiLink
         href={link}
         target="_blank"
         rel="nofollow"
       >
         {value}
-      </Link>
+      </NextMuiLink>
     );
   }
   return (<span>{value}</span>);
