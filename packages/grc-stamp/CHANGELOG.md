@@ -1,3 +1,10 @@
+# [grc-stamp-v1.1.8](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.7...grc-stamp-v1.1.8) (2025-09-18)
+
+
+### Bug Fixes
+
+* change user creation step for debian based images ([c4c52df](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/c4c52df22c35d5de17cc13e054f4081683e1fd42))
+
 # [grc-stamp-v1.1.7](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.6...grc-stamp-v1.1.7) (2025-09-18)
 
 
