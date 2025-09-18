@@ -2,8 +2,8 @@ import { Typography } from '@mui/material';
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { StampEntity } from '@/entities/StampEntity';
-import { FileData } from '../reducer';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { FileData } from '../reducer';
 
 interface Props {
   fileData: FileData;
