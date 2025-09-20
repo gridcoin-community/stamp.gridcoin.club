@@ -8,7 +8,7 @@ import createEmotionCache from '../createEmotionCache';
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en">
+      <Html lang="en" data-scroll-behavior="smooth">
         <Head />
         <body>
           <Main />

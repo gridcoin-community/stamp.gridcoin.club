@@ -1,18 +1,31 @@
 import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link';
-import Link, { LinkProps as NextLinkProps } from 'next/link';
+import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import { forwardRef } from 'react';
 
-type NextMuiLinkProps = NextLinkProps & Omit<MuiLinkProps, 'href'>;
+type NextMuiLinkProps = Omit<NextLinkProps, 'href'> &
+MuiLinkProps & {
+  href: NextLinkProps['href'];
+};
 
+// This component combines MUI's styling with Next.js routing
 // eslint-disable-next-line react/display-name
 export const NextMuiLink = forwardRef<HTMLAnchorElement, NextMuiLinkProps>(
   (props, ref) => {
     const {
-      as, href, replace, scroll, shallow, prefetch, locale, ...muiProps
+      href,
+      as,
+      replace,
+      scroll,
+      shallow,
+      prefetch,
+      locale,
+      ...muiProps
     } = props;
 
     return (
-      <Link
+      <MuiLink
+        component={NextLink}
+        ref={ref}
         href={href}
         as={as}
         replace={replace}
@@ -20,11 +33,8 @@ export const NextMuiLink = forwardRef<HTMLAnchorElement, NextMuiLinkProps>(
         shallow={shallow}
         prefetch={prefetch}
         locale={locale}
-        passHref
-        legacyBehavior // important for MUI Link to get proper anchor props
-      >
-        <MuiLink ref={ref} {...muiProps} />
-      </Link>
+        {...muiProps}
+      />
     );
   },
 );

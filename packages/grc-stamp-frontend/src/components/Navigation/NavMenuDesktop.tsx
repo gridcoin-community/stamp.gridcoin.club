@@ -56,7 +56,7 @@ const NavItem = styled('li')(({ theme }) => ({
       transform: 'scale(1, 1)',
     },
   },
-  '&:not(:first-child)': {
+  '&:not(:first-of-type)': {
     marginLeft: typeof gutter === 'number' ? theme.spacing(gutter) : gutter,
   },
   '&.itemActive': {
