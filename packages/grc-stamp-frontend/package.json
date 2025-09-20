@@ -1,6 +1,6 @@
 {
   "name": "grc-stamp-frontend",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
