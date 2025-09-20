@@ -50,7 +50,7 @@ function InstructionsComponent() {
           This ensures that there is no possibility of malicious
           modifications being made at a later time. To learn more, click
           {' '}
-          <NextMuiLink href="/about" passHref legacyBehavior>here</NextMuiLink>
+          <NextMuiLink href="/about" passHref>here</NextMuiLink>
           .
         </Text>
         <Text variant="body1" gutterBottom>
