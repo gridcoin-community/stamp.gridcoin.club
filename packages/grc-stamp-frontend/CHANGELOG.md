@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.1.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.1.0...grc-stamp-frontend-v1.1.1) (2025-09-21)
+
+
+### Bug Fixes
+
+* add debug info ([6d46a2d](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/6d46a2df79b5b0927300ffc6765bca04bf703437))
+
 # [grc-stamp-frontend-v1.1.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.0.3...grc-stamp-frontend-v1.1.0) (2025-09-21)
 
 
