@@ -31,7 +31,7 @@ describe('StampService', () => {
 
       expect(rpc.setTXfee).not.toHaveBeenCalled();
       expect(rpc.burn).not.toHaveBeenCalled();
-      expect(log.info).toHaveBeenCalledWith('Nothing to publish');
+      expect(log.info).toHaveBeenCalledWith('[StampService] Nothing to publish');
     });
 
     it('should publish stamps and update database when stamps are ready', async () => {

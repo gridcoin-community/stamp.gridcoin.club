@@ -1,4 +1,3 @@
-version: '3'
 services:
   # Mysql storage for the admin interface (mainly for statistics and users)
   test_grc_mysql:

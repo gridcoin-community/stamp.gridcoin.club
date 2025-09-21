@@ -7,12 +7,18 @@ import { EntityType } from '../../src/presenters/types';
 
 const ADDRESS = 'S74mjeRTQbpPzDoibmnMz23hThXCxRUMhn';
 const AMOUNT = '10.221';
+const BLOCK = 123456;
 
 jest.mock('../../src/lib/gridcoin', () => ({
   connect: () => Promise.resolve(true),
   rpc: {
     getAccountAddress: jest.fn(() => Promise.resolve(ADDRESS)),
     getBalance: jest.fn(() => Promise.resolve(AMOUNT)),
+  },
+}));
+jest.mock('../../src/lib/redis', () => ({
+  redis: {
+    get: jest.fn(() => Promise.resolve(BLOCK)),
   },
 }));
 
@@ -33,6 +39,7 @@ describe('Wallet endpoints', () => {
     expect(data.type).to.be.equal(EntityType.WALLET);
     expect(attributes.address).to.be.equal(ADDRESS);
     expect(attributes.balance).to.be.equal(AMOUNT);
+    expect(attributes.block).to.be.equal(BLOCK);
   });
   it('GET /wallet failure', async () => {
     rpc.getBalance = jest.fn(() => Promise.reject(new Error('a')));
