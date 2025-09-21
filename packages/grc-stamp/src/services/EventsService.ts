@@ -9,8 +9,17 @@ interface Client {
   res: Response
 }
 
-export class EventsServiceClass {
-  public constructor(
+export class EventsService {
+  public static instance;
+
+  public static getInstance(): EventsService {
+    if (!this.instance) {
+      this.instance = new this();
+    }
+    return this.instance;
+  }
+
+  private constructor(
     private clients: Client[] = [],
   ) {
     getEmitter().on('processBlock', (data: ProcessBlockEvent) => {
@@ -22,6 +31,16 @@ export class EventsServiceClass {
     getEmitter().on('transactionFound', (data: Events) => {
       this.broadcast(data);
     });
+    setInterval(() => {
+      this.ping();
+    }, 15000);
+  }
+
+  public ping(): void {
+    if (this.clients && this.clients.length > 0) {
+      log.debug('Send keep-alive to all clients');
+      this.clients.forEach((client) => client.res.write(': keep-alive\n\n'));
+    }
   }
 
   public addClient(res: Response): string {
@@ -32,7 +51,8 @@ export class EventsServiceClass {
   }
 
   public removeClient(id: string): void {
-    this.clients = this.clients.filter((client) => client.id !== id);
+    this.clients = this
+      .clients.filter((client) => client.id !== id);
   }
 
   public broadcast(data: Events): void {
@@ -41,5 +61,3 @@ export class EventsServiceClass {
     this.clients.forEach((client) => client.res.write(payload));
   }
 }
-
-export const EventsService = new EventsServiceClass();

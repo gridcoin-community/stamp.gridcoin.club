@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { Controller } from './BaseController';
-import { EventsService, EventsServiceClass } from '../services/EventsService';
+import { EventsService } from '../services/EventsService';
 import { log } from '../lib/log';
 
 export class EventsController extends Controller {
-  private service: EventsServiceClass;
+  private service: EventsService;
 
   public constructor(
     req: Request,
@@ -12,7 +12,7 @@ export class EventsController extends Controller {
   ) {
     super(req, res);
     this.init();
-    this.service = EventsService;
+    this.service = EventsService.getInstance();
   }
 
   public async subscribe(): Promise<void> {
