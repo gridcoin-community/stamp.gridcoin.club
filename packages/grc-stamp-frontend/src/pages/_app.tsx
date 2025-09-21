@@ -34,12 +34,16 @@ export default function MyApp(props: MyAppProps) {
   React.useEffect(() => {
     if (isMounted) {
       localStorage.setItem('mode', mode);
-      if (typeof window !== 'undefined') {
-        console.log('Connecting to SSE...');
-        sseManager.connect(`${process.env.NEXT_PUBLIC_API_URL}/events`);
-      }
     }
   }, [mode, isMounted]);
+
+  React.useEffect(() => {
+    if (isMounted && typeof window !== 'undefined') {
+      console.log('Connecting to SSE...');
+      sseManager.connect(`${process.env.NEXT_PUBLIC_API_URL}/events`);
+    }
+    return () => sseManager.disconnect();
+  }, [isMounted]);
 
   const colorMode = React.useMemo(
     () => ({

@@ -27,13 +27,13 @@ class SSEManager {
     this.eventSource.onmessage = (e) => {
       try {
         const message: BaseEvent = JSON.parse(e.data);
-        // console.log('SSE message received:', message);
+        console.log('SSE message received:', message);
         const { type, data } = message;
         if (type && this.listeners[type]) {
           this.listeners[type].forEach((cb) => cb(data));
         }
       } catch (err) {
-        // console.error('Failed to parse SSE message', e.data);
+        console.error('Failed to parse SSE message', e.data);
       }
     };
 
