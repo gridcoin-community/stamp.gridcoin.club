@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.1.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.0.3...grc-stamp-frontend-v1.1.0) (2025-09-21)
+
+
+### Features
+
+* introduce SSE ([cd81b81](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/cd81b81c6eb8e83f5e588ef0e62373d4084a2cc7))
+
 # [grc-stamp-frontend-v1.0.3](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.0.2...grc-stamp-frontend-v1.0.3) (2025-09-20)
 
 
