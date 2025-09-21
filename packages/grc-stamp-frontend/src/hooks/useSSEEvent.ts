@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import sseManager from '../lib/sseManager';
 import { EventType } from '@/types';
+import sseManager from '../lib/sseManager';
 
 export const useSSEEvent = (type: EventType, callback: (data: any) => void) => {
   useEffect(() => {
