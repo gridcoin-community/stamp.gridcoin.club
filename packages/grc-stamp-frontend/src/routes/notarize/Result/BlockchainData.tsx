@@ -62,7 +62,7 @@ export function BlockchainData({ isUploading }: Props) {
     if (isUploading && !stamp.isFinished()) {
       idRef.current = setInterval(async () => {
         getInfo();
-      }, 90_000);
+      }, 30_000);
     }
     return () => {
       clearInterval(idRef.current as NodeJS.Timeout);
