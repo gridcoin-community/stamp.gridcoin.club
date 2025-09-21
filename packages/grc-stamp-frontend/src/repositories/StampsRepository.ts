@@ -32,7 +32,7 @@ export class StampRepository {
 
   /**
    * Assumption: We will always get the single record from the server side
-   * Even if somebody will craf the transaction manually,
+   * Even if somebody will craft the transaction manually,
    * server must return the very first record and ignore the rest
    */
   public async findStampByHash(hash: string, isServer = false): Promise<StampEntity | null> {

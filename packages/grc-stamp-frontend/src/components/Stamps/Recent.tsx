@@ -3,6 +3,7 @@ import { Typography, Box, LinearProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { StampEntity } from '@/entities/StampEntity';
 import { StampRepository } from '@/repositories/StampsRepository';
+import { useSSEEvent } from '@/hooks';
 import { StampsList } from './StampsList';
 
 const Wrapper = styled(Box)((() => ({
@@ -34,6 +35,11 @@ export function RecentStamps() {
   useEffect(() => {
     fetchStamps();
   }, []);
+
+  useSSEEvent('transactionFound', () => {
+    // just refresh the list if a new stamp transaction in the block is found
+    fetchStamps();
+  });
 
   let stampsList;
   switch (stamps) {

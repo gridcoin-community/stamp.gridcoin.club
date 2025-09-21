@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import Script from 'next/script';
+import sseManager from '@/lib/sseManager';
 import { themeCreator } from '../theme';
 import createEmotionCache from '../createEmotionCache';
 import { ColorModeContext } from '../context';
@@ -33,6 +34,10 @@ export default function MyApp(props: MyAppProps) {
   React.useEffect(() => {
     if (isMounted) {
       localStorage.setItem('mode', mode);
+      if (typeof window !== 'undefined') {
+        console.log('Connecting to SSE...');
+        sseManager.connect(`${process.env.NEXT_PUBLIC_API_URL}/events`);
+      }
     }
   }, [mode, isMounted]);
 

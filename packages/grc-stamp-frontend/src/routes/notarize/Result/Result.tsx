@@ -56,9 +56,11 @@ export function Result({ back, next, activeStep }: Props) {
   const time = fileData.blockchainData?.time;
   const finished = transaction && block && time;
 
-  if (finished && activeStep < Steps.Upload) {
-    next();
-  }
+  React.useEffect(() => {
+    if (finished && activeStep < Steps.Upload) {
+      next();
+    }
+  }, [finished, activeStep, next]);
 
   const onUpload = async () => {
     try {
