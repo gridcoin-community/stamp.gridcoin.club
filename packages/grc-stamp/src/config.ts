@@ -19,6 +19,7 @@ interface Config {
   PORT: number;
   BLOCK_PREFIX: string;
   MINIMUM_WALLET_AMOUNT: number;
+  REDIS_SCRAPER_KEY: string;
 }
 
 /**
@@ -73,6 +74,7 @@ nconf
     PORT: packageJson.port,
     BLOCK_PREFIX: 'f055aa',
     MINIMUM_WALLET_AMOUNT: 1,
+    REDIS_SCRAPER_KEY: 'grc-stamp:processedBlock',
   });
 
 // Check required settings
@@ -87,6 +89,7 @@ checkConfig([
   'PORT',
   'BLOCK_PREFIX',
   'MINIMUM_WALLET_AMOUNT',
+  'REDIS_SCRAPER_KEY',
 ]);
 
 export const config = Object.freeze(nconf.get()) as Config;

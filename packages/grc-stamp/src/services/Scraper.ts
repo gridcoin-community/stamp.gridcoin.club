@@ -5,8 +5,8 @@ import { rpc } from '../lib/gridcoin';
 import { log } from '../lib/log';
 import { redis as redisConn } from '../lib/redis';
 import { Stamp } from '../models/Stamp';
-
-const REDIS_SCRAPER_KEY = 'grc-stamp:processedBlock';
+import { getEmitter } from '../lib/emitter';
+import { ProcessBlockEvent, TransactionFoundEvent } from '../types';
 
 export class Scraper {
   private currentBlock: number;
@@ -18,14 +18,15 @@ export class Scraper {
   ) {}
 
   private async readBlockInfo() {
-    this.currentBlock = Number(await this.redis.get(REDIS_SCRAPER_KEY))
+    this.currentBlock = Number(await this.redis.get(config.REDIS_SCRAPER_KEY))
       || Number(config.START_BLOCK);
   }
 
   public async scrape(): Promise<void> {
     await this.readBlockInfo();
 
-    log.info('Starting the scraper');
+    log.info('[Scraper] Starting the scraper');
+
     // Get current block number
     const info = await this.grcRpc.getMiningInfo();
     const { blocks } = info;
@@ -40,7 +41,14 @@ export class Scraper {
 
   private async getNextBlock(): Promise<void> {
     await this.readBlockInfo();
-    log.debug(`Processing block #${this.currentBlock + 1}`);
+    log.debug(`[Scraper] Processing block #${this.currentBlock + 1}`);
+    const processBlockEvent: ProcessBlockEvent = {
+      type: 'processBlock',
+      data: {
+        block: this.currentBlock + 1,
+      },
+    };
+    getEmitter().emit('processBlock', processBlockEvent);
     try {
       const block = await this.grcRpc.getBlockByNumber(
         this.currentBlock + 1,
@@ -60,7 +68,7 @@ export class Scraper {
           const hex = Buffer.from(hexString);
           const re = new RegExp(`${OP_RETURN} ${this.blockPrefix}`);
           if (re.test(asm)) {
-            log.info('We have found transaction');
+            log.info('[Scraper] We have found transaction');
             // console.log(hex.toString('utf8'));
             // console.log(hexString);
             // console.log(JSON.stringify(block, null, 2));
@@ -86,6 +94,16 @@ export class Scraper {
                 stamp.time = block.time;
                 stamp.tx = TXID;
                 stamp.type = StampsType.sha256;
+
+                // Send transaction found event
+                const transactionFoundEvent: TransactionFoundEvent = {
+                  type: 'transactionFound',
+                  data: {
+                    hash,
+                  },
+                };
+                getEmitter().emit('transactionFound', transactionFoundEvent);
+
                 return stamp.saveOrUpdate();
               }
               return Promise.resolve();
@@ -97,7 +115,7 @@ export class Scraper {
       });
       // save all stamps
       // we have parsed the block
-      await this.redis.set(REDIS_SCRAPER_KEY, this.currentBlock + 1);
+      await this.redis.set(config.REDIS_SCRAPER_KEY, this.currentBlock + 1);
     } catch (e) {
       log.error(e);
     }

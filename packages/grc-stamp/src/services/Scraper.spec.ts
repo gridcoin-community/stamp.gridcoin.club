@@ -9,6 +9,7 @@ jest.mock('../config', () => ({
   config: {
     START_BLOCK: 1000,
     BLOCK_GROUPS: 2,
+    REDIS_SCRAPER_KEY: 'grc-stamp:processedBlock',
   },
 }));
 

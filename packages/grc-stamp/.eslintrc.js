@@ -36,6 +36,13 @@ module.exports = {
       files: ['**/*.ts', '**/*.tsx'],
     },
     {
+      files: ['*.spec.ts', '*.test.ts'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+        'no-unused-expressions': 'off',
+      },
+    },
+    {
       files: '*.spec.js',
       rules: {
         'no-unused-expressions': 'off',
