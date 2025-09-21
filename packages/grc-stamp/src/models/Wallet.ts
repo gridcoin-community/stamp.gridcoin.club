@@ -4,4 +4,6 @@ export class Wallet {
   public balance: number;
 
   public address: Address;
+
+  public block: number;
 }

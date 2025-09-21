@@ -2,16 +2,16 @@ import HttpStatus from 'http-status-codes';
 import { Request, Response } from 'express';
 import { BalancePresenter } from '../presenters/balance.presenter';
 import { WalletPresenter } from '../presenters/wallet.presenter';
-import { WalletRepository } from '../repositories/WalletRepository';
 import { Controller } from './BaseController';
 import { ErrorModel } from '../models/Error';
 import { log } from '../lib/log';
+import { WalletService } from '../services/WalletService';
 
 export class WalletController extends Controller {
   constructor(
     req: Request,
     res: Response,
-    private repository = WalletRepository,
+    private service = WalletService,
     private balancePresenter = BalancePresenter,
     private walletPresenter = WalletPresenter,
   ) {
@@ -21,7 +21,7 @@ export class WalletController extends Controller {
 
   public async getWalletInfo(): Promise<void> {
     try {
-      const wallet = await this.repository.getWalletInfo();
+      const wallet = await this.service.getWalletInfo();
       this.res
         .status(HttpStatus.OK)
         .send(this.render(wallet, this.walletPresenter));
@@ -40,7 +40,7 @@ export class WalletController extends Controller {
 
   public async getBalance(): Promise<void> {
     try {
-      const balance = await this.repository.getBalance();
+      const balance = await this.service.getBalance();
       this.res
         .status(HttpStatus.OK)
         .send(this.render(balance, this.balancePresenter));

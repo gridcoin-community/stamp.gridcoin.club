@@ -4,6 +4,7 @@ import { log } from './lib/log';
 import { Scraper } from './services/Scraper';
 import { StampService } from './services/StampService';
 import './api';
+import './services/EventsService';
 
 async function initConnections(): Promise<void> {
   while (!await connect()) {

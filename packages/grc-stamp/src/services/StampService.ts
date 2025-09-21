@@ -4,6 +4,8 @@ import {
 } from '../constants';
 import { rpc } from '../lib/gridcoin';
 import { log } from '../lib/log';
+import { StampSubmittedEvent } from '../types';
+import { getEmitter } from '../lib/emitter';
 
 export class StampService {
   constructor(private prisma = new PrismaClient()) {}
@@ -25,7 +27,7 @@ export class StampService {
     const hashes = readyStamps.map((stamp) => stamp.hash);
 
     if (!hashes.length) {
-      log.info('Nothing to publish');
+      log.info('[StampService] Nothing to publish');
       return;
     }
 
@@ -36,7 +38,7 @@ export class StampService {
 
     await rpc.setTXfee(MIN_FEE);
     const tx = await rpc.burn(MINIMUM, string);
-    log.debug({ tx });
+    log.debug(`[StampService] Publishing ${JSON.stringify(tx)}`);
     if (tx) {
       await this.prisma.stamps.updateMany({
         where: {
@@ -47,6 +49,19 @@ export class StampService {
         },
       });
     }
+
+    // Send events
+    hashes.forEach((hash) => {
+      log.info(`[StampService] Stamp submitted: ${hash}/${tx}`);
+      const stampSubmittedEvent: StampSubmittedEvent = {
+        type: 'stampSubmitted',
+        data: {
+          hash,
+          tx,
+        },
+      };
+      getEmitter().emit('stampSubmitted', stampSubmittedEvent);
+    });
   }
 }
 

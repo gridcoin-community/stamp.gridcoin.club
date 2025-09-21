@@ -8,6 +8,7 @@ import { statusRouter } from './routes/status';
 import { stampsRouter } from './routes/stamps';
 import { walletRouter } from './routes/wallet';
 import { hashesRouter } from './routes/hashes';
+import { eventsRouter } from './routes/events';
 import packageJson from '../package.json';
 import { log } from './lib/log';
 
@@ -57,6 +58,7 @@ app.use('/status', statusRouter);
 app.use('/stamps', stampsRouter);
 app.use('/wallet', walletRouter);
 app.use('/hashes', hashesRouter);
+app.use('/events', eventsRouter);
 
 // Not found error handling
 app.use((req, res) => {

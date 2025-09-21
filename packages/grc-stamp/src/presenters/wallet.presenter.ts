@@ -15,6 +15,7 @@ export class WalletPresenter extends Presenter implements PresenterInterface {
     return {
       address: instanse.address,
       balance: instanse.balance,
+      block: instanse.block,
     };
   }
 
