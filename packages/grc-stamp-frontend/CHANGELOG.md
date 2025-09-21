@@ -1,3 +1,11 @@
+# [grc-stamp-frontend-v1.1.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.1.1...grc-stamp-frontend-v1.1.2) (2025-09-21)
+
+
+### Bug Fixes
+
+* reduce intervals to 30 seconds in case if dumb client apps won't be able to process sse ([aef9287](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/aef9287b09dfbc77a61119f8dc64c953df4b1fcc))
+* timeout to 30 seconds for dumb client apps with no sse ([f84966a](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f84966a93ee875a8fe2510aabdfd6fc0bc022cef))
+
 # [grc-stamp-frontend-v1.1.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.1.0...grc-stamp-frontend-v1.1.1) (2025-09-21)
 
 
