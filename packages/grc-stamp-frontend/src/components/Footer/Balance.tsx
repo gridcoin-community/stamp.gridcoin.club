@@ -1,13 +1,15 @@
 import { Box, Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useInterval } from '@/hooks';
+import { useInterval, useSSEEvent } from '@/hooks';
 import { WalletEntity } from '@/entities/WalletEntity';
 import { WalletRepository } from '@/repositories/WalletRepository';
+import { ProcessBlockEvent } from '@/types';
 
 const walletRepository = new WalletRepository();
 
 export function BalanceComponent() {
   const [walletData, setWalletData] = useState<WalletEntity>();
+  const [blockHeight, setBlockHeight] = useState<number>(0);
 
   const fetchWalletInfo = async () => {
     const walletEntity = await walletRepository.getWalletData();
@@ -23,6 +25,10 @@ export function BalanceComponent() {
   useInterval(() => {
     fetchWalletInfo();
   }, 90000);
+
+  useSSEEvent('processBlock', (event: ProcessBlockEvent['data']) => {
+    setBlockHeight(event.block);
+  });
 
   return (
     <>
@@ -40,6 +46,13 @@ export function BalanceComponent() {
           Address:
           {' '}
           {process.env.NEXT_PUBLIC_WALLET_ADDRESS}
+        </Typography>
+      </Box>
+      <Box>
+        <Typography variant="caption">
+          Current block height:
+          {' '}
+          {blockHeight || walletData?.block || 'N/A'}
         </Typography>
       </Box>
     </>
