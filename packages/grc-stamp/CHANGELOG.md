@@ -1,3 +1,10 @@
+# [grc-stamp-v1.2.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.2.0...grc-stamp-v1.2.1) (2025-09-21)
+
+
+### Bug Fixes
+
+* send keep alive to all clients ([964b92a](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/964b92a8687b544cb41f29b5d9345b83abe179b3))
+
 # [grc-stamp-v1.2.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.1.8...grc-stamp-v1.2.0) (2025-09-21)
 
 
