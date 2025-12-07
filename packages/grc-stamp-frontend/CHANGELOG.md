@@ -1,3 +1,11 @@
+# [grc-stamp-frontend-v1.1.3](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.1.2...grc-stamp-frontend-v1.1.3) (2025-12-07)
+
+
+### Bug Fixes
+
+* apply nextjs patch ([5173105](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/5173105d0893bef40bdd36231dc6a5fc58df7b81))
+* make the project server side again ([ce82624](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/ce8262452d9d79de6566938f446c248836dcd2d4))
+
 # [grc-stamp-frontend-v1.1.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.1.1...grc-stamp-frontend-v1.1.2) (2025-09-21)
 
 
