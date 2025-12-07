@@ -7,8 +7,8 @@ import Document, {
 import createEmotionServer from '@emotion/server/create-instance';
 // import { cookies } from 'next/headers';
 import { parseCookie } from 'cookie';
-import createEmotionCache from '../createEmotionCache';
 import { DEFAULT_THEME, ThemeMode } from '@/lib/mode';
+import createEmotionCache from '../createEmotionCache';
 // import { DEFAULT_THEME, ThemeMode } from '@/lib/mode';
 
 export default class MyDocument extends Document {
