@@ -29,11 +29,13 @@ interface Props {
 
 export function Page({ stamp }: Props) {
   const title = `Gridcoin blockchain stamping :: Proof of ${stamp.hash}`;
+  const description = `This document's digest has been permanently certified in the Gridcoin blockchain with hash ${stamp.hash}.`;
   return (
     <>
       <Head>
         <title>{title}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="description" content={description} />
       </Head>
       <PageWrapper>
         <Header />

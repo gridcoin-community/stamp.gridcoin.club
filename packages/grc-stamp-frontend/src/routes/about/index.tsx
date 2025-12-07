@@ -28,6 +28,7 @@ export function Page() {
       <Head>
         <title>Gridcoin blockchain stamping :: About</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="description" content="Learn about Gridcoin blockchain stamping, how it works, the protocol behind it, and the costs involved in certifying your documents on the Gridcoin blockchain." />
       </Head>
       <PageWrapper>
         <Header />

@@ -54,6 +54,7 @@ export function Page() {
       <Head>
         <title>Gridcoin blockchain stamping</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="description" content="Permanently certify your documents on the Gridcoin blockchain with our easy-to-use stamping service." />
       </Head>
       <PageWrapper>
         <Header />
