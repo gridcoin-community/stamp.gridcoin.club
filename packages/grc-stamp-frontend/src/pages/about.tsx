@@ -1,7 +1,9 @@
+import { GetServerSidePropsContext } from 'next';
+import { withThemeDataServerSide } from '@/lib/modeDataServer';
 import { Page } from '@/routes/about';
 import { MaintenanceWrapper } from '@/routes/maintenance/MaintananceWrapper';
 
-function AboutPage() {
+export default function AboutPage() {
   return (
     <MaintenanceWrapper>
       <Page />
@@ -9,4 +11,9 @@ function AboutPage() {
   );
 }
 
-export default AboutPage;
+export const getServerSideProps = withThemeDataServerSide(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async (_context: GetServerSidePropsContext) => ({
+    props: {},
+  }),
+);
