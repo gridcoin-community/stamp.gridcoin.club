@@ -24,7 +24,7 @@
     "date-fns": "^2.30.0",
     "identicon.js": "^2.3.3",
     "js-sha256": "^0.10.1",
-    "next": "^15.5.3",
+    "next": "15.5.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.2.3",
