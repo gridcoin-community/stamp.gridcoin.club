@@ -1,14 +1,25 @@
+'use server';
+
 import * as React from 'react';
 import Document, {
   Html, Head, Main, NextScript,
 } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
+// import { cookies } from 'next/headers';
+import { parseCookie } from 'cookie';
 import createEmotionCache from '../createEmotionCache';
+import { DEFAULT_THEME, ThemeMode } from '@/lib/mode';
+// import { DEFAULT_THEME, ThemeMode } from '@/lib/mode';
 
 export default class MyDocument extends Document {
   render() {
+    const { theme } = this.props as any;
     return (
-      <Html lang="en" data-scroll-behavior="smooth">
+      <Html
+        lang="en"
+        data-theme={theme}
+        data-scroll-behavior="smooth"
+      >
         <Head />
         <body>
           <Main />
@@ -70,8 +81,31 @@ MyDocument.getInitialProps = async (ctx) => {
     />
   ));
 
+  const { req } = ctx;
+  let theme: ThemeMode = DEFAULT_THEME;
+  if (req) {
+    const cookies = req.headers.cookie ? parseCookie(req.headers.cookie) : {};
+    const themeCookie = cookies.theme;
+    theme = themeCookie === 'light' || themeCookie === 'dark'
+      ? (themeCookie as ThemeMode)
+      : DEFAULT_THEME;
+  }
+
+  // const cookieStore = await cookies();
+  // const theme: ThemeMode = cookieStore.get('theme') || DEFAULT_THEME;
+  // if (1) {
+  //   console.log(req);
+  // }
+  // if (req?.headers?.cookie) {
+  //   console.log(req.headers.cookie);
+  //   const match = req.headers.cookie.match(/theme=(dark|light)/);
+  //   console.log(match);
+  //   if (match) theme = match[1] as ThemeMode;
+  // }
+
   return {
     ...initialProps,
+    theme,
     // Styles fragment is rendered after the app and page rendering finish.
     styles: [...React.Children.toArray(initialProps.styles), ...emotionStyleTags],
   };

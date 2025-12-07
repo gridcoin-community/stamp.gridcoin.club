@@ -21,6 +21,7 @@
     "@mui/material": "^7.3.2",
     "axios": "^1.6.8",
     "clsx": "^2.0.0",
+    "cookie": "^1.1.1",
     "date-fns": "^2.30.0",
     "identicon.js": "^2.3.3",
     "js-sha256": "^0.10.1",
