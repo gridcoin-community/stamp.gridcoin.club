@@ -10,7 +10,7 @@
     "eslint-plugin-import": "^2.29.1",
     "typescript": "^5.0.4",
     "vitest": "1.3.0",
-    "wrangler": "^3.0.0"
+    "wrangler": "^3.114.17"
   },
   "private": true,
   "scripts": {
