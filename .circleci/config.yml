@@ -11,8 +11,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fetch master branch for Nx affected comparison
-          command: git fetch origin master:refs/remotes/origin/master --depth=1 2>/dev/null || true
+          name: Fetch git history for Nx affected comparison
+          command: |
+            git fetch --deepen=1 origin master:refs/remotes/origin/master || \
+              git fetch origin master:refs/remotes/origin/master --depth=2
       - restore_cache:
           keys:
             - v2-root-deps-{{ checksum "package-lock.json" }}
@@ -56,7 +58,7 @@ jobs:
             fi
 
             echo "Comparing against base: $BASE"
-            AFFECTED=$(npx nx show projects --affected --base=$BASE --head=HEAD 2>/dev/null || echo "")
+            AFFECTED=$(npx nx show projects --affected --base=$BASE --head=HEAD)
             echo "Affected projects: $AFFECTED"
 
             mkdir -p ~/app/.affected
