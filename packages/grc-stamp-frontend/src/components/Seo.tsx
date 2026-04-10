@@ -24,6 +24,7 @@ export function Seo({
   noindex,
 }: SeoProps) {
   const canonicalUrl = `${SITE_URL}${path}`;
+  const ogImageUrl = `${SITE_URL}/og-image.png`;
 
   return (
     <Head>
@@ -35,12 +36,14 @@ export function Seo({
       <meta key="og:description" property="og:description" content={description} />
       <meta key="og:type" property="og:type" content={ogType} />
       <meta key="og:url" property="og:url" content={canonicalUrl} />
+      <meta key="og:image" property="og:image" content={ogImageUrl} />
       <meta key="og:site_name" property="og:site_name" content={SITE_NAME} />
       <meta key="og:locale" property="og:locale" content="en_US" />
 
-      <meta key="twitter:card" name="twitter:card" content="summary" />
+      <meta key="twitter:card" name="twitter:card" content="summary_large_image" />
       <meta key="twitter:title" name="twitter:title" content={title} />
       <meta key="twitter:description" name="twitter:description" content={description} />
+      <meta key="twitter:image" name="twitter:image" content={ogImageUrl} />
 
       {noindex && <meta key="robots" name="robots" content="noindex, nofollow" />}
       {jsonLd && (
