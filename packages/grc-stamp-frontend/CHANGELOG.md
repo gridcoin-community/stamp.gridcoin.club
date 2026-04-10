@@ -1,3 +1,11 @@
+# [grc-stamp-frontend-v1.2.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.1.3...grc-stamp-frontend-v1.2.0) (2026-04-10)
+
+
+### Features
+
+* aadd og_image ([c25cd60](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/c25cd603eb182085df9d9128c552a3cab61ca6d7))
+* some seo related improvements for the frontend part ([43ab446](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/43ab446484a907d5353742c2254a614e583cbb6f))
+
 # [grc-stamp-frontend-v1.1.3](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.1.2...grc-stamp-frontend-v1.1.3) (2025-12-07)
 
 
