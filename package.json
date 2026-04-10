@@ -10,7 +10,7 @@
     "syncpack": "^13.0.4"
   },
   "node": ">=22.0.0",
-  "packageManager": "npm@8.3.0",
+  "packageManager": "npm@10.9.0",
   "private": true,
   "scripts": {
     "dev:typecheck": "nx run-many --target=typecheck --all",
