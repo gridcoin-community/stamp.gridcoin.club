@@ -11,10 +11,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fetch git history for Nx affected comparison
+          name: Fetch full history and tags for Nx affected comparison
           command: |
-            git fetch --deepen=1 origin master:refs/remotes/origin/master || \
-              git fetch origin master:refs/remotes/origin/master --depth=2
+            # Unshallow so `git describe` can walk back to release tags.
+            # Falls back to a plain fetch if the clone is already complete.
+            git fetch --tags --unshallow origin master:refs/remotes/origin/master 2>/dev/null || \
+              git fetch --tags origin master:refs/remotes/origin/master
       - restore_cache:
           keys:
             - v2-root-deps-{{ checksum "package-lock.json" }}
@@ -51,22 +53,40 @@ jobs:
       - run:
           name: Detect affected projects
           command: |
-            if [ "$CIRCLE_BRANCH" = "master" ]; then
-              BASE="HEAD~1"
-            else
-              BASE="origin/master"
-            fi
-
-            echo "Comparing against base: $BASE"
-            AFFECTED=$(npx nx show projects --affected --base=$BASE --head=HEAD)
-            echo "Affected projects: $AFFECTED"
-
             mkdir -p ~/app/.affected
-            echo "$AFFECTED" | grep -qw "grc-stamp" && echo "true" > ~/app/.affected/grc-stamp || echo "false" > ~/app/.affected/grc-stamp
-            echo "$AFFECTED" | grep -qw "grc-stamp-frontend" && echo "true" > ~/app/.affected/grc-stamp-frontend || echo "false" > ~/app/.affected/grc-stamp-frontend
 
-            echo "grc-stamp affected: $(cat ~/app/.affected/grc-stamp)"
-            echo "grc-stamp-frontend affected: $(cat ~/app/.affected/grc-stamp-frontend)"
+            # On master, compare each project against its own last release tag
+            # so that changes accumulated over failed/skipped prior builds still
+            # trigger a release. On other branches, compare against origin/master.
+            check_affected() {
+              local project="$1"
+              local base
+
+              if [ "$CIRCLE_BRANCH" = "master" ]; then
+                base=$(git describe --tags --abbrev=0 --match "${project}-v*" 2>/dev/null || true)
+              fi
+              if [ -z "$base" ]; then
+                if [ "$CIRCLE_BRANCH" = "master" ]; then
+                  base="HEAD~1"
+                else
+                  base="origin/master"
+                fi
+              fi
+
+              echo "Checking $project against base: $base"
+              local affected
+              affected=$(npx nx show projects --affected --base="$base" --head=HEAD)
+              echo "  affected projects in range: $affected"
+              if echo "$affected" | grep -qw "$project"; then
+                echo "true" > ~/app/.affected/"$project"
+              else
+                echo "false" > ~/app/.affected/"$project"
+              fi
+              echo "  $project affected: $(cat ~/app/.affected/"$project")"
+            }
+
+            check_affected grc-stamp
+            check_affected grc-stamp-frontend
       - persist_to_workspace:
           root: ~/app
           paths: .
