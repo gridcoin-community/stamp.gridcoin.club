@@ -155,3 +155,7 @@ Please open an issue before submitting a pull request for significant changes.
 ## License
 
 MIT
+
+---
+
+<p align="center">Made with ❤️ by @gridcat</p>
