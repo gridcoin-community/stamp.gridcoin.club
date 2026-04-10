@@ -5,7 +5,7 @@ import React from 'react';
 function ChapterProofOfExistence() {
   return (
     <Box pb={3}>
-      <Typography variant="h4" component="h3" pb={2} id="proof-of-existence">
+      <Typography variant="h4" component="h2" pb={2} id="proof-of-existence">
         Proof of Existence
       </Typography>
       <Box component="article">

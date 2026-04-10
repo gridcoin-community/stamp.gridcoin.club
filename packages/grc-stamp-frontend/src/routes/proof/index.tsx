@@ -1,5 +1,4 @@
 import React from 'react';
-import Head from 'next/head';
 import {
   Container,
   Box,
@@ -9,6 +8,7 @@ import {
 } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { styled } from '@mui/material/styles';
+import { Seo, SITE_NAME } from '@/components/Seo';
 import { StampEntity } from '@/entities/StampEntity';
 import { Info } from '@/components/Info/Info';
 import { PageWrapper } from '@/components/PageWrapper';
@@ -28,18 +28,30 @@ interface Props {
 }
 
 export function Page({ stamp }: Props) {
-  const title = `Gridcoin blockchain stamping :: Proof of ${stamp.hash}`;
+  const title = `${SITE_NAME} :: Proof of ${stamp.hash}`;
   const description = `This document's digest has been permanently certified in the Gridcoin blockchain with hash ${stamp.hash}.`;
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="description" content={description} />
-      </Head>
+      <Seo
+        title={title}
+        description={description}
+        path={`/proof/${stamp.hash}`}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'DigitalDocument',
+          name: `Blockchain Proof of ${stamp.hash}`,
+          description: 'Document digest permanently certified on Gridcoin blockchain.',
+          identifier: stamp.hash,
+          ...(stamp.time ? { dateCreated: new Date(stamp.time * 1000).toISOString() } : {}),
+        }}
+      />
       <PageWrapper>
         <Header />
         <Container maxWidth="md" sx={{ flexGrow: 1 }}>
+          <Typography component="h1" variant="h5" textAlign="center" gutterBottom>
+            {'Proof of '}
+            {stamp.hash}
+          </Typography>
           <Message gutterBottom variant="body1">
             This document&apos;s digest was successfully embedded in the Gridcoin blockchain.
             <br />

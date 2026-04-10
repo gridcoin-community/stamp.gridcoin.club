@@ -48,6 +48,7 @@ export default function MyApp(props: MyAppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="theme-color" content={theme.palette.primary.main} />
         <meta httpEquiv="onion-location" content="http://u4embjw2uzwpdubgm72ywbmixte4kqgwurc4r4rp6elhlokutdfsy4id.onion" />
       </Head>

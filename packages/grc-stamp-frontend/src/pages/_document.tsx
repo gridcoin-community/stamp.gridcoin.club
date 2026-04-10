@@ -20,7 +20,11 @@ export default class MyDocument extends Document {
         data-theme={theme}
         data-scroll-behavior="smooth"
       >
-        <Head />
+        <Head>
+          <link rel="dns-prefetch" href="https://daj.pw" />
+          <link rel="preconnect" href="https://daj.pw" crossOrigin="anonymous" />
+          <link rel="dns-prefetch" href="https://gridcoinstats.eu" />
+        </Head>
         <body>
           <Main />
           <NextScript />

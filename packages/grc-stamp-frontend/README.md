@@ -4,3 +4,7 @@
 This application is running with a help of [Next.js](https://nextjs.org/)
 
 This is the frontend part of the [Gridcoin Stamp Project](https://stamp.gridcoin.club)
+
+---
+
+<p align="center">Made with ❤️ by @gridcat</p>

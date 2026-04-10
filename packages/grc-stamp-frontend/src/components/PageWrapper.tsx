@@ -1,7 +1,6 @@
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 
-export const PageWrapper = styled(Box)(({ theme }) => ({
+export const PageWrapper = styled('main')(({ theme }) => ({
   minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',

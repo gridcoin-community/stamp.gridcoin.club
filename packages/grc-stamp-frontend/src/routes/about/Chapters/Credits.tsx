@@ -4,7 +4,7 @@ import React from 'react';
 function ChapterCredits() {
   return (
     <Box pb={2} id="credits">
-      <Typography variant="h4" component="h3" pb={2}>
+      <Typography variant="h4" component="h2" pb={2}>
         Credits
       </Typography>
       <Box component="article">

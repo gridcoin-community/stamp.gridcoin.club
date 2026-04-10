@@ -5,7 +5,7 @@ import React from 'react';
 function ChapterCosts() {
   return (
     <Box pb={3} id="costs">
-      <Typography variant="h4" component="h3" pb={2}>
+      <Typography variant="h4" component="h2" pb={2}>
         Costs
       </Typography>
       <Box component="article">

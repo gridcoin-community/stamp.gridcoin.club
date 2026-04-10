@@ -34,6 +34,8 @@ const getStampDataServerSide: GetServerSideProps<Partial<Props>> = async (
     };
   }
 
+  context.res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800');
+
   return {
     props: {
       stampData: stamp.toJson(),

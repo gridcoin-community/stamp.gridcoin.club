@@ -1,11 +1,11 @@
 import React from 'react';
-import Head from 'next/head';
 import {
   Container, Box, Typography, Button,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Seo } from '@/components/Seo';
 import { PageWrapper } from '@/components/PageWrapper';
 
 const PageBody = styled(Box)(() => ({
@@ -29,10 +29,12 @@ const ErrorContainer = styled(Container)(() => ({
 export function NotFound() {
   return (
     <PageBody>
-      <Head>
-        <title>Page Not Found</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
+      <Seo
+        title="Page Not Found"
+        description="The page you were looking for does not exist."
+        path="/404"
+        noindex
+      />
       <PageWrapper>
         <ErrorContainer maxWidth="xl">
           <Image

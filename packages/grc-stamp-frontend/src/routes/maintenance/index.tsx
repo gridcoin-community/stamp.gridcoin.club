@@ -1,7 +1,7 @@
 import { Container, Typography } from '@mui/material';
-import Head from 'next/head';
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import { Seo, SITE_NAME } from '@/components/Seo';
 import { GradientLine } from '@/components/GradientLine';
 import { Header } from '@/components/Header/Header';
 import { PageWrapper } from '@/components/PageWrapper';
@@ -17,10 +17,12 @@ const Centered = styled('div')(() => ({
 export function Page() {
   return (
     <>
-      <Head>
-        <title>Gridcoin blockchain stamping :: Under Maintenance</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
+      <Seo
+        title={`${SITE_NAME} :: Under Maintenance`}
+        description="The website is currently under maintenance. We will be back soon."
+        path="/"
+        noindex
+      />
       <PageWrapper>
         <Header showLinks={false} />
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>

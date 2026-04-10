@@ -6,7 +6,7 @@ import { NextMuiLink } from '@/components/NextMuiLink';
 function ChapterAbout() {
   return (
     <Box pb={3}>
-      <Typography variant="h4" component="h3" pb={2} id="about-the-service">
+      <Typography variant="h4" component="h2" pb={2} id="about-the-service">
         About the Service
       </Typography>
       <Box component="article">

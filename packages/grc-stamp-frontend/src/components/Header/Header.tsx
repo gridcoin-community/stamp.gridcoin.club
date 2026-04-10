@@ -55,6 +55,7 @@ export function Header({ showLinks = true }: HeaderProps) {
                     width={140}
                     height={32}
                     alt="Gridcoin stamp"
+                    priority
                   />
                 ) : (
                   <Image
@@ -62,6 +63,7 @@ export function Header({ showLinks = true }: HeaderProps) {
                     width={158}
                     height={50}
                     alt="Gridcoin stamp"
+                    priority
                   />
                 )}
               </Link>

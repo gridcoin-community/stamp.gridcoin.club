@@ -6,8 +6,8 @@ import React, {
 } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import Head from 'next/head';
 import { Header } from '@/components/Header/Header';
+import { Seo, SITE_URL, SITE_NAME } from '@/components/Seo';
 import { Footer } from '@/components/Footer/Footer';
 import { PageWrapper } from '@/components/PageWrapper';
 import { RecentStamps } from '@/components/Stamps/Recent';
@@ -51,11 +51,23 @@ export function Page() {
 
   return (
     <>
-      <Head>
-        <title>Gridcoin blockchain stamping</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="description" content="Permanently certify your documents on the Gridcoin blockchain with our easy-to-use stamping service." />
-      </Head>
+      <Seo
+        title={SITE_NAME}
+        description="Permanently certify your documents on the Gridcoin blockchain with our easy-to-use stamping service."
+        path="/"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: SITE_NAME,
+          url: SITE_URL,
+          description: 'Permanently certify your documents on the Gridcoin blockchain.',
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: `${SITE_URL}/proof/{hash}`,
+            'query-input': 'required name=hash',
+          },
+        }}
+      />
       <PageWrapper>
         <Header />
         <Container maxWidth="xl" sx={{ flexGrow: 1 }}>
