@@ -1,19 +1,188 @@
 version: 2.1
 
-# Allow dynamic configuration for the project
-setup: true
-
-# the path-filtering orb is required to continue a pipeline based on
-# the path of an updated fileset
-orbs:
-  path-filtering: circleci/path-filtering@2.0.4
-
 defaults: &defaults
   working_directory: ~/app
   docker:
     - image: cimg/node:22.16
 
 jobs:
+  install-and-detect:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Fetch master branch for Nx affected comparison
+          command: git fetch origin master:refs/remotes/origin/master --depth=1 2>/dev/null || true
+      - restore_cache:
+          keys:
+            - v2-root-deps-{{ checksum "package-lock.json" }}
+            - v2-root-deps-
+      - restore_cache:
+          keys:
+            - v2-stamp-deps-{{ checksum "packages/grc-stamp/package-lock.json" }}
+            - v2-stamp-deps-
+      - restore_cache:
+          keys:
+            - v2-frontend-deps-{{ checksum "packages/grc-stamp-frontend/package-lock.json" }}
+            - v2-frontend-deps-
+      - run:
+          name: Install root dependencies
+          command: npm ci
+      - run:
+          name: Install grc-stamp dependencies
+          command: cd ~/app/packages/grc-stamp && npm ci
+      - run:
+          name: Install grc-stamp-frontend dependencies
+          command: cd ~/app/packages/grc-stamp-frontend && npm ci
+      - save_cache:
+          key: v2-root-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/app/node_modules
+      - save_cache:
+          key: v2-stamp-deps-{{ checksum "packages/grc-stamp/package-lock.json" }}
+          paths:
+            - ~/app/packages/grc-stamp/node_modules
+      - save_cache:
+          key: v2-frontend-deps-{{ checksum "packages/grc-stamp-frontend/package-lock.json" }}
+          paths:
+            - ~/app/packages/grc-stamp-frontend/node_modules
+      - run:
+          name: Detect affected projects
+          command: |
+            if [ "$CIRCLE_BRANCH" = "master" ]; then
+              BASE="HEAD~1"
+            else
+              BASE="origin/master"
+            fi
+
+            echo "Comparing against base: $BASE"
+            AFFECTED=$(npx nx show projects --affected --base=$BASE --head=HEAD 2>/dev/null || echo "")
+            echo "Affected projects: $AFFECTED"
+
+            mkdir -p ~/app/.affected
+            echo "$AFFECTED" | grep -qw "grc-stamp" && echo "true" > ~/app/.affected/grc-stamp || echo "false" > ~/app/.affected/grc-stamp
+            echo "$AFFECTED" | grep -qw "grc-stamp-frontend" && echo "true" > ~/app/.affected/grc-stamp-frontend || echo "false" > ~/app/.affected/grc-stamp-frontend
+
+            echo "grc-stamp affected: $(cat ~/app/.affected/grc-stamp)"
+            echo "grc-stamp-frontend affected: $(cat ~/app/.affected/grc-stamp-frontend)"
+      - persist_to_workspace:
+          root: ~/app
+          paths: .
+
+  grc-stamp-checks:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Check if grc-stamp is affected
+          command: |
+            FLAG=$(cat ~/app/.affected/grc-stamp 2>/dev/null || echo "false")
+            if [ "$FLAG" != "true" ]; then
+              echo "grc-stamp not affected, skipping"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Run lint
+          command: cd ~/app/packages/grc-stamp && npm run test:lint
+      - run:
+          name: Run typecheck
+          command: cd ~/app/packages/grc-stamp && npm run typecheck
+      - run:
+          name: Run unit tests
+          command: cd ~/app/packages/grc-stamp && npm run test:unit
+
+  grc-stamp-integration:
+    <<: *defaults
+    docker:
+      - image: cimg/node:22.16
+      - image: cimg/mysql:5.7
+        environment:
+          MYSQL_RANDOM_ROOT_PASSWORD: true
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
+          MYSQL_DATABASE: test
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Check if grc-stamp is affected
+          command: |
+            FLAG=$(cat ~/app/.affected/grc-stamp 2>/dev/null || echo "false")
+            if [ "$FLAG" != "true" ]; then
+              echo "grc-stamp not affected, skipping"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Wait for MySQL
+          command: sleep 7
+      - run:
+          name: Run integration tests
+          command: cd ~/app/packages/grc-stamp && npm run test:integration
+
+  grc-stamp-frontend-checks:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Check if grc-stamp-frontend is affected
+          command: |
+            FLAG=$(cat ~/app/.affected/grc-stamp-frontend 2>/dev/null || echo "false")
+            if [ "$FLAG" != "true" ]; then
+              echo "grc-stamp-frontend not affected, skipping"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Run lint
+          command: cd ~/app/packages/grc-stamp-frontend && npm run test:lint
+      - run:
+          name: Run typecheck
+          command: cd ~/app/packages/grc-stamp-frontend && npm run typecheck
+      - run:
+          name: Run unit tests
+          command: cd ~/app/packages/grc-stamp-frontend && npm run test:unit
+
+  grc-stamp-release:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Check if grc-stamp is affected
+          command: |
+            FLAG=$(cat ~/app/.affected/grc-stamp 2>/dev/null || echo "false")
+            if [ "$FLAG" != "true" ]; then
+              echo "grc-stamp not affected, skipping release"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Trust SSH key
+          command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Semantic release
+          command: cd ~/app/packages/grc-stamp && npm run semantic-release
+
+  grc-stamp-frontend-release:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Check if grc-stamp-frontend is affected
+          command: |
+            FLAG=$(cat ~/app/.affected/grc-stamp-frontend 2>/dev/null || echo "false")
+            if [ "$FLAG" != "true" ]; then
+              echo "grc-stamp-frontend not affected, skipping release"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Trust SSH key
+          command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run:
+          name: Semantic release
+          command: cd ~/app/packages/grc-stamp-frontend && npm run semantic-release
+
   grc-stamp_build_image:
     <<: *defaults
     docker:
@@ -101,7 +270,40 @@ jobs:
             docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):latest"
 
 workflows:
-  # Unconditional jobs, firing when new tag is released
+  ci:
+    jobs:
+      - install-and-detect:
+          filters:
+            tags:
+              ignore: /.*/
+
+      - grc-stamp-checks:
+          requires:
+            - install-and-detect
+
+      - grc-stamp-integration:
+          requires:
+            - install-and-detect
+
+      - grc-stamp-frontend-checks:
+          requires:
+            - install-and-detect
+
+      - grc-stamp-release:
+          requires:
+            - grc-stamp-checks
+            - grc-stamp-integration
+          filters:
+            branches:
+              only: master
+
+      - grc-stamp-frontend-release:
+          requires:
+            - grc-stamp-frontend-checks
+          filters:
+            branches:
+              only: master
+
   grc-stamp_deploy-tag:
     jobs:
       - grc-stamp_build_image:
@@ -111,7 +313,6 @@ workflows:
             tags:
               only: /^grc-stamp-v.*/
 
-  # Unconditional jobs, firing when new tag is released
   grc-stamp-frontend_deploy-tag:
     jobs:
       - grc-stamp-frontend_build_image:
@@ -120,23 +321,3 @@ workflows:
               ignore: /.*/
             tags:
               only: /^grc-stamp-frontend-v.*/
-
-  # the always-run workflow is always triggered, regardless of the pipeline parameters.
-  always-run:
-    jobs:
-      # the path-filtering/filter job determines which pipeline
-      # parameters to update.
-      - path-filtering/filter:
-          name: check-updated-files
-          # 3-column, whitespace-delimited mapping. One mapping per
-          # line:
-          # <regex path-to-test> <parameter-to-set> <value-of-pipeline-parameter>
-          mapping: |
-            packages/grc-stamp/.* run-build-grc-stamp true
-            packages/grc-stamp-frontend/.* run-build-grc-stamp-frontend true
-          base-revision: master
-          # this is the path of the configuration we should trigger once
-          # path filtering and pipeline parameter value updates are
-          # complete. In this case, we are using the parent dynamic
-          # configuration itself.
-          config-path: .circleci/continue_config.yml

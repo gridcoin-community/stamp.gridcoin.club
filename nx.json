@@ -3,5 +3,5 @@
   "tui": {
     "autoExit": 0
   },
-  "defaultBase": "dev"
+  "defaultBase": "master"
 }
