@@ -88,12 +88,15 @@ export function NavMenuMobile() {
     setOpen(false);
   };
 
-  // Drawer doubles as a loading screen while the next page streams in.
+  // Drawer doubles as a loading screen while the next page streams in —
+  // close it once the router reports the transition is done. Deps are
+  // intentionally just [navigating] so the effect stays dormant while the
+  // user is opening/closing the drawer manually.
   useEffect(() => {
-    if (open && !navigating) {
+    if (!navigating) {
       setOpen(false);
     }
-  }, [open, navigating]);
+  }, [navigating]);
 
   return (
     <>
