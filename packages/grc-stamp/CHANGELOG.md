@@ -1,3 +1,11 @@
+# [grc-stamp-v1.2.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.2.1...grc-stamp-v1.2.2) (2026-04-11)
+
+
+### Bug Fixes
+
+* add headers for sse hope to defeat cloudflare ([ff746a4](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/ff746a458d5c9544a14e89297e9100840dbf9d19))
+* fix casting bug causing the system restart ([c73371d](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/c73371db031dc260a497c83b27cb54f401263d52))
+
 # [grc-stamp-v1.2.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.2.0...grc-stamp-v1.2.1) (2025-09-21)
 
 
