@@ -14,7 +14,6 @@ const entries: PageContentsEntry[] = [
   { id: 'wallet', label: 'Wallet' },
   { id: 'wallet-full', label: 'Wallet info', indent: true },
   { id: 'wallet-balance', label: 'Balance only', indent: true },
-  { id: 'disclaimer', label: 'Disclaimer' },
 ];
 
 export function Contents() {

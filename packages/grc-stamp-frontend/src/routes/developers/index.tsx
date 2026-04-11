@@ -22,7 +22,6 @@ import {
   Stamps,
   Hashes,
   Wallet,
-  Disclaimer,
 } from './Chapters';
 
 const DESCRIPTION = 'Public JSON:API for the Gridcoin blockchain stamping service — '
@@ -80,7 +79,6 @@ export function Page() {
               <Stamps />
               <Hashes />
               <Wallet />
-              <Disclaimer />
             </Grid>
           </Grid>
         </Container>

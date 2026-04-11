@@ -6,4 +6,3 @@ export { Stamps } from './Stamps';
 export { Hashes } from './Hashes';
 export { Wallet } from './Wallet';
 export { Events } from './Events';
-export { Disclaimer } from './Disclaimer';

@@ -17,6 +17,7 @@ import {
   // Credits,
   About,
   Costs,
+  Disclaimer,
   ProofOfExistence,
   Protocol,
 } from './Chapters';
@@ -64,6 +65,7 @@ export function Page() {
               <About />
               <Protocol />
               <Costs />
+              <Disclaimer />
               {/* <Credits /> */}
             </Grid>
           </Grid>

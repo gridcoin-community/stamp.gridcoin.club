@@ -88,38 +88,12 @@ export function Conventions() {
           {' '}
           <code>fields[stamps]=id,hash,block</code>
           {' '}
-          to reduce payload size.
+          to reduce payload size. Keep
+          {' '}
+          <code>id</code>
+          {' '}
+          in the list — JSON:API requires it on every resource object.
         </Typography>
-        <Alert severity="warning" variant="outlined" sx={{ mb: 2 }}>
-          <AlertTitle>Always include <code>id</code></AlertTitle>
-          The current server implementation uses the field list directly as the
-          database projection, and the JSON:API presenter needs
-          {' '}
-          <code>id</code>
-          {' '}
-          to build every resource object. A request like
-          {' '}
-          <code>fields[stamps]=hash</code>
-          {' '}
-          (without
-          {' '}
-          <code>id</code>
-          ) is rejected with
-          {' '}
-          <code>404 Not Found</code>
-          . Always include
-          {' '}
-          <code>id</code>
-          {' '}
-          in the field list — it won&apos;t clutter your response because
-          {' '}
-          <code>id</code>
-          {' '}
-          is emitted as a top-level key, not inside
-          {' '}
-          <code>attributes</code>
-          .
-        </Alert>
 
         <Typography variant="h6" component="h3" pt={2} pb={1}>
           Filtering

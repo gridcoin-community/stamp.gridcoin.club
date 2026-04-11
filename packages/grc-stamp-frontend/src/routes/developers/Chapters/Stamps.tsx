@@ -288,7 +288,7 @@ export function Stamps() {
           <ListItem disableGutters>
             <ListItemText
               primary="400 Bad Request"
-              secondary={'Validation failed — most commonly an incorrect hash length (the Joi message reads "hash\\" length must be at least 64 characters long") or an unsupported hashType.'}
+              secondary="Validation failed — most commonly an incorrect hash length or an unsupported hashType."
             />
           </ListItem>
           <ListItem disableGutters>
