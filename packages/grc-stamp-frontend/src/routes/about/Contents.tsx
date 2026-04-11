@@ -1,59 +1,13 @@
-import {
-  List, ListItem, ListItemButton, ListItemText, Box,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
 import React from 'react';
-import { NextMuiLink } from '@/components/NextMuiLink';
+import { PageContents, PageContentsEntry } from '@/components/PageContents/PageContents';
 
-const ContentsContainer = styled(Box)(({ theme }) => ({
-  paddingTop: theme.spacing(7),
-  position: 'fixed',
-}));
+const entries: PageContentsEntry[] = [
+  { id: 'proof-of-existence', label: 'Proof of Existence' },
+  { id: 'about-the-service', label: 'About the Service' },
+  { id: 'protocol-overview', label: 'Protocol Summary' },
+  { id: 'costs', label: 'Costs' },
+];
 
 export function Contents() {
-  return (
-    <ContentsContainer>
-      <List disablePadding dense>
-        <NextMuiLink href="#proof-of-existence" passHref>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText>
-                Proof of Existence
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
-        </NextMuiLink>
-        <NextMuiLink href="#about-the-service" passHref>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText>
-                About the Service
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
-        </NextMuiLink>
-        <NextMuiLink href="#protocol-overview" passHref>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText>Protocol Summary</ListItemText>
-            </ListItemButton>
-          </ListItem>
-        </NextMuiLink>
-        <NextMuiLink href="#costs" passHref>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText>Costs</ListItemText>
-            </ListItemButton>
-          </ListItem>
-        </NextMuiLink>
-        {/* <NextMuiLink href="#credits" passHref>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText>Credits</ListItemText>
-            </ListItemButton>
-          </ListItem>
-        </NextMuiLink> */}
-      </List>
-    </ContentsContainer>
-  );
+  return <PageContents entries={entries} />;
 }

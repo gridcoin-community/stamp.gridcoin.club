@@ -2,7 +2,7 @@
 import { Typography, Box } from '@mui/material';
 import React from 'react';
 
-function ChapterProofOfExistence() {
+export function ProofOfExistence() {
   return (
     <Box pb={3}>
       <Typography variant="h4" component="h2" pb={2} id="proof-of-existence">
@@ -39,5 +39,3 @@ function ChapterProofOfExistence() {
     </Box>
   );
 }
-
-export const ProofOfExistence = React.memo(ChapterProofOfExistence);

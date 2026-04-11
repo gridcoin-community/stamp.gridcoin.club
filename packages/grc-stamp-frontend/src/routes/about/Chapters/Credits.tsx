@@ -1,7 +1,7 @@
 import { Typography, Box } from '@mui/material';
 import React from 'react';
 
-function ChapterCredits() {
+export function Credits() {
   return (
     <Box pb={2} id="credits">
       <Typography variant="h4" component="h2" pb={2}>
@@ -15,5 +15,3 @@ function ChapterCredits() {
     </Box>
   );
 }
-
-export const Credits = React.memo(ChapterCredits);

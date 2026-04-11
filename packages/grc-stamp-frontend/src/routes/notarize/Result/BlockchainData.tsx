@@ -1,7 +1,7 @@
 import {
   List, Divider,
 } from '@mui/material';
-import React from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { Info } from '@/components/Info/Info';
 import { StampEntity } from '@/entities/StampEntity';
 import { StampBlockchainData } from '@/components/Info/StampBlockchainData';
@@ -15,60 +15,44 @@ interface Props {
 }
 
 export function BlockchainData({ isUploading }: Props) {
-  const { state, dispatch } = React.useContext(FilesContext);
-  const idRef = React.useRef<NodeJS.Timeout | 0>(0);
+  const { state, dispatch } = useContext(FilesContext);
 
   const fileData = getFirstFromTheStore(state);
   const stamp = new StampEntity(fileData.blockchainData);
+  const isFinished = stamp.isFinished();
+  const { dataId } = fileData;
+  const fileName = fileData.file.name;
 
-  const getInfo = async (): Promise<void> => {
-    if (fileData.dataId) {
-      const info = await getStampInfoById(fileData.dataId);
-      if (!info) return;
-      if (info.block) {
-        dispatch({
-          type: ActionType.setBlock,
-          payload: { id: fileData.file.name, block: info.block },
-        });
-      }
-      if (info.tx) {
-        dispatch({
-          type: ActionType.setTransaction,
-          payload: { id: fileData.file.name, transaction: info.tx },
-        });
-      }
-      if (info.time) {
-        dispatch({
-          type: ActionType.setTime,
-          payload: { id: fileData.file.name, time: info.time },
-        });
-      }
+  const getInfo = useCallback(async (): Promise<void> => {
+    if (!dataId) return;
+    const info = await getStampInfoById(dataId);
+    if (!info) return;
+    if (info.block) {
+      dispatch({ type: ActionType.setBlock, payload: { id: fileName, block: info.block } });
     }
-  };
-
-  if (stamp.isFinished()) {
-    clearInterval(idRef.current as NodeJS.Timeout);
-    idRef.current = 0;
-  }
+    if (info.tx) {
+      dispatch({
+        type: ActionType.setTransaction,
+        payload: { id: fileName, transaction: info.tx },
+      });
+    }
+    if (info.time) {
+      dispatch({ type: ActionType.setTime, payload: { id: fileName, time: info.time } });
+    }
+  }, [dataId, fileName, dispatch]);
 
   useSSEEvent('stampSubmitted', () => {
-    getInfo();
+    if (!isFinished) getInfo();
   });
   useSSEEvent('transactionFound', () => {
-    getInfo();
+    if (!isFinished) getInfo();
   });
 
-  React.useEffect(() => {
-    if (isUploading && !stamp.isFinished()) {
-      idRef.current = setInterval(async () => {
-        getInfo();
-      }, 30_000);
-    }
-    return () => {
-      clearInterval(idRef.current as NodeJS.Timeout);
-      idRef.current = 0;
-    };
-  });
+  useEffect(() => {
+    if (!isUploading || isFinished) return undefined;
+    const id = setInterval(() => { getInfo(); }, 30_000);
+    return () => clearInterval(id);
+  }, [isUploading, isFinished, getInfo]);
 
   return (
     <List>

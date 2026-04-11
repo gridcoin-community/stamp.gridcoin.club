@@ -2,7 +2,7 @@
 import { Typography, Box } from '@mui/material';
 import React from 'react';
 
-function ChapterCosts() {
+export function Costs() {
   return (
     <Box pb={3} id="costs">
       <Typography variant="h4" component="h2" pb={2}>
@@ -35,5 +35,3 @@ function ChapterCosts() {
     </Box>
   );
 }
-
-export const Costs = React.memo(ChapterCosts);

@@ -1,10 +1,20 @@
 import { styled } from '@mui/material/styles';
-import React from 'react';
-import { Box, IconButton } from '@mui/material';
-import AppsIcon from '@mui/icons-material/Apps';
+import React, { useState } from 'react';
+import {
+  Box,
+  Menu,
+  MenuItem,
+} from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { ModeToggle } from './Mode';
-import { menuItems } from './constants';
+import {
+  menuItems,
+  isMenuGroup,
+  MenuEntry,
+  MenuGroup,
+} from './constants';
 import { NextMuiLink } from '../NextMuiLink';
 
 const itemHorzPadding = 1;
@@ -14,6 +24,8 @@ const Nav = styled('ul')(() => ({
   listStyle: 'none',
   display: 'flex',
   overflow: 'auto',
+  padding: 0,
+  margin: 0,
 }));
 
 const NavItem = styled('li')(({ theme }) => ({
@@ -26,9 +38,16 @@ const NavItem = styled('li')(({ theme }) => ({
   cursor: 'pointer',
   textDecoration: 'none',
   transition: '0.2s ease-out',
-  '& a': {
+  '& a, & .groupTrigger': {
     color: theme.palette.text.secondary,
     textDecoration: 'none',
+    display: 'inline-flex',
+    alignItems: 'center',
+    background: 'none',
+    border: 'none',
+    font: 'inherit',
+    cursor: 'pointer',
+    padding: 0,
   },
   '&:after': {
     content: '""',
@@ -45,7 +64,7 @@ const NavItem = styled('li')(({ theme }) => ({
     backgroundImage: `linear-gradient(to right, ${theme.palette.primary.dark}, ${theme.palette.primary.light})`,
   },
   '&:hover': {
-    '& a': {
+    '& a, & .groupTrigger': {
       color:
     theme.palette.mode === 'dark'
       ? theme.palette.primary.light
@@ -57,10 +76,10 @@ const NavItem = styled('li')(({ theme }) => ({
     },
   },
   '&:not(:first-of-type)': {
-    marginLeft: typeof gutter === 'number' ? theme.spacing(gutter) : gutter,
+    marginLeft: theme.spacing(gutter),
   },
   '&.itemActive': {
-    '& a': {
+    '& a, & .groupTrigger': {
       color:
         theme.palette.mode === 'dark'
           ? theme.palette.primary.light
@@ -77,6 +96,80 @@ const NavItem = styled('li')(({ theme }) => ({
   },
 }));
 
+interface GroupItemProps {
+  group: MenuGroup;
+  isActive: boolean;
+  entryKey: string;
+}
+
+function GroupItem({ group, isActive, entryKey }: GroupItemProps) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <NavItem
+      key={entryKey}
+      className={isActive ? 'itemActive' : undefined}
+    >
+      <button
+        type="button"
+        className="groupTrigger"
+        onClick={handleOpen}
+        aria-haspopup="true"
+        aria-expanded={open || undefined}
+      >
+        {group.label}
+        <KeyboardArrowDownIcon
+          fontSize="small"
+          sx={{
+            ml: 0.5,
+            transition: '0.2s ease-out',
+            transform: open ? 'rotate(180deg)' : 'rotate(0)',
+          }}
+        />
+      </button>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+        slotProps={{
+          paper: {
+            elevation: 4,
+            sx: { mt: 0.5, minWidth: 200 },
+          },
+        }}
+      >
+        {group.children.map((child) => (
+          <MenuItem
+            key={child.href}
+            component={Link}
+            href={child.href}
+            onClick={handleClose}
+          >
+            {child.label}
+          </MenuItem>
+        ))}
+      </Menu>
+    </NavItem>
+  );
+}
+
+function entryKeyFor(entry: MenuEntry, index: number): string {
+  if (isMenuGroup(entry)) {
+    return `dmenu-group-${entry.label.toLowerCase().replace(/\s+/g, '-')}-${index}`;
+  }
+  return `dmenu-item-${entry.href.replace('/', '') || 'root'}`;
+}
+
 export function NavMenuDesktop() {
   const router = useRouter();
 
@@ -84,26 +177,34 @@ export function NavMenuDesktop() {
     <>
       <Box component="nav">
         <Nav>
-          {Object.entries(menuItems).map(([uri, name]: [string, string]) => (
-            <NavItem key={`dmenu-item-${uri.replace('/', '')}`} className={router.pathname === uri ? 'itemActive' : undefined}>
-              <NextMuiLink href={uri}>{name}</NextMuiLink>
-            </NavItem>
-          ))}
+          {menuItems.map((entry, index) => {
+            const key = entryKeyFor(entry, index);
+            if (isMenuGroup(entry)) {
+              const isActive = entry.children.some(
+                (child) => router.pathname === child.href,
+              );
+              return (
+                <GroupItem
+                  key={key}
+                  entryKey={key}
+                  group={entry}
+                  isActive={isActive}
+                />
+              );
+            }
+            const isActive = router.pathname === entry.href;
+            return (
+              <NavItem
+                key={key}
+                className={isActive ? 'itemActive' : undefined}
+              >
+                <NextMuiLink href={entry.href}>{entry.label}</NextMuiLink>
+              </NavItem>
+            );
+          })}
         </Nav>
       </Box>
       <ModeToggle />
-      <Box display="none">
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-                  // onClick={handleMenu}
-          color="inherit"
-        >
-          <AppsIcon />
-        </IconButton>
-      </Box>
     </>
   );
 }
