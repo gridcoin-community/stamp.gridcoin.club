@@ -5,5 +5,5 @@ export const hashesRouter = Router();
 
 hashesRouter.get('/:hash', async (req: Request, res: Response) => {
   const controller = new HashController(req, res);
-  return controller.getById(req.params.hash);
+  return controller.getById(String(req.params.hash));
 });

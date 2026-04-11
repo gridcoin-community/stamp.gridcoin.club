@@ -229,8 +229,18 @@ export class Controller {
           const filterTypeUnresolved = ([Object.keys(query.filter[key])]).toString();
           if (Object.values(FilterTypes).includes(filterTypeUnresolved)) {
             const filterType = MapFilterTypes[filterTypeUnresolved];
-            let list = query.filter[key][filterTypeUnresolved].split(',');
-            list = list.map((value: any) => (Number.isNaN(value) ? value : BigInt(value)));
+            const raw = query.filter[key][filterTypeUnresolved];
+            // Coerce via String() — express's qs parser can deliver arrays or
+            // objects for the same key, and .split() would throw TypeError.
+            let list = String(raw).split(',');
+            // BigInt() throws on non-numeric input; fall through to the raw string.
+            list = list.map((value: any) => {
+              try {
+                return BigInt(value);
+              } catch {
+                return value;
+              }
+            });
 
             filters = {
               ...filters,
@@ -238,7 +248,7 @@ export class Controller {
             };
           }
         } else {
-          const list = query.filter[key].split(',');
+          const list = String(query.filter[key]).split(',');
           if (list.length > 1) {
             filters = {
               ...filters,

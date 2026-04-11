@@ -154,4 +154,52 @@ describe('GET /stamps', () => {
         title: HttpStatus.getStatusText(HttpStatus.NOT_FOUND),
       });
   });
+
+  // Regression: a non-numeric comparison filter on any field used to throw
+  // BigInt('abc') synchronously inside the StampsController constructor,
+  // producing an unhandled rejection that crashed the Node process. The fix
+  // makes BigInt() failures fall through to the raw string value, and Prisma
+  // validation errors now map to a clean 400 instead of 404 or a process death.
+  it('should not crash on a non-numeric ne filter (DoS regression)', async () => {
+    const res = await request(app)
+      .get('/stamps?filter[hash][ne]=abc')
+      .send();
+    // The server must respond — anything other than a crash is acceptable.
+    expect(res.status).to.not.equal(HttpStatus.INTERNAL_SERVER_ERROR);
+    expect(res.status).to.be.oneOf([HttpStatus.OK, HttpStatus.BAD_REQUEST]);
+  });
+
+  it('should not crash on a float filter on a BigInt column', async () => {
+    const res = await request(app)
+      .get('/stamps?filter[id][gt]=1.5')
+      .send();
+    expect(res.status).to.not.equal(HttpStatus.INTERNAL_SERVER_ERROR);
+    expect(res.status).to.be.oneOf([HttpStatus.OK, HttpStatus.BAD_REQUEST]);
+  });
+
+  it('should not crash when the filter value is delivered as an array', async () => {
+    // qs parses `filter[hash][ne][]=a&filter[hash][ne][]=b` into an array value,
+    // which used to blow up the `.split(',')` call with TypeError.
+    const res = await request(app)
+      .get('/stamps?filter[hash][ne][]=a&filter[hash][ne][]=b')
+      .send();
+    expect(res.status).to.not.equal(HttpStatus.INTERNAL_SERVER_ERROR);
+    expect(res.status).to.be.oneOf([HttpStatus.OK, HttpStatus.BAD_REQUEST]);
+  });
+
+  it('should return 400 for a filter value that fails Prisma validation', async () => {
+    // id is a BigInt column — comparing it against a non-numeric string
+    // surfaces a PrismaClientValidationError, which the controller maps to 400.
+    const res = await request(app)
+      .get('/stamps?filter[id][gt]=not-a-number')
+      .send();
+    expect(res.status).to.be.equal(HttpStatus.BAD_REQUEST);
+    const { errors } = res.body;
+    expect(errors).to.be.an('array')
+      .to.have.lengthOf(1)
+      .that.deep.includes({
+        status: HttpStatus.BAD_REQUEST,
+        title: 'Invalid query parameters',
+      });
+  });
 });
