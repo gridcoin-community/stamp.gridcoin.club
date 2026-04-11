@@ -139,6 +139,40 @@ describe('BaseController', () => {
       const controller = createInstance(req, res);
       expect(controller.useFilters).toBeUndefined();
     });
+
+    it('should convert numeric values to BigInt when using a comparison operator', () => {
+      req.query = { filter: { field1: { gt: '123' } } };
+      const controller = createInstance(req, res);
+      expect(controller.useFilters).toEqual({ field1: { gt: BigInt(123) } });
+    });
+
+    it('should not throw and should pass through non-numeric string values when using a comparison operator', () => {
+      // Regression test: previously `BigInt("abc")` threw synchronously, which
+      // turned into an unhandled promise rejection from the async route handler
+      // and crashed the Node process — letting any unauthenticated caller DoS
+      // the service with `?filter[hash][ne]=abc`.
+      req.query = { filter: { field1: { ne: 'abc' } } };
+      expect(() => createInstance(req, res)).not.toThrow();
+      const controller = createInstance(req, res);
+      expect(controller.useFilters).toEqual({ field1: { not: 'abc' } });
+    });
+
+    it('should not throw and should pass through float string values when using a comparison operator', () => {
+      // `BigInt("1.5")` also throws — `Number.isNaN("1.5")` would have missed this.
+      req.query = { filter: { field1: { gt: '1.5' } } };
+      expect(() => createInstance(req, res)).not.toThrow();
+      const controller = createInstance(req, res);
+      expect(controller.useFilters).toEqual({ field1: { gt: '1.5' } });
+    });
+
+    it('should accept a comma-separated list of mixed values without throwing', () => {
+      req.query = { filter: { field1: { gt: '10,abc,20' } } };
+      expect(() => createInstance(req, res)).not.toThrow();
+      const controller = createInstance(req, res);
+      expect(controller.useFilters).toEqual({
+        field1: { gt: [BigInt(10), 'abc', BigInt(20)] },
+      });
+    });
   });
 
   describe('hasFilter', () => {

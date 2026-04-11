@@ -1,6 +1,6 @@
 import HttpStatus from 'http-status-codes';
 import { Request, Response } from 'express';
-import { stamps, StampsType } from '@prisma/client';
+import { Prisma, stamps, StampsType } from '@prisma/client';
 // import { ValidationResult } from 'joi';
 import yayson from 'yayson';
 import { StampPresenter } from '../presenters/stamp.presenter';
@@ -69,6 +69,19 @@ export class StampsController extends Controller {
         .send(this.render<stamps>(results));
     } catch (e) {
       log.error(e);
+      // Bad filter/sort/field values produce a Prisma validation error — return
+      // 400 so callers see "your query is malformed" instead of a mystery 404.
+      if (e instanceof Prisma.PrismaClientValidationError) {
+        this.res.status(HttpStatus.BAD_REQUEST).send({
+          errors: [
+            new ErrorModel(
+              HttpStatus.BAD_REQUEST,
+              'Invalid query parameters',
+            ),
+          ],
+        });
+        return;
+      }
       this.res.status(HttpStatus.NOT_FOUND).send({
         errors: [
           new ErrorModel(

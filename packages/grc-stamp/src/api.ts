@@ -17,6 +17,12 @@ export const app = express();
 // Set up port
 app.set('port', config.PORT);
 
+// Express 5 changed the default query parser from "extended" (qs) to "simple"
+// (node:querystring), which does NOT understand JSON:API bracket syntax like
+// page[size]=5 or filter[block][gt]=0. Restore the qs-backed parser so nested
+// query params produce a nested object in req.query.
+app.set('query parser', 'extended');
+
 // Set up middleware
 
 // Set up body parser in order to get post values
@@ -72,15 +78,22 @@ app.use((req, res) => {
     });
 });
 
-// 500 error handling
+// 500 error handling — catches any error forwarded via next(err), including
+// rejections from async route handlers wrapped with asyncHandler().
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err, req, res, _next) => {
-  log.error(`Internal server error: ${err}`);
+  log.error(`Internal server error: ${err && err.stack ? err.stack : err}`);
+  if (res.headersSent) {
+    return;
+  }
   res
     .status(HttpStatus.INTERNAL_SERVER_ERROR)
     .send({
       errors: [
-        new ErrorModel(HttpStatus.NOT_FOUND, HttpStatus.getStatusText(HttpStatus.NOT_FOUND)),
+        new ErrorModel(
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
+        ),
       ],
     });
 });
