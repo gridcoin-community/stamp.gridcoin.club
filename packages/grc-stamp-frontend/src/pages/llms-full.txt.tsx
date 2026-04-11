@@ -54,16 +54,55 @@ Each transaction can store up to two SHA-256 hashes, saving on fees and improvin
 
 - \`/\` — Interactive stamping tool: upload a file, compute its hash, and submit to blockchain
 - \`/about\` — Detailed explanation of Proof of Existence, the protocol, and costs
+- \`/developers\` — Full API reference with request and response examples
+- \`/developers/github-action\` — Gridcoin Stamp Action for GitHub (drop-in workflow that timestamps release assets on the Gridcoin blockchain)
 - \`/proof/{sha256hash}\` — Verification page for a specific blockchain-certified document hash
 
 ## API
 
-- \`GET /api/stamps\` — List stamps (supports JSON:API filtering, sorting, and pagination)
-- \`POST /api/stamps\` — Create a new stamp (body: { hash, hashType? })
-- \`GET /api/stamps/:id\` — Get stamp by ID
-- \`GET /api/hashes/:hash\` — Look up a stamp by hash
-- \`GET /api/wallet\` — Wallet balance info
-- \`GET /api/events\` — Server-Sent Events stream for real-time stamp updates
+The API is public, unauthenticated, and CORS-enabled. Full human-readable docs live at https://stamp.gridcoin.club/developers.
+
+- **Base URL**: https://stamp.gridcoin.club/api
+- **Content-Type**: application/vnd.api+json (JSON:API specification)
+- **Authentication**: none — every endpoint is publicly accessible
+- **Error format**: { "errors": [{ "status": number, "title": string, "detail"?: string }] }
+
+### Conventions
+
+Collection endpoints support these query parameters:
+- \`page[size]\` — items per page, default 25, maximum 100
+- \`page[number]\` — zero-indexed page number
+- \`page[offset]\` — absolute record offset
+- \`sort=field\` or \`sort=-field\` — ascending or descending
+- \`fields[stamps]=hash,block,time\` — sparse fieldsets
+- \`filter[field]=value\` — exact match, or \`filter[field][op]=value\` with operators \`eq\`, \`ne\`, \`gt\`, \`gte\`, \`lt\`, \`lte\`
+- Responses include \`meta.count\` with the total number of matching records
+
+### Endpoints
+
+- \`GET /api/status\` — Service name, version, and maintenance flag. Use this for health checks.
+- \`GET /api/stamps\` — List stamps. Supports pagination, sorting, sparse fieldsets, and filtering.
+- \`GET /api/stamps/:id\` — Fetch a single stamp by its numeric id.
+- \`POST /api/stamps\` — Create a new stamp. JSON:API body: { data: { type: "stamps", attributes: { hash, hashType?, protocol? } } }. \`hash\` must be exactly 64 hex characters. Returns 201 Created for a new stamp, 200 OK if the hash was already stamped, 400 for validation errors, and 406 if the service wallet is below the minimum balance.
+- \`GET /api/hashes/:hash\` — Look up the earliest stamp for a given SHA-256 hash. Returns 404 if the hash has never been stamped.
+- \`GET /api/wallet\` — Returns the service wallet address, current balance (as a string to avoid floating-point rounding), and the last block processed by the scraper.
+- \`GET /api/wallet/balance\` — Lightweight balance-only variant.
+
+### Quick examples
+
+Check service health:
+
+    curl https://stamp.gridcoin.club/api/status
+
+Stamp a SHA-256 hash:
+
+    curl -X POST 'https://stamp.gridcoin.club/api/stamps' \\
+      -H 'Content-Type: application/vnd.api+json' \\
+      -d '{"data":{"type":"stamps","attributes":{"hash":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"}}}'
+
+Look up a hash:
+
+    curl https://stamp.gridcoin.club/api/hashes/87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7
 `;
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {

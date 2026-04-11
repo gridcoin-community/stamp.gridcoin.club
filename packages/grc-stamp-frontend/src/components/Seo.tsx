@@ -13,6 +13,10 @@ interface SeoProps {
   jsonLd?: Record<string, unknown>;
   // eslint-disable-next-line react/require-default-props
   noindex?: boolean;
+  // eslint-disable-next-line react/require-default-props
+  iconDataUrl?: string;
+  // eslint-disable-next-line react/require-default-props
+  ogImagePath?: string;
 }
 
 export function Seo({
@@ -22,15 +26,30 @@ export function Seo({
   ogType = 'website',
   jsonLd,
   noindex,
+  iconDataUrl,
+  ogImagePath,
 }: SeoProps) {
   const canonicalUrl = `${SITE_URL}${path}`;
-  const ogImageUrl = `${SITE_URL}/og-image.png`;
+  const ogImageUrl = ogImagePath
+    ? `${SITE_URL}${ogImagePath}`
+    : `${SITE_URL}/og-image.png`;
 
   return (
     <Head>
       <title>{title}</title>
       <meta key="description" name="description" content={description} />
       <link key="canonical" rel="canonical" href={canonicalUrl} />
+
+      {/*
+        Always emit a favicon link — next/head only replaces tags by key, so
+        a page that omits it entirely would leave the previous page's icon
+        stuck in the tab until a full reload.
+      */}
+      <link
+        key="icon"
+        rel="icon"
+        href={iconDataUrl ?? '/favicon.ico'}
+      />
 
       <meta key="og:title" property="og:title" content={title} />
       <meta key="og:description" property="og:description" content={description} />
@@ -51,7 +70,7 @@ export function Seo({
           key="jsonld"
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/<\//g, '<\\/') }}
         />
       )}
     </Head>

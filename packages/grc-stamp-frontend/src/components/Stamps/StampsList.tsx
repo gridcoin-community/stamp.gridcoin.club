@@ -9,9 +9,9 @@ import {
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Identicon from 'identicon.js';
 import { format } from 'date-fns';
 import { blockUrl, txUrl } from '@/lib/explorerLinks';
+import { identiconDataUrl } from '@/lib/identicon';
 import { StampEntity } from '@/entities/StampEntity';
 import { NextMuiLink } from '../NextMuiLink';
 
@@ -56,13 +56,13 @@ export function StampsList({ stamps }: Props) {
       <ListWrapper>
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           {stamps.map((stamp: StampEntity) => {
-            const identiocon = (new Identicon(stamp.hash!, 40)).toString();
+            const hash = stamp.hash ?? '';
             return (
-              <ListItem alignItems="flex-start" key={`stamp-${stamp.hash!}`}>
+              <ListItem alignItems="flex-start" key={`stamp-${hash}`}>
                 <ListItemAvatar>
                   <Avatar
-                    alt={stamp.hash}
-                    src={`data:image/png;base64,${identiocon}`}
+                    alt={hash}
+                    src={identiconDataUrl(hash)}
                   />
                 </ListItemAvatar>
                 <ListItemTextResponsive
