@@ -1,3 +1,17 @@
+# [grc-stamp-frontend-v1.3.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.2.0...grc-stamp-frontend-v1.3.0) (2026-04-11)
+
+
+### Bug Fixes
+
+* improve SSE handling ([4758df8](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/4758df8d73fdf62ca287f13ddb00c22284719a08))
+
+
+### Features
+
+* add linear loading progress for mobile and desktop views ([65d64d5](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/65d64d57882bffc78a65a913ec161f6db57fb432))
+* generate og image, add proof favicon, make hash page interactive (not 404) for in progress proofs ([d828152](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/d828152f643c0a4aaef4073c7f7dcf1ec43bf268))
+* improve documentation, add api and actions documentation ([007dd6b](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/007dd6bf3474a7f43efade80ca36f73dbca5d5bb))
+
 # [grc-stamp-frontend-v1.2.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.1.3...grc-stamp-frontend-v1.2.0) (2026-04-10)
 
 
