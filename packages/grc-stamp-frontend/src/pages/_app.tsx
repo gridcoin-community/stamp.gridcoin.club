@@ -6,7 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import Script from 'next/script';
 import { ThemeMode } from '@/lib/mode';
-// import sseManager from '@/lib/sseManager';
+import sseManager from '@/lib/sseManager';
 import { themeCreator } from '../theme';
 import createEmotionCache from '../createEmotionCache';
 import '../styles/style.css';
@@ -27,23 +27,17 @@ export default function MyApp(props: MyAppProps) {
   } = props;
   const { mode } = pageProps;
 
-  // console.log('App mode:', mode);
-  // React.useEffect(() => {
-  //   if (isMounted && typeof window !== 'undefined') {
-  //     console.log('Connecting to SSE...');
-  //     sseManager.connect(`${process.env.NEXT_PUBLIC_API_URL}/events`);
-  //   }
-  //   return () => sseManager.disconnect();
-  // }, [isMounted]);
+  React.useEffect(() => {
+    sseManager.connect(`${process.env.NEXT_PUBLIC_API_URL}/events`);
+    return () => {
+      sseManager.disconnect();
+    };
+  }, []);
 
   const theme = React.useMemo(
     () => themeCreator(mode),
     [mode],
   );
-
-  // if (!isMounted) {
-  //   return null;
-  // }
 
   return (
     <CacheProvider value={emotionCache}>
