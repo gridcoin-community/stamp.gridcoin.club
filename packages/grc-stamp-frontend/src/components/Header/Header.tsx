@@ -3,12 +3,14 @@ import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
+import LinearProgress from '@mui/material/LinearProgress';
 import Image from 'next/image';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { NavMenuMobile } from '@/components/Navigation/NavMenuMobile';
+import { useRouteNavigating } from '@/hooks';
 import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
 interface Props {
@@ -37,6 +39,7 @@ export function Header({ showLinks = true }: HeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mounted, setMounted] = useState(false);
+  const navigating = useRouteNavigating();
 
   useEffect(() => {
     setMounted(true);
@@ -46,6 +49,19 @@ export function Header({ showLinks = true }: HeaderProps) {
     <>
       <ElevationScroll>
         <AppBar color="transparent">
+          {navigating && (
+            <LinearProgress
+              color="primary"
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 3,
+                zIndex: (t) => t.zIndex.appBar + 1,
+              }}
+            />
+          )}
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
             <Box>
               <Link passHref href="/">
