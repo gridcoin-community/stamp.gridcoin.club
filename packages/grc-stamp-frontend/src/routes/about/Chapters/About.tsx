@@ -3,7 +3,7 @@ import { Typography, Box } from '@mui/material';
 import React from 'react';
 import { NextMuiLink } from '@/components/NextMuiLink';
 
-function ChapterAbout() {
+export function About() {
   return (
     <Box pb={3}>
       <Typography variant="h4" component="h2" pb={2} id="about-the-service">
@@ -34,5 +34,3 @@ function ChapterAbout() {
     </Box>
   );
 }
-
-export const About = React.memo(ChapterAbout);

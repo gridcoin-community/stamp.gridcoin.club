@@ -28,13 +28,22 @@ const getStampDataServerSide: GetServerSideProps<Partial<Props>> = async (
   const repository = new StampRepository();
   const stamp = await repository.findStampByHash(hash, true);
 
-  if (!stamp || !stamp.isFinished()) {
+  // Only 404 if the hash has never been submitted to this service.
+  // Stamps that exist but aren't yet confirmed on chain render as "in progress"
+  // and poll/listen for the confirmation on the client side.
+  if (!stamp) {
     return {
       notFound: true,
     };
   }
 
-  context.res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800');
+  if (stamp.isFinished()) {
+    // Confirmed proofs are immutable — cache aggressively.
+    context.res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800');
+  } else {
+    // Pending stamps must never be cached; the state changes within minutes.
+    context.res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  }
 
   return {
     props: {

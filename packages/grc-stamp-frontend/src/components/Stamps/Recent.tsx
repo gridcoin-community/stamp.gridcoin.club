@@ -3,7 +3,7 @@ import { Typography, Box, LinearProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { StampEntity } from '@/entities/StampEntity';
 import { StampRepository } from '@/repositories/StampsRepository';
-import { useSSEEvent } from '@/hooks';
+import { useInterval, useSSEEvent } from '@/hooks';
 import { StampsList } from './StampsList';
 
 const Wrapper = styled(Box)((() => ({
@@ -35,6 +35,12 @@ export function RecentStamps() {
   useEffect(() => {
     fetchStamps();
   }, []);
+
+  // Polling backstop for when SSE is unavailable (e.g. Cloudflare buffering
+  // the /events stream). 30s keeps the list fresh without hammering the API.
+  useInterval(() => {
+    fetchStamps();
+  }, 30_000);
 
   useSSEEvent('transactionFound', () => {
     // just refresh the list if a new stamp transaction in the block is found

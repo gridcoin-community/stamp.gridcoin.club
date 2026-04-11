@@ -26,6 +26,7 @@
     "identicon.js": "^2.3.3",
     "js-sha256": "^0.10.1",
     "next": "15.5.7",
+    "prism-react-renderer": "^2.4.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.2.3",

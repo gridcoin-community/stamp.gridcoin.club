@@ -10,12 +10,14 @@ import { Header } from '@/components/Header/Header';
 import { Seo, SITE_NAME, SITE_URL } from '@/components/Seo';
 import { Footer } from '@/components/Footer/Footer';
 import { GradientLine } from '@/components/GradientLine';
+import { ScrollTopFab } from '@/components/ScrollTopFab/ScrollTopFab';
 import { PageWrapper } from '../../components/PageWrapper';
 import { Contents } from './Contents';
 import {
   // Credits,
   About,
   Costs,
+  Disclaimer,
   ProofOfExistence,
   Protocol,
 } from './Chapters';
@@ -56,16 +58,21 @@ export function Page() {
               <Typography component="h1" variant="h4" pb={2}>
                 {`About ${SITE_NAME}`}
               </Typography>
+              <Typography gutterBottom variant="body1" component="p">
+                {`${SITE_NAME} is a free, privacy-first Proof of Existence service. Drop any file into the app, a SHA-256 hash is computed entirely in your browser, and that hash is written to the Gridcoin blockchain — your document never leaves your device. This page walks through the idea behind the service, the on-chain protocol it uses, and what it costs to run.`}
+              </Typography>
               <ProofOfExistence />
               <About />
               <Protocol />
               <Costs />
+              <Disclaimer />
               {/* <Credits /> */}
             </Grid>
           </Grid>
         </Container>
         <Footer />
       </PageWrapper>
+      <ScrollTopFab />
     </>
   );
 }

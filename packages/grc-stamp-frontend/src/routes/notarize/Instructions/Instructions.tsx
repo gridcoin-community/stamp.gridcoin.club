@@ -17,12 +17,6 @@ const TextBox = styled(Box)(() => ({
   justifyContent: 'center',
 }));
 
-const Text = styled(Typography)(({ theme }) => ({
-  [theme.breakpoints.down('md')]: {
-    textAlign: 'justify',
-  },
-}));
-
 const IconWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -33,7 +27,7 @@ const IconWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-function InstructionsComponent() {
+export function Instructions() {
   return (
     <Wrapper>
       <IconWrapper>
@@ -41,10 +35,10 @@ function InstructionsComponent() {
       </IconWrapper>
       <TextBox>
         <GradientLine />
-        <Typography component="h1" variant="h4" mb={3}>
+        <Typography component="h1" variant="h4" pb={2}>
           Notarize Documents with the Gridcoin Blockchain
         </Typography>
-        <Text variant="body1" gutterBottom>
+        <Typography gutterBottom variant="body1" component="p">
           Timestamping your documents with the Gridcoin blockchain allows for a publicly
           verifiable record of their creation and history.
           This ensures that there is no possibility of malicious
@@ -52,17 +46,15 @@ function InstructionsComponent() {
           {' '}
           <NextMuiLink href="/about" passHref>here</NextMuiLink>
           .
-        </Text>
-        <Text variant="body1" gutterBottom>
+        </Typography>
+        <Typography gutterBottom variant="body1" component="p">
           To notarize a document or verify its existence,
           simply drag and drop the target file below and follow the provided instructions.
-        </Text>
-        <Text variant="body1" gutterBottom>
+        </Typography>
+        <Typography gutterBottom variant="body1" component="p">
           Our service is offered at no cost to you.
-        </Text>
+        </Typography>
       </TextBox>
     </Wrapper>
   );
 }
-
-export const Instructions = React.memo(InstructionsComponent);

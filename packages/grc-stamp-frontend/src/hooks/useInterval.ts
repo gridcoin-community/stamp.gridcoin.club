@@ -1,22 +1,22 @@
 import { useEffect, useRef } from 'react';
 
-export function useInterval(callback: () => void, delay: number) {
-  const savedCallback = useRef<any>();
+/**
+ * Calls the latest `callback` every `delay` milliseconds. Pass `null` to
+ * pause the interval without unmounting. Based on Dan Abramov's reference
+ * implementation.
+ */
+export function useInterval(callback: () => void, delay: number | null) {
+  const savedCallback = useRef<() => void>();
 
-  // Remember the latest callback.
   useEffect(() => {
     savedCallback.current = callback;
   }, [callback]);
 
-  // Set up the interval.
   useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      const id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-    return undefined;
+    if (delay === null) return undefined;
+    const id = setInterval(() => {
+      savedCallback.current?.();
+    }, delay);
+    return () => clearInterval(id);
   }, [delay]);
 }

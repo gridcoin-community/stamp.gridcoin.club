@@ -1,19 +1,10 @@
 /* eslint-disable max-len */
-import {
-  Typography, Box, Paper,
-} from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 
-const CodePaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
-  fontFamily: 'monospace',
-  overflowX: 'auto',
-  maxWidth: '100%',
-}));
-
-function ChapterProtocol() {
+export function Protocol() {
   return (
     <Box pb={3} id="protocol-overview">
       <Typography variant="h4" component="h2" pb={2}>
@@ -27,15 +18,19 @@ function ChapterProtocol() {
         <Typography gutterBottom variant="body1" component="p">
           A typical transaction may contain one or two hashes, such as:
         </Typography>
-        <CodePaper variant="outlined" elevation={0}>
-          6a265ea1ed0000015f334f14161952476adde3fbd843f93f647d47a0d7e30eb5d1635fb7569a2503
-        </CodePaper>
+        <CodeBlock
+          caption="Single-hash transaction"
+          language="text"
+          code="6a265ea1ed0000015f334f14161952476adde3fbd843f93f647d47a0d7e30eb5d1635fb7569a2503"
+        />
         <Typography gutterBottom variant="body1" component="p">
           or like that:
         </Typography>
-        <CodePaper variant="outlined" elevation={0}>
-          6a465ea1ed0000015bbbbbee48b735693478140de1b7f09fe0acddc0c7bce87f8665074efe53410f7158380aca149fa8422fb1274a69155303d4aaa76bf67defe0bb31628293afd2
-        </CodePaper>
+        <CodeBlock
+          caption="Two-hash transaction"
+          language="text"
+          code="6a465ea1ed0000015bbbbbee48b735693478140de1b7f09fe0acddc0c7bce87f8665074efe53410f7158380aca149fa8422fb1274a69155303d4aaa76bf67defe0bb31628293afd2"
+        />
         <Typography gutterBottom variant="body1" component="p">
           The key difference between the two transactions is that the second one includes two hashes,
           while the first one only has one.
@@ -45,37 +40,31 @@ function ChapterProtocol() {
         <Typography gutterBottom variant="body1" component="p">
           Let&apos;s take a closer look at what makes up the transaction:
         </Typography>
-        <CodePaper variant="outlined" elevation={0}>
-          <b>6a46</b>
+        <CodeBlock
+          caption="Transaction anatomy"
+          language="bash"
+          code={`# OP_RETURN script opcode (hex)
+6a46
+
+# "Sealed" identifier — hex word that marks stamp transactions
+5ea1ed
+
+# Protocol version (0.0.1, semantic versioning — legacy versions stay supported)
+000001
+
+# First SHA-256 hash
+5bbbbbee48b735693478140de1b7f09fe0acddc0c7bce87f8665074efe53410f
+
+# Second SHA-256 hash (optional — present only in two-hash transactions)
+7158380aca149fa8422fb1274a69155303d4aaa76bf67defe0bb31628293afd2`}
+        />
+        <Typography gutterBottom variant="body1" component="p" sx={{ pt: 1 }}>
+          For the full protocol reference, semantic versioning conventions are described at
           {' '}
-          - This is the hexadecimal representation of the OP_RETURN script
-          <br />
-          <br />
-          <b>5ea1ed</b>
-          {' '}
-          - A unique sequence of characters that helps identify the stamp transaction and process it. This is known as a &ldquo;hex word&rdquo; and reads as &ldquo;Sealed&rdquo;.
-          <br />
-          <br />
-          <b>000001</b>
-          {' '}
-          - The protocol version. The current version at the time of writing is 0.0.1, using
-          {' '}
-          <NextMuiLink rel="nofollow" href="https://semver.org/">semantic versioning</NextMuiLink>
-          . All future versions shall support legacy protocols.
-          <br />
-          <br />
-          <b>5bbbbbee48b735693478140de1b7f09fe0acddc0c7bce87f8665074efe53410f</b>
-          {' '}
-          - The first sha256 hash.
-          <br />
-          <br />
-          <b>7158380aca149fa8422fb1274a69155303d4aaa76bf67defe0bb31628293afd2</b>
-          {' '}
-          - The second sha256 hash (if present).
-        </CodePaper>
+          <NextMuiLink rel="nofollow" href="https://semver.org/">semver.org</NextMuiLink>
+          .
+        </Typography>
       </Box>
     </Box>
   );
 }
-
-export const Protocol = React.memo(ChapterProtocol);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import {
@@ -9,13 +9,20 @@ import {
   Box,
   Stack,
   Divider,
+  Typography,
+  LinearProgress,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
-import { menuItems } from './constants';
+import { useRouteNavigating } from '@/hooks';
+import {
+  menuItems,
+  isMenuGroup,
+  MenuLeaf,
+} from './constants';
 import { ModeToggle } from './Mode';
 
 const SubMenuContainer = styled(Container)(() => ({
@@ -36,9 +43,42 @@ const MenuButton = styled(Button)(({ theme }) => ({
   fontWeight: 600,
 }));
 
+const ChildButton = styled(Button)(({ theme }) => ({
+  paddingLeft: theme.spacing(3),
+  paddingRight: theme.spacing(3),
+  fontWeight: 500,
+  textTransform: 'none',
+}));
+
+interface LeafLinkProps {
+  leaf: MenuLeaf;
+  currentPath: string;
+  ButtonComponent: typeof MenuButton;
+}
+
+function LeafLink({
+  leaf,
+  currentPath,
+  ButtonComponent,
+}: LeafLinkProps) {
+  const isCurrent = currentPath === leaf.href;
+  return (
+    <Link href={leaf.href} passHref>
+      <ButtonComponent
+        variant={isCurrent ? 'contained' : 'text'}
+        disableElevation
+        color="primary"
+      >
+        {leaf.label}
+      </ButtonComponent>
+    </Link>
+  );
+}
+
 export function NavMenuMobile() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const navigating = useRouteNavigating();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -47,6 +87,13 @@ export function NavMenuMobile() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  // Drawer doubles as a loading screen while the next page streams in.
+  useEffect(() => {
+    if (open && !navigating) {
+      setOpen(false);
+    }
+  }, [open, navigating]);
 
   return (
     <>
@@ -64,6 +111,18 @@ export function NavMenuMobile() {
         open={open}
         onClose={handleClose}
       >
+        {navigating && (
+          <LinearProgress
+            color="primary"
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              zIndex: 2,
+            }}
+          />
+        )}
         <SubMenuContainer>
           <Box>
             <Image
@@ -91,21 +150,48 @@ export function NavMenuMobile() {
           </Toolbar>
         </SubMenuContainer>
         <MenuContainer>
-          <Stack alignItems="center">
-            {Object.entries(menuItems).map(([uri, name]: [string, string]) => {
-              const isCurrent = router.pathname === uri;
-              return (
-                <Box key={`mmenu-item-${uri.replace('/', '')}`} p={3}>
-                  <Link href={uri} passHref>
-                    <MenuButton
-                      variant={isCurrent ? 'contained' : 'text'}
-                      disableElevation
-                      color="primary"
-                      onClick={handleClose}
+          <Stack alignItems="center" spacing={1}>
+            {menuItems.map((entry) => {
+              if (isMenuGroup(entry)) {
+                return (
+                  <Box
+                    key={`mmenu-group-${entry.label}`}
+                    pt={2}
+                    sx={{ textAlign: 'center' }}
+                  >
+                    <Typography
+                      variant="overline"
+                      sx={{
+                        display: 'block',
+                        color: 'text.secondary',
+                        letterSpacing: '0.12em',
+                        mb: 0.5,
+                      }}
                     >
-                      {name}
-                    </MenuButton>
-                  </Link>
+                      {entry.label}
+                    </Typography>
+                    <Stack alignItems="center" spacing={0.5}>
+                      {entry.children.map((child) => (
+                        <LeafLink
+                          key={child.href}
+                          leaf={child}
+                          currentPath={router.pathname}
+                          ButtonComponent={ChildButton}
+                        />
+                      ))}
+                    </Stack>
+                  </Box>
+                );
+              }
+              return (
+                <Box
+                  key={`mmenu-item-${entry.href.replace('/', '') || 'root'}`}
+                >
+                  <LeafLink
+                    leaf={entry}
+                    currentPath={router.pathname}
+                    ButtonComponent={MenuButton}
+                  />
                 </Box>
               );
             })}
