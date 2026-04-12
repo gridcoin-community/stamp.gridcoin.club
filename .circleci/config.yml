@@ -21,13 +21,13 @@ jobs:
               git fetch --tags origin master:refs/remotes/origin/master
       - restore_cache:
           keys:
-            - v2-root-deps-{{ checksum "package-lock.json" }}
+            - v3-root-deps-{{ checksum "package-lock.json" }}
       - restore_cache:
           keys:
-            - v2-stamp-deps-{{ checksum "packages/grc-stamp/package-lock.json" }}
+            - v3-stamp-deps-{{ checksum "packages/grc-stamp/package-lock.json" }}
       - restore_cache:
           keys:
-            - v2-frontend-deps-{{ checksum "packages/grc-stamp-frontend/package-lock.json" }}
+            - v3-frontend-deps-{{ checksum "packages/grc-stamp-frontend/package-lock.json" }}
       - run:
           name: Install root dependencies
           command: |
@@ -61,15 +61,15 @@ jobs:
               echo "$HASH" > node_modules/.lockfile-hash
             fi
       - save_cache:
-          key: v2-root-deps-{{ checksum "package-lock.json" }}
+          key: v3-root-deps-{{ checksum "package-lock.json" }}
           paths:
             - ~/app/node_modules
       - save_cache:
-          key: v2-stamp-deps-{{ checksum "packages/grc-stamp/package-lock.json" }}
+          key: v3-stamp-deps-{{ checksum "packages/grc-stamp/package-lock.json" }}
           paths:
             - ~/app/packages/grc-stamp/node_modules
       - save_cache:
-          key: v2-frontend-deps-{{ checksum "packages/grc-stamp-frontend/package-lock.json" }}
+          key: v3-frontend-deps-{{ checksum "packages/grc-stamp-frontend/package-lock.json" }}
           paths:
             - ~/app/packages/grc-stamp-frontend/node_modules
       - run:
