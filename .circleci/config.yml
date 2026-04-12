@@ -8,6 +8,8 @@ defaults: &defaults
 jobs:
   install-and-detect:
     <<: *defaults
+    environment:
+      PIPELINE_BASE_REVISION: << pipeline.git.base_revision >>
     steps:
       - checkout
       - run:
@@ -20,24 +22,44 @@ jobs:
       - restore_cache:
           keys:
             - v2-root-deps-{{ checksum "package-lock.json" }}
-            - v2-root-deps-
       - restore_cache:
           keys:
             - v2-stamp-deps-{{ checksum "packages/grc-stamp/package-lock.json" }}
-            - v2-stamp-deps-
       - restore_cache:
           keys:
             - v2-frontend-deps-{{ checksum "packages/grc-stamp-frontend/package-lock.json" }}
-            - v2-frontend-deps-
       - run:
           name: Install root dependencies
-          command: npm ci
+          command: |
+            HASH=$(sha256sum package-lock.json | awk '{print $1}')
+            if [ -f node_modules/.lockfile-hash ] && [ "$(cat node_modules/.lockfile-hash)" = "$HASH" ]; then
+              echo "Root deps cache hit — skipping install"
+            else
+              npm ci
+              echo "$HASH" > node_modules/.lockfile-hash
+            fi
       - run:
           name: Install grc-stamp dependencies
-          command: cd ~/app/packages/grc-stamp && npm ci
+          command: |
+            cd ~/app/packages/grc-stamp
+            HASH=$(sha256sum package-lock.json | awk '{print $1}')
+            if [ -f node_modules/.lockfile-hash ] && [ "$(cat node_modules/.lockfile-hash)" = "$HASH" ]; then
+              echo "grc-stamp deps cache hit — skipping install"
+            else
+              npm ci
+              echo "$HASH" > node_modules/.lockfile-hash
+            fi
       - run:
           name: Install grc-stamp-frontend dependencies
-          command: cd ~/app/packages/grc-stamp-frontend && npm ci
+          command: |
+            cd ~/app/packages/grc-stamp-frontend
+            HASH=$(sha256sum package-lock.json | awk '{print $1}')
+            if [ -f node_modules/.lockfile-hash ] && [ "$(cat node_modules/.lockfile-hash)" = "$HASH" ]; then
+              echo "grc-stamp-frontend deps cache hit — skipping install"
+            else
+              npm ci
+              echo "$HASH" > node_modules/.lockfile-hash
+            fi
       - save_cache:
           key: v2-root-deps-{{ checksum "package-lock.json" }}
           paths:
@@ -55,27 +77,26 @@ jobs:
           command: |
             mkdir -p ~/app/.affected
 
-            # On master, compare each project against its own last release tag
-            # so that changes accumulated over failed/skipped prior builds still
-            # trigger a release. On other branches, compare against origin/master.
+            # Compare against the previous CI run on this branch.
+            # Release jobs on master always run (semantic-release decides
+            # whether to publish), so this only gates check/test jobs.
             check_affected() {
               local project="$1"
               local base
 
-              if [ "$CIRCLE_BRANCH" = "master" ]; then
-                base=$(git describe --tags --abbrev=0 --match "${project}-v*" 2>/dev/null || true)
-              fi
-              if [ -z "$base" ]; then
-                if [ "$CIRCLE_BRANCH" = "master" ]; then
-                  base="HEAD~1"
-                else
-                  base="origin/master"
-                fi
+              if [ -n "$PIPELINE_BASE_REVISION" ]; then
+                base="$PIPELINE_BASE_REVISION"
+              else
+                base="origin/master"
               fi
 
               echo "Checking $project against base: $base"
               local affected
-              affected=$(npx nx show projects --affected --base="$base" --head=HEAD)
+              affected=$(npx nx show projects --affected --base="$base" --head=HEAD 2>/dev/null) || {
+                echo "  WARNING: affected detection failed (base=$base), marking $project as affected"
+                echo "true" > ~/app/.affected/"$project"
+                return
+              }
               echo "  affected projects in range: $affected"
               if echo "$affected" | grep -qw "$project"; then
                 echo "true" > ~/app/.affected/"$project"
@@ -171,14 +192,6 @@ jobs:
       - attach_workspace:
           at: ~/app
       - run:
-          name: Check if grc-stamp is affected
-          command: |
-            FLAG=$(cat ~/app/.affected/grc-stamp 2>/dev/null || echo "false")
-            if [ "$FLAG" != "true" ]; then
-              echo "grc-stamp not affected, skipping release"
-              circleci-agent step halt
-            fi
-      - run:
           name: Trust SSH key
           command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
@@ -190,14 +203,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/app
-      - run:
-          name: Check if grc-stamp-frontend is affected
-          command: |
-            FLAG=$(cat ~/app/.affected/grc-stamp-frontend 2>/dev/null || echo "false")
-            if [ "$FLAG" != "true" ]; then
-              echo "grc-stamp-frontend not affected, skipping release"
-              circleci-agent step halt
-            fi
       - run:
           name: Trust SSH key
           command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
