@@ -10,15 +10,15 @@
     "syncpack": "^13.0.4"
   },
   "node": ">=22.0.0",
+  "nx": {},
   "packageManager": "npm@10.9.0",
   "private": true,
   "scripts": {
-    "dev:typecheck": "nx run-many --target=typecheck --all",
+    "dev:deps:fix": "syncpack fix-mismatches",
+    "dev:deps:lint": "syncpack lint",
+    "dev:test": "npm run dev:test:unit && npm run dev:test:lint",
     "dev:test:lint": "nx run-many --target=test:lint --all",
     "dev:test:unit": "nx run-many --target=test:unit --all",
-    "dev:test": "npm run dev:test:unit && npm run dev:test:lint",
-    "dev:deps:fix": "syncpack fix-mismatches",
-    "dev:deps:lint": "syncpack lint"
-  },
-  "nx": {}
+    "dev:typecheck": "nx run-many --target=typecheck --all"
+  }
 }

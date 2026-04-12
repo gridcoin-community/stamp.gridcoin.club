@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+ 
 import { Typography, Box } from '@mui/material';
 import React from 'react';
 import { NextMuiLink } from '@/components/NextMuiLink';
@@ -6,8 +6,8 @@ import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 
 export function Protocol() {
   return (
-    <Box pb={3} id="protocol-overview">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="protocol-overview" sx={{ pb: 3 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Protocol Summary
       </Typography>
       <Box component="article">

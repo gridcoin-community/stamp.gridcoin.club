@@ -87,14 +87,21 @@ export function Result({ back, next, activeStep }: Props) {
   };
 
   return (
-    <Box display="flex" justifyContent="center" mt={4} mb={4}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        mt: 4,
+        mb: 4,
+      }}
+    >
       {isFundError && <ErrorInsufficientFunds back={back} />}
       <MainCard>
-        <Box display="flex">
+        <Box sx={{ display: 'flex' }}>
           {showFilePreview && <FilePreview file={fileData.file} preview={fileData.preview} />}
           <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
             <CardContent sx={{ flex: '1 0 auto' }}>
-              <Typography component="div" variant="h5" pb={1}>
+              <Typography component="div" variant="h5" sx={{ pb: 1 }}>
                 {fileData.file.name}
               </Typography>
               <BlockchainData isUploading={isUploading} />
@@ -102,15 +109,14 @@ export function Result({ back, next, activeStep }: Props) {
           </Box>
         </Box>
         <CardActions>
-          <Grid container alignItems="center" sx={{ width: '100%' }}>
+          <Grid container sx={{ width: '100%', alignItems: 'center' }}>
             <Grid>
               <Progress fileData={fileData} isUploading={isUploading} />
             </Grid>
             <Grid sx={{ width: '100%' }}>
               <Stack
                 direction="row"
-                justifyContent="flex-end"
-                sx={{ width: '100%' }}
+                sx={{ width: '100%', justifyContent: 'flex-end' }}
                 spacing={2}
               >
                 {finished ? (

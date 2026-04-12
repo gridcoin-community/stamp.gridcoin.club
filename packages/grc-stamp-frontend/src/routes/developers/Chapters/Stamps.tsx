@@ -1,6 +1,6 @@
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/jsx-no-useless-fragment */
+ 
+ 
+ 
 import React from 'react';
 import {
   Typography,
@@ -17,8 +17,8 @@ import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 
 export function Stamps() {
   return (
-    <Box pb={4} id="stamps">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="stamps" sx={{ pb: 4 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Stamps
       </Typography>
       <Box component="article">
@@ -51,7 +51,7 @@ export function Stamps() {
           whenever you need to look a stamp up in a portable way.
         </Alert>
 
-        <Typography variant="h6" component="h3" id="stamps-list" pt={2} pb={1}>
+        <Typography variant="h6" component="h3" id="stamps-list" sx={{ pt: 2, pb: 1 }}>
           List stamps
         </Typography>
         <Endpoint method="GET" path="/api/stamps" title="Paginated list" />
@@ -109,7 +109,7 @@ export function Stamps() {
 }`}
         />
 
-        <Typography variant="h6" component="h3" id="stamps-get" pt={3} pb={1}>
+        <Typography variant="h6" component="h3" id="stamps-get" sx={{ pt: 3, pb: 1 }}>
           Get a stamp by ID
         </Typography>
         <Endpoint method="GET" path="/api/stamps/:id" title="Single resource" />
@@ -178,7 +178,7 @@ export function Stamps() {
           with the standard error envelope.
         </Typography>
 
-        <Typography variant="h6" component="h3" id="stamps-create" pt={3} pb={1}>
+        <Typography variant="h6" component="h3" id="stamps-create" sx={{ pt: 3, pb: 1 }}>
           Create a stamp
         </Typography>
         <Endpoint method="POST" path="/api/stamps" title="Create a new stamp" />
@@ -190,7 +190,7 @@ export function Stamps() {
           {' '}
           transaction, which is broadcast to the Gridcoin network.
         </Typography>
-        <Typography variant="subtitle2" component="h4" pt={1} pb={0.5}>
+        <Typography variant="subtitle2" component="h4" sx={{ pt: 1, pb: 0.5 }}>
           Request body
         </Typography>
         <List dense>
@@ -269,7 +269,7 @@ export function Stamps() {
           {' '}
           until the scraper confirms the transaction on-chain.
         </Typography>
-        <Typography variant="subtitle2" component="h4" pt={1} pb={0.5}>
+        <Typography variant="subtitle2" component="h4" sx={{ pt: 1, pb: 0.5 }}>
           Status codes
         </Typography>
         <List dense>

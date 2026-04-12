@@ -23,7 +23,7 @@ export function useScrollSpy(ids: string[], offset = 120): string | null {
       for (let i = 0; i < ids.length; i += 1) {
         const el = document.getElementById(ids[i]);
         if (!el) {
-          // eslint-disable-next-line no-continue
+           
           continue;
         }
         const { top } = el.getBoundingClientRect();

@@ -31,7 +31,7 @@ export function ElevationScroll({ children }: Props) {
 }
 
 interface HeaderProps {
-  // eslint-disable-next-line react/require-default-props
+   
   showLinks?: boolean;
 }
 

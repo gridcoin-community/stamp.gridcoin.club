@@ -31,7 +31,7 @@ export function ErrorInsufficientFunds({ back }: Props) {
       <Box>
         <Card sx={style}>
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div" mb={3}>
+            <Typography gutterBottom variant="h5" component="div" sx={{ mb: 3 }}>
               Insufficient Funds
             </Typography>
             <Typography variant="body1" color="text.body2" sx={{ textAlign: 'justify' }}>
@@ -65,8 +65,7 @@ export function ErrorInsufficientFunds({ back }: Props) {
           <CardActions>
             <Stack
               direction="row"
-              justifyContent="flex-end"
-              sx={{ width: '100%' }}
+              sx={{ width: '100%', justifyContent: 'flex-end' }}
               spacing={2}
             >
               <Button variant="outlined" onClick={back}>Back to the main page</Button>

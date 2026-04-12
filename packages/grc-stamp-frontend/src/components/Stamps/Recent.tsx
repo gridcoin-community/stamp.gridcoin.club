@@ -53,7 +53,7 @@ export function RecentStamps() {
       stampsList = <LinearProgress color="secondary" />;
       break;
     case null:
-      // eslint-disable-next-line react/jsx-no-useless-fragment
+       
       stampsList = <></>;
       break;
     default:
@@ -64,7 +64,7 @@ export function RecentStamps() {
     <>
       <Wrapper>
         <HeaderWrapper>
-          <Typography component="h3" variant="h6" mb={2}>
+          <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
             Most Recent Stamps
           </Typography>
         </HeaderWrapper>

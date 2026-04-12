@@ -41,7 +41,7 @@ const ListItemTextResponsive = styled(ListItemText)(({ theme }) => ({
 
 interface Props {
   title: string,
-  // eslint-disable-next-line react/require-default-props
+   
   link?: string;
   value: string | number | undefined;
 }

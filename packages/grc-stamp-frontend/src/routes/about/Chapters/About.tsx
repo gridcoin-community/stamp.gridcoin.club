@@ -1,12 +1,12 @@
-/* eslint-disable max-len */
+ 
 import { Typography, Box } from '@mui/material';
 import React from 'react';
 import { NextMuiLink } from '@/components/NextMuiLink';
 
 export function About() {
   return (
-    <Box pb={3}>
-      <Typography variant="h4" component="h2" pb={2} id="about-the-service">
+    <Box sx={{ pb: 3 }}>
+      <Typography variant="h4" component="h2" id="about-the-service" sx={{ pb: 2 }}>
         About the Service
       </Typography>
       <Box component="article">

@@ -74,7 +74,7 @@ export function Page() {
           <ErrorContext.Provider value={errorContextValue}>
             <FilesContext.Provider value={fileContextValue}>
               <Instructions />
-              <Box width="100%">
+              <Box sx={{ width: '100%' }}>
                 <ColorizedSteppers activeStep={activeStep} />
                 <Box>
                   {activeStep === Steps.Select && <Upload next={handleNext} />}

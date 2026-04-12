@@ -7,7 +7,7 @@ type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 interface EndpointProps {
   method: Method;
   path: string;
-  // eslint-disable-next-line react/require-default-props
+   
   title?: string;
 }
 

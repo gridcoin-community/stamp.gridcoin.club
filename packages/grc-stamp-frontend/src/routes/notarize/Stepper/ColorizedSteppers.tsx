@@ -75,7 +75,7 @@ export function ColorizedSteppers({ activeStep }: Props) {
       <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
         {stepTitle.map((label) => (
           <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+            <StepLabel slots={{ stepIcon: ColorlibStepIcon }}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>

@@ -35,7 +35,7 @@ export function Instructions() {
       </IconWrapper>
       <TextBox>
         <GradientLine />
-        <Typography component="h1" variant="h4" pb={2}>
+        <Typography component="h1" variant="h4" sx={{ pb: 2 }}>
           Notarize Documents with the Gridcoin Blockchain
         </Typography>
         <Typography gutterBottom variant="body1" component="p">

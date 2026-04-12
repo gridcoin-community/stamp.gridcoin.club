@@ -32,13 +32,13 @@ class SSEManager {
           this.listeners[type].forEach((cb) => cb(data));
         }
       } catch {
-        // eslint-disable-next-line no-console
+         
         console.error('Failed to parse SSE message', e.data);
       }
     };
 
     this.eventSource.onerror = (e) => {
-      // eslint-disable-next-line no-console
+       
       console.error('SSE error:', e);
     };
   }

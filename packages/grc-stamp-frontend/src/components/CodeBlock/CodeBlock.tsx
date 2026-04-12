@@ -13,9 +13,9 @@ import { Highlight, themes } from 'prism-react-renderer';
 
 interface CodeBlockProps {
   code: string;
-  // eslint-disable-next-line react/require-default-props
+   
   language?: string;
-  // eslint-disable-next-line react/require-default-props
+   
   caption?: string;
 }
 
@@ -130,11 +130,11 @@ function CodeBlockInner({
             {tokens.map((line, i) => {
               const lineProps = getLineProps({ line });
               return (
-                // eslint-disable-next-line react/no-array-index-key
+                 
                 <div key={i} {...lineProps}>
                   {line.map((token, j) => {
                     const tokenProps = getTokenProps({ token });
-                    // eslint-disable-next-line react/no-array-index-key
+                     
                     return <span key={j} {...tokenProps} />;
                   })}
                 </div>

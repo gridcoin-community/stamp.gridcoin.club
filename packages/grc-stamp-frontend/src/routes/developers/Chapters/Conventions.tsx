@@ -1,6 +1,6 @@
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/jsx-no-useless-fragment */
+ 
+ 
+ 
 import React from 'react';
 import {
   Typography,
@@ -15,8 +15,8 @@ import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 
 export function Conventions() {
   return (
-    <Box pb={4} id="conventions">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="conventions" sx={{ pb: 4 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         JSON:API Conventions
       </Typography>
       <Box component="article">
@@ -27,7 +27,7 @@ export function Conventions() {
           order.
         </Typography>
 
-        <Typography variant="h6" component="h3" pt={2} pb={1}>
+        <Typography variant="h6" component="h3" sx={{ pt: 2, pb: 1 }}>
           Pagination
         </Typography>
         <List dense>
@@ -58,7 +58,7 @@ export function Conventions() {
           field with the total number of records matching the query.
         </Typography>
 
-        <Typography variant="h6" component="h3" pt={2} pb={1}>
+        <Typography variant="h6" component="h3" sx={{ pt: 2, pb: 1 }}>
           Sorting
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
@@ -80,7 +80,7 @@ export function Conventions() {
           .
         </Typography>
 
-        <Typography variant="h6" component="h3" pt={2} pb={1}>
+        <Typography variant="h6" component="h3" sx={{ pt: 2, pb: 1 }}>
           Sparse Fieldsets
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
@@ -95,7 +95,7 @@ export function Conventions() {
           in the list — JSON:API requires it on every resource object.
         </Typography>
 
-        <Typography variant="h6" component="h3" pt={2} pb={1}>
+        <Typography variant="h6" component="h3" sx={{ pt: 2, pb: 1 }}>
           Filtering
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
@@ -150,7 +150,7 @@ export function Conventions() {
           error.
         </Alert>
 
-        <Typography variant="h6" component="h3" pt={3} pb={1}>
+        <Typography variant="h6" component="h3" sx={{ pt: 3, pb: 1 }}>
           Example
         </Typography>
         <Typography gutterBottom variant="body1" component="p">

@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-one-expression-per-line */
+ 
+ 
 import React from 'react';
 import { Typography, Box } from '@mui/material';
 import { Endpoint } from '@/components/Endpoint/Endpoint';
@@ -7,8 +7,8 @@ import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 
 export function Wallet() {
   return (
-    <Box pb={4} id="wallet">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="wallet" sx={{ pb: 4 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Wallet
       </Typography>
       <Box component="article">
@@ -19,7 +19,7 @@ export function Wallet() {
           keeping up with the blockchain.
         </Typography>
 
-        <Typography variant="h6" component="h3" id="wallet-full" pt={2} pb={1}>
+        <Typography variant="h6" component="h3" id="wallet-full" sx={{ pt: 2, pb: 1 }}>
           Wallet info
         </Typography>
         <Endpoint method="GET" path="/api/wallet" title="Address, balance, last block" />
@@ -63,7 +63,7 @@ export function Wallet() {
           is the last Gridcoin block the scraper has processed.
         </Typography>
 
-        <Typography variant="h6" component="h3" id="wallet-balance" pt={3} pb={1}>
+        <Typography variant="h6" component="h3" id="wallet-balance" sx={{ pt: 3, pb: 1 }}>
           Balance only
         </Typography>
         <Endpoint method="GET" path="/api/wallet/balance" title="Lightweight balance check" />

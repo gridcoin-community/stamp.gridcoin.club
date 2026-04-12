@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-one-expression-per-line */
+ 
+ 
 import React from 'react';
 import {
   Typography,
@@ -12,8 +12,8 @@ import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 
 export function Errors() {
   return (
-    <Box pb={4} id="errors">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="errors" sx={{ pb: 4 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Errors
       </Typography>
       <Box component="article">
@@ -55,7 +55,7 @@ export function Errors() {
   -H 'Content-Type: application/vnd.api+json' \\
   -d '{"data":{"type":"stamps","attributes":{"hash":"not-a-hash"}}}'`}
         />
-        <Typography variant="h6" component="h3" pt={2} pb={1}>
+        <Typography variant="h6" component="h3" sx={{ pt: 2, pb: 1 }}>
           Common status codes
         </Typography>
         <List dense>

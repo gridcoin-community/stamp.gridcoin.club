@@ -104,7 +104,7 @@ describe('SSEManager', () => {
 
   it('should handle malformed JSON gracefully', async () => {
     const { default: sseManager } = await import('@/lib/sseManager');
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     sseManager.connect('http://localhost/events');
 
     // Should not throw
