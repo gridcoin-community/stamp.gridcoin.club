@@ -6,7 +6,6 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
-    'jest',
   ],
   extends: [
     // 'plugin:@typescript-eslint/recommended',
@@ -22,7 +21,14 @@ module.exports = {
     'no-case-declarations': 0,
     'jsx-a11y/anchor-is-valid': 0,
     'no-plusplus': 0,
-    'import/extensions': 0
+    'import/extensions': 0,
+    'import/no-extraneous-dependencies': ['error', {
+      devDependencies: [
+        'test/**',
+        '**/*.{test,spec}.{ts,tsx}',
+        'vitest.config.{ts,js}',
+      ],
+    }],
   },
   overrides: [
     {

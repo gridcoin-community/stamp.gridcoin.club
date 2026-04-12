@@ -14,7 +14,7 @@ import { useRouteNavigating } from '@/hooks';
 import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
 interface Props {
-  children: React.ReactElement;
+  children: React.ReactElement<React.ComponentProps<typeof AppBar>>;
 }
 
 export function ElevationScroll({ children }: Props) {

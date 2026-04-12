@@ -67,3 +67,16 @@ export const walletMock = {
     },
   },
 };
+
+export const statusMock = {
+  data: {
+    id: '1',
+    type: 'status',
+    attributes: {
+      name: 'grc-stamp',
+      version: 1,
+      maintenance: false,
+    },
+    links: { self: '/status' },
+  },
+};

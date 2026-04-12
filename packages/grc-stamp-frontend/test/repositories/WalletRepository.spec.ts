@@ -1,11 +1,11 @@
-import { expect } from 'chai';
+import { describe, it, expect, vi, type MockedObject } from 'vitest';
 import axios from 'axios';
 import { WalletEntity } from '@/entities/WalletEntity';
 import { WalletRepository } from '@/repositories/WalletRepository';
 import { walletMock } from './mocks';
 
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+vi.mock('axios');
+const mockedAxios = axios as MockedObject<typeof axios>;
 
 describe('WalletRepository', () => {
   it('Should get wallet infor and transform it to the entity', async () => {
@@ -15,7 +15,7 @@ describe('WalletRepository', () => {
 
     const repo = new WalletRepository();
     const entity = await repo.getWalletData() as WalletEntity;
-    expect(entity.address).to.be.equal(walletMock.data.attributes.address);
-    expect(entity.balance).to.be.equal(walletMock.data.attributes.balance);
+    expect(entity.address).toBe(walletMock.data.attributes.address);
+    expect(entity.balance).toBe(walletMock.data.attributes.balance);
   });
 });
