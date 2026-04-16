@@ -55,48 +55,46 @@ export class Scraper {
         true,
       );
       const { tx: txs } = block;
+      const re = new RegExp(`${OP_RETURN} ${this.blockPrefix}`);
       let foundAny = false;
-      txs.forEach((tx) => {
+      for (let i = 0; i < txs.length; i++) {
+        const tx = txs[i];
         const TXID = tx.txid;
-        const { vout: vouts } = tx;
-        vouts.forEach(async (vout) => {
-          const script = vout.scriptPubKey;
-          const { hex: hexString, asm } = script;
+        for (let j = 0; j < tx.vout.length; j++) {
+          const vout = tx.vout[j];
+          const { hex: hexString, asm } = vout.scriptPubKey;
+          if (!re.test(asm)) continue;
+
+          log.info('[Scraper] We have found transaction');
           const hex = Buffer.from(hexString);
-          const re = new RegExp(`${OP_RETURN} ${this.blockPrefix}`);
-          if (re.test(asm)) {
-            log.info('[Scraper] We have found transaction');
-            // Payload format: 12-hex-char prefix + up to two 64-hex-char hashes
-            const stamps2save = [
-              hex.toString('utf8', 16, 16 + 64),
-              hex.toString('utf8', 16 + 64, 16 + 128),
-            ].map((hash: string) => {
-              if (hash && hash.length) {
-                const stamp = new Stamp();
-                stamp.block = this.currentBlock + 1;
-                stamp.hash = hash;
-                stamp.protocol = PROTOCOL;
-                stamp.rawTransaction = hex.toString('utf8');
-                stamp.time = block.time;
-                stamp.tx = TXID;
-                stamp.type = StampsType.sha256;
+          // Payload format: 12-hex-char prefix + up to two 64-hex-char hashes
+          const stamps2save = [
+            hex.toString('utf8', 16, 16 + 64),
+            hex.toString('utf8', 16 + 64, 16 + 128),
+          ].map((hash: string) => {
+            if (!hash || !hash.length) return Promise.resolve();
+            const stamp = new Stamp();
+            stamp.block = this.currentBlock + 1;
+            stamp.hash = hash;
+            stamp.protocol = PROTOCOL;
+            stamp.rawTransaction = hex.toString('utf8');
+            stamp.time = block.time;
+            stamp.tx = TXID;
+            stamp.type = StampsType.sha256;
 
-                const transactionFoundEvent: TransactionFoundEvent = {
-                  type: 'transactionFound',
-                  data: { hash },
-                };
-                getEmitter().emit('transactionFound', transactionFoundEvent);
+            const transactionFoundEvent: TransactionFoundEvent = {
+              type: 'transactionFound',
+              data: { hash },
+            };
+            getEmitter().emit('transactionFound', transactionFoundEvent);
 
-                return stamp.saveOrUpdate();
-              }
-              return Promise.resolve();
-            });
+            return stamp.saveOrUpdate();
+          });
 
-            await Promise.all(stamps2save);
-            foundAny = true;
-          }
-        });
-      });
+          await Promise.all(stamps2save);
+          foundAny = true;
+        }
+      }
       if (foundAny) {
         emitPendingCount();
       }

@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { randomUUID } from 'node:crypto';
-import { getEmitter } from '../lib/emitter';
+import { emitPendingCount, getEmitter } from '../lib/emitter';
 import { Events, PendingCountEvent, ProcessBlockEvent } from '../types';
 import { log } from '../lib/log';
 
@@ -21,6 +21,8 @@ export class EventsService {
 
   private lastPendingCount: number | null = null;
 
+  private lastPendingCountAt = 0;
+
   private constructor(
     private clients: Client[] = [],
   ) {
@@ -35,11 +37,14 @@ export class EventsService {
     });
     getEmitter().on('pendingCount', (data: PendingCountEvent) => {
       this.lastPendingCount = data.data.count;
+      this.lastPendingCountAt = Date.now();
       this.broadcast(data);
     });
     setInterval(() => {
       this.ping();
     }, 15000);
+    // Prime the cache so the first SSE client doesn't see a stale value
+    emitPendingCount();
   }
 
   public ping(): void {
@@ -61,6 +66,11 @@ export class EventsService {
         data: { count: this.lastPendingCount },
       };
       res.write(`data: ${JSON.stringify(event)}\n\n`);
+    }
+
+    // Refresh if the cache is stale or missing
+    if (Date.now() - this.lastPendingCountAt > 30_000) {
+      emitPendingCount();
     }
 
     return id;
