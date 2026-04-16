@@ -48,6 +48,58 @@ describe('WalletRepository', () => {
 
       await expect(repository.getBalance()).rejects.toThrow('RPC Error');
     });
+
+    it('should return cached balance on subsequent calls within TTL', async () => {
+      mockRpc.getBalance.mockResolvedValue(mockBalance);
+
+      await repository.getBalance();
+      await repository.getBalance();
+      await repository.getBalance();
+
+      expect(mockRpc.getBalance).toHaveBeenCalledTimes(1);
+    });
+
+    it('should coalesce concurrent calls into a single RPC request', async () => {
+      mockRpc.getBalance.mockResolvedValue(mockBalance);
+
+      const results = await Promise.all([
+        repository.getBalance(),
+        repository.getBalance(),
+        repository.getBalance(),
+      ]);
+
+      expect(results).toEqual([mockBalance, mockBalance, mockBalance]);
+      expect(mockRpc.getBalance).toHaveBeenCalledTimes(1);
+    });
+
+    it('should refetch after cache expires', async () => {
+      mockRpc.getBalance
+        .mockResolvedValueOnce(100)
+        .mockResolvedValueOnce(50);
+
+      const first = await repository.getBalance();
+
+      // Expire the cache by backdating the fetch timestamp
+      (repository as any).balanceFetchedAt = 0;
+
+      const second = await repository.getBalance();
+
+      expect(first).toBe(100);
+      expect(second).toBe(50);
+      expect(mockRpc.getBalance).toHaveBeenCalledTimes(2);
+    });
+
+    it('should allow retry after a failed RPC call', async () => {
+      const error = new Error('RPC Error');
+      mockRpc.getBalance
+        .mockRejectedValueOnce(error)
+        .mockResolvedValueOnce(mockBalance);
+
+      await expect(repository.getBalance()).rejects.toThrow('RPC Error');
+
+      const result = await repository.getBalance();
+      expect(result).toBe(mockBalance);
+    });
   });
 
   describe('getWalletInfo', () => {

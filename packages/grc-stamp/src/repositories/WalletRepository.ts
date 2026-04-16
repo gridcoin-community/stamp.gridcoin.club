@@ -1,7 +1,15 @@
 import { rpc } from '../lib/gridcoin';
 import { Wallet } from '../models/Wallet';
 
+const BALANCE_TTL_MS = 15_000;
+
 export class WalletRepositoryClass {
+  private cachedBalance: number | null = null;
+
+  private balanceFetchedAt = 0;
+
+  private balanceInflight: Promise<number> | null = null;
+
   constructor(private grcRpc = rpc) {}
 
   public async getWalletInfo(): Promise<Wallet> {
@@ -20,7 +28,27 @@ export class WalletRepositoryClass {
   }
 
   public async getBalance(): Promise<number> {
-    return this.grcRpc.getBalance();
+    const now = Date.now();
+    if (this.cachedBalance !== null && now - this.balanceFetchedAt < BALANCE_TTL_MS) {
+      return this.cachedBalance;
+    }
+
+    // Coalesce concurrent callers onto a single RPC request
+    if (!this.balanceInflight) {
+      this.balanceInflight = this.grcRpc.getBalance()
+        .then((balance) => {
+          this.cachedBalance = balance;
+          this.balanceFetchedAt = Date.now();
+          this.balanceInflight = null;
+          return balance;
+        })
+        .catch((err) => {
+          this.balanceInflight = null;
+          throw err;
+        });
+    }
+
+    return this.balanceInflight;
   }
 }
 
