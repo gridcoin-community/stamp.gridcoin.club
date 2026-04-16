@@ -2,12 +2,22 @@ import { BaseEvent, EventType } from '@/types';
 
 type SSECallback = (data: any) => void;
 
+const READY_STATE_LABEL: Record<number, string> = {
+  0: 'CONNECTING',
+  1: 'OPEN',
+  2: 'CLOSED',
+};
+
 class SSEManager {
   private static instance: SSEManager;
 
   private eventSource: EventSource | null = null;
 
   private listeners: { [type: string]: SSECallback[] } = {};
+
+  private url: string | null = null;
+
+  private loggedError = false;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
@@ -22,7 +32,14 @@ class SSEManager {
   public connect(url: string) {
     if (this.eventSource) return;
 
+    this.url = url;
     this.eventSource = new EventSource(url);
+
+    this.eventSource.onopen = () => {
+      // eslint-disable-next-line no-console
+      console.info(`[SSE] connected to ${url}`);
+      this.loggedError = false;
+    };
 
     this.eventSource.onmessage = (e) => {
       try {
@@ -32,14 +49,22 @@ class SSEManager {
           this.listeners[type].forEach((cb) => cb(data));
         }
       } catch {
-         
-        console.error('Failed to parse SSE message', e.data);
+        // eslint-disable-next-line no-console
+        console.error('[SSE] failed to parse message', e.data);
       }
     };
 
-    this.eventSource.onerror = (e) => {
-       
-      console.error('SSE error:', e);
+    this.eventSource.onerror = () => {
+      // SSE error events carry no detail by design. Log what we can, once
+      // per disconnected streak — the browser retries in the background.
+      if (this.loggedError) return;
+      this.loggedError = true;
+      const state = this.eventSource?.readyState ?? -1;
+      // eslint-disable-next-line no-console
+      console.error(
+        `[SSE] connection error (url=${this.url}, state=${READY_STATE_LABEL[state] ?? state}).`
+        + ' Check that the backend is running and reachable.',
+      );
     };
   }
 
