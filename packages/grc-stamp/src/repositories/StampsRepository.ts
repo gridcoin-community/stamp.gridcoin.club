@@ -36,6 +36,23 @@ export class StampsRepositoryClass {
     });
   }
 
+  // Unpublished stamps (will cost burn fees) — used for the balance check
+  public async countPending(): Promise<number> {
+    return this.stamp.model.count({
+      where: {
+        block: null,
+        tx: null,
+        raw_transaction: null,
+        time: null,
+      },
+    });
+  }
+
+  // Unconfirmed stamps (queued + mempool) — used for the live UI counter
+  public async countInProgress(): Promise<number> {
+    return this.stamp.model.count({ where: { block: null } });
+  }
+
   public async getByHash(
     hash: string,
     hashType: StampsType = StampsType.sha256,
