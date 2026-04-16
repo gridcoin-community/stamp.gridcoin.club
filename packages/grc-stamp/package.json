@@ -112,8 +112,8 @@
     ]
   },
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc -w",
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rimraf ./dist",
     "commit": "git-cz",
     "dev": "npm-run-all -p build:watch start:dev",

@@ -137,18 +137,14 @@ export class StampsController extends Controller {
       if (result.error && result.error.details) {
         throw new Error(result.error.details[0].message);
       }
-    } catch (_e) {
+    } catch (e) {
+      const message = e instanceof Error && e.message
+        ? e.message
+        : HttpStatus.getStatusText(HttpStatus.BAD_REQUEST);
       this.res
         .status(HttpStatus.BAD_REQUEST)
         .send({
-          errors: [
-            new ErrorModel(
-              HttpStatus.BAD_REQUEST,
-              _e.message
-                ? _e.message
-                : HttpStatus.getStatusText(HttpStatus.BAD_REQUEST),
-            ),
-          ],
+          errors: [new ErrorModel(HttpStatus.BAD_REQUEST, message)],
         });
       return;
     }

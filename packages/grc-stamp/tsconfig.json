@@ -10,16 +10,19 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "sourceMap": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["node", "jest"],
+    "useUnknownInCatchVariables": true
     // "strict": true,
   },
   "include": [
     "src",
+    "tests"
   ],
   "exclude": [
     "node_modules",
+    "dist",
     "scripts/*.ts",
-    "./src/**/_*.ts",
-    "./src/**/*.spec.ts"
+    "./src/**/_*.ts"
   ]
 }
