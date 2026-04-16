@@ -89,6 +89,19 @@ describe('WalletRepository', () => {
       expect(mockRpc.getBalance).toHaveBeenCalledTimes(2);
     });
 
+    it('should force a fresh RPC call after resetCache()', async () => {
+      mockRpc.getBalance
+        .mockResolvedValueOnce(100)
+        .mockResolvedValueOnce(50);
+
+      await repository.getBalance();
+      repository.resetCache();
+      const second = await repository.getBalance();
+
+      expect(second).toBe(50);
+      expect(mockRpc.getBalance).toHaveBeenCalledTimes(2);
+    });
+
     it('should allow retry after a failed RPC call', async () => {
       const error = new Error('RPC Error');
       mockRpc.getBalance

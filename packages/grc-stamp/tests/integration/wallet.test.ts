@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import request from 'supertest';
 import { rpc } from '../../src/lib/gridcoin';
 import { app, server } from '../../src/api';
+import { WalletRepository } from '../../src/repositories/WalletRepository';
 import { EntityType } from '../../src/presenters/types';
 
 const ADDRESS = 'S74mjeRTQbpPzDoibmnMz23hThXCxRUMhn';
@@ -43,6 +44,7 @@ describe('Wallet endpoints', () => {
   });
   it('GET /wallet failure', async () => {
     rpc.getBalance = jest.fn(() => Promise.reject(new Error('a')));
+    WalletRepository.resetCache();
     const res = await request(app)
       .get('/wallet')
       .send({});

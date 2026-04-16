@@ -27,6 +27,12 @@ export class WalletRepositoryClass {
     return this.grcRpc.getAccountAddress('');
   }
 
+  public resetCache(): void {
+    this.cachedBalance = null;
+    this.balanceFetchedAt = 0;
+    this.balanceInflight = null;
+  }
+
   public async getBalance(): Promise<number> {
     const now = Date.now();
     if (this.cachedBalance !== null && now - this.balanceFetchedAt < BALANCE_TTL_MS) {

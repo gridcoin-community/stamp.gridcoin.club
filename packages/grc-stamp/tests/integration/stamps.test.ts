@@ -7,6 +7,7 @@ import { app, server } from '../../src/api';
 import { PROTOCOL } from '../../src/constants';
 import { rpc } from '../../src/lib/gridcoin';
 import { disconnect, getPrisma } from '../../src/lib/prisma';
+import { WalletRepository } from '../../src/repositories/WalletRepository';
 import { cleanUp, initDatabase } from './helpers';
 import { EntityType } from '../../src/presenters/types';
 
@@ -106,6 +107,7 @@ describe('POST /stamps', () => {
 
   it('should fail if there is no enough funds', async () => {
     rpc.getBalance = jest.fn(() => Promise.resolve(0));
+    WalletRepository.resetCache();
     const res = await request(app)
       .post('/stamps')
       .send({
