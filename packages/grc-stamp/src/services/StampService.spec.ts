@@ -7,16 +7,22 @@ import { MINIMUM, MIN_FEE } from '../constants';
 jest.mock('@prisma/client');
 jest.mock('../lib/gridcoin');
 jest.mock('../lib/log');
+jest.mock('../lib/emitter', () => ({
+  getEmitter: () => ({ emit: jest.fn() }),
+  emitPendingCount: jest.fn(),
+}));
 
 describe('StampService', () => {
   let service: StampService;
   let mockPrisma: jest.Mocked<PrismaClient>;
 
   beforeEach(() => {
+    jest.clearAllMocks();
     mockPrisma = {
       stamps: {
         findMany: jest.fn(),
         updateMany: jest.fn(),
+        count: jest.fn().mockResolvedValue(0),
       },
     } as any;
 
@@ -41,7 +47,9 @@ describe('StampService', () => {
       ];
       const mockTxId = 'testTxId';
 
-      (mockPrisma.stamps.findMany as any).mockResolvedValue(mockStamps);
+      (mockPrisma.stamps.findMany as any)
+        .mockResolvedValueOnce(mockStamps)
+        .mockResolvedValueOnce([]);
       (rpc.burn as jest.Mock).mockResolvedValue(mockTxId);
 
       await service.publishStamp();
@@ -55,6 +63,37 @@ describe('StampService', () => {
         data: {
           tx: mockTxId,
         },
+      });
+    });
+
+    it('should drain multiple batches until the queue is empty', async () => {
+      const batch1 = [
+        { id: 1, hash: 'hash1' },
+        { id: 2, hash: 'hash2' },
+      ];
+      const batch2 = [
+        { id: 3, hash: 'hash3' },
+      ];
+
+      (mockPrisma.stamps.findMany as any)
+        .mockResolvedValueOnce(batch1)
+        .mockResolvedValueOnce(batch2)
+        .mockResolvedValueOnce([]);
+      (rpc.burn as jest.Mock)
+        .mockResolvedValueOnce('tx1')
+        .mockResolvedValueOnce('tx2');
+
+      await service.publishStamp();
+
+      expect(rpc.burn).toHaveBeenCalledTimes(2);
+      expect(mockPrisma.stamps.updateMany).toHaveBeenCalledTimes(2);
+      expect(mockPrisma.stamps.updateMany).toHaveBeenCalledWith({
+        where: { id: { in: [1, 2] } },
+        data: { tx: 'tx1' },
+      });
+      expect(mockPrisma.stamps.updateMany).toHaveBeenCalledWith({
+        where: { id: { in: [3] } },
+        data: { tx: 'tx2' },
       });
     });
   });
