@@ -5,6 +5,7 @@ import { StampEntity } from '@/entities/StampEntity';
 import { StampRepository } from '@/repositories/StampsRepository';
 import { useInterval, useSSEEvent } from '@/hooks';
 import { StampsList } from './StampsList';
+import { PendingCount } from './PendingCount';
 
 const Wrapper = styled(Box)((() => ({
   display: 'flex',
@@ -64,9 +65,20 @@ export function RecentStamps() {
     <>
       <Wrapper>
         <HeaderWrapper>
-          <Typography component="h3" variant="h6" sx={{ mb: 2 }}>
-            Most Recent Stamps
-          </Typography>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 1,
+            mb: 2,
+          }}
+          >
+            <Typography component="h3" variant="h6">
+              Most Recent Stamps
+            </Typography>
+            <PendingCount />
+          </Box>
         </HeaderWrapper>
       </Wrapper>
       <Box>
