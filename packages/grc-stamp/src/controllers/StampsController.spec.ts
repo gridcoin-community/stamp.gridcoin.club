@@ -12,6 +12,10 @@ const validHash = 'abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456
 jest.mock('../repositories/WalletRepository');
 jest.mock('../models/Stamp');
 jest.mock('.prisma/client');
+jest.mock('../lib/emitter', () => ({
+  getEmitter: () => ({ emit: jest.fn() }),
+  emitPendingCount: jest.fn(),
+}));
 
 describe('StampsController', () => {
   let req: Request;
@@ -21,6 +25,7 @@ describe('StampsController', () => {
     listStamps: jest.Mock;
     getByHash: jest.Mock;
     createStamp: jest.Mock;
+    countPending: jest.Mock;
   };
   let walletRepository: {
     getBalance: jest.Mock;
@@ -39,6 +44,7 @@ describe('StampsController', () => {
       listStamps: jest.fn(),
       getByHash: jest.fn(),
       createStamp: jest.fn(),
+      countPending: jest.fn().mockResolvedValue(0),
     };
     walletRepository = {
       getBalance: jest.fn(),
@@ -212,6 +218,26 @@ describe('StampsController', () => {
       await controller.createStamp(validInput);
 
       expect(walletRepository.getBalance).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_ACCEPTABLE);
+      expect(res.send).toHaveBeenCalledWith({
+        errors: [
+          expect.objectContaining({
+            status: HttpStatus.NOT_ACCEPTABLE,
+            title: 'Insufficient Funds',
+          }),
+        ],
+      });
+    });
+
+    it('should return 406 if pending stamps exhaust the effective balance', async () => {
+      // Balance is 2 GRC, but 2000 pending stamps need ~1 GRC to publish,
+      // plus this new one pushes effective balance below MINIMUM_WALLET_AMOUNT (1)
+      walletRepository.getBalance.mockResolvedValue(2);
+      stampsRepository.countPending.mockResolvedValue(2000);
+
+      await controller.createStamp(validInput);
+
+      expect(stampsRepository.countPending).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_ACCEPTABLE);
       expect(res.send).toHaveBeenCalledWith({
         errors: [

@@ -11,8 +11,11 @@ import { Stamp } from '../models/Stamp';
 import { StampData, StampInput, StampSchema } from './schemas/StampSchema';
 import { ErrorModel } from '../models/Error';
 import { WalletRepository } from '../repositories/WalletRepository';
+import { MINIMUM, MIN_FEE } from '../constants';
 import { config } from '../config';
 import { log } from '../lib/log';
+import { withHashLock } from '../lib/hashLock';
+import { emitPendingCount } from '../lib/emitter';
 
 const { Store } = yayson();
 export class StampsController extends Controller {
@@ -96,11 +99,16 @@ export class StampsController extends Controller {
   public async createStamp(input: StampInput): Promise<void> {
     const store = new Store();
     let data: StampData;
-    // Check wallet balance
     try {
-      const balance = await this.walletRepository.getBalance();
-      if (balance < Number(config.MINIMUM_WALLET_AMOUNT)) {
-        // insufficient funds
+      const [balance, pendingCount] = await Promise.all([
+        this.walletRepository.getBalance(),
+        this.repository.countPending(),
+      ]);
+      const costPerTx = MINIMUM + MIN_FEE;
+      // +1 accounts for the stamp we're about to create
+      const pendingCost = Math.ceil((pendingCount + 1) / 2) * costPerTx;
+      const effectiveBalance = balance - pendingCost;
+      if (effectiveBalance < Number(config.MINIMUM_WALLET_AMOUNT)) {
         this.res.status(HttpStatus.NOT_ACCEPTABLE).send({
           errors: [
             new ErrorModel(
@@ -145,35 +153,39 @@ export class StampsController extends Controller {
       return;
     }
 
-    // Find existing record
-    const existing = await this.repository.getByHash(data.hash, data.hashType as StampsType);
-    if (existing) {
-      this.res
-        .status(HttpStatus.OK)
-        .send(this.render<stamps>(existing));
-      return;
-    }
+    const hashType = data.hashType
+      ? data.hashType as StampsType
+      : StampsType.sha256;
 
-    try {
-      const result = await this.repository.createStamp(
-        data.hash,
-        data.hashType
-          ? data.hashType as StampsType
-          : StampsType.sha256,
-      );
-      this.res
-        .status(HttpStatus.CREATED)
-        .send(this.render<stamps>(result));
-    } catch (e) {
-      log.error(e);
-      this.res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
-        errors: [
-          new ErrorModel(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
-          ),
-        ],
-      });
-    }
+    // Serialize check+insert per hash to prevent duplicate stamps from
+    // concurrent requests. Different hashes still proceed in parallel.
+    await withHashLock(`${data.hash}:${hashType}`, async () => {
+      const existing = await this.repository.getByHash(data.hash, hashType);
+      if (existing) {
+        this.res
+          .status(HttpStatus.OK)
+          .send(this.render<stamps>(existing));
+        return;
+      }
+
+      try {
+        const result = await this.repository.createStamp(data.hash, hashType);
+        this.res
+          .status(HttpStatus.CREATED)
+          .send(this.render<stamps>(result));
+
+        emitPendingCount();
+      } catch (e) {
+        log.error(e);
+        this.res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
+          errors: [
+            new ErrorModel(
+              HttpStatus.INTERNAL_SERVER_ERROR,
+              HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR),
+            ),
+          ],
+        });
+      }
+    });
   }
 }
