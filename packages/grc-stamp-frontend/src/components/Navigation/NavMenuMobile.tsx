@@ -63,7 +63,7 @@ function LeafLink({
 }: LeafLinkProps) {
   const isCurrent = currentPath === leaf.href;
   return (
-    <Link href={leaf.href} passHref>
+    <Link href={leaf.href} style={{ textDecoration: 'none' }}>
       <ButtonComponent
         variant={isCurrent ? 'contained' : 'text'}
         disableElevation

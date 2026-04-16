@@ -64,7 +64,7 @@ export function Header({ showLinks = true }: HeaderProps) {
           )}
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
             <Box>
-              <Link passHref href="/">
+              <Link href="/">
                 {isMobile && mounted ? (
                   <Image
                     src="/ic-logo-mobile.svg"
