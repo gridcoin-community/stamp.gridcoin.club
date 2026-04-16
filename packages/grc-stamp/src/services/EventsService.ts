@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { randomUUID } from 'node:crypto';
 import { getEmitter } from '../lib/emitter';
-import { Events, ProcessBlockEvent } from '../types';
+import { Events, PendingCountEvent, ProcessBlockEvent } from '../types';
 import { log } from '../lib/log';
 
 interface Client {
@@ -19,6 +19,8 @@ export class EventsService {
     return this.instance;
   }
 
+  private lastPendingCount: number | null = null;
+
   private constructor(
     private clients: Client[] = [],
   ) {
@@ -29,6 +31,10 @@ export class EventsService {
       this.broadcast(data);
     });
     getEmitter().on('transactionFound', (data: Events) => {
+      this.broadcast(data);
+    });
+    getEmitter().on('pendingCount', (data: PendingCountEvent) => {
+      this.lastPendingCount = data.data.count;
       this.broadcast(data);
     });
     setInterval(() => {
@@ -47,6 +53,16 @@ export class EventsService {
     const id = randomUUID();
     this.clients.push({ id, res });
     log.info(`[EventsService] Clients connected: ${this.clients.length}`);
+
+    // Send last known pending count so the client doesn't start blank
+    if (this.lastPendingCount !== null) {
+      const event: PendingCountEvent = {
+        type: 'pendingCount',
+        data: { count: this.lastPendingCount },
+      };
+      res.write(`data: ${JSON.stringify(event)}\n\n`);
+    }
+
     return id;
   }
 

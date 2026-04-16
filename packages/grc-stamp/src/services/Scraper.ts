@@ -5,7 +5,7 @@ import { rpc } from '../lib/gridcoin';
 import { log } from '../lib/log';
 import { redis as redisConn } from '../lib/redis';
 import { Stamp } from '../models/Stamp';
-import { getEmitter } from '../lib/emitter';
+import { emitPendingCount, getEmitter } from '../lib/emitter';
 import { ProcessBlockEvent, TransactionFoundEvent } from '../types';
 
 export class Scraper {
@@ -54,14 +54,11 @@ export class Scraper {
         this.currentBlock + 1,
         true,
       );
-      // go through transactions
       const { tx: txs } = block;
+      let foundAny = false;
       txs.forEach((tx) => {
-      // console.log(JSON.stringify(tx, null, 2));
         const TXID = tx.txid;
-        // looking for the vout
         const { vout: vouts } = tx;
-        // looping through all vouts, looking for the specific data (OP_RETURN)
         vouts.forEach(async (vout) => {
           const script = vout.scriptPubKey;
           const { hex: hexString, asm } = script;
@@ -69,18 +66,7 @@ export class Scraper {
           const re = new RegExp(`${OP_RETURN} ${this.blockPrefix}`);
           if (re.test(asm)) {
             log.info('[Scraper] We have found transaction');
-            // console.log(hex.toString('utf8'));
-            // console.log(hexString);
-            // console.log(JSON.stringify(block, null, 2));
-            // console.log(script.hex, TXID);
-            // Now use protocol and parse result, translate it to the stamp object
-            // then compare the result with database results
-            // if record exists, update it
-            // if record doesn't exists - create it
-            // (because someone else could have created the transaction using my protocol)
-            // get protocol version
-            // const protocol = hex.toString('utf8', 10, 16)
-            // I know there will be maximum 2 hashes
+            // Payload format: 12-hex-char prefix + up to two 64-hex-char hashes
             const stamps2save = [
               hex.toString('utf8', 16, 16 + 64),
               hex.toString('utf8', 16 + 64, 16 + 128),
@@ -95,12 +81,9 @@ export class Scraper {
                 stamp.tx = TXID;
                 stamp.type = StampsType.sha256;
 
-                // Send transaction found event
                 const transactionFoundEvent: TransactionFoundEvent = {
                   type: 'transactionFound',
-                  data: {
-                    hash,
-                  },
+                  data: { hash },
                 };
                 getEmitter().emit('transactionFound', transactionFoundEvent);
 
@@ -110,11 +93,13 @@ export class Scraper {
             });
 
             await Promise.all(stamps2save);
+            foundAny = true;
           }
         });
       });
-      // save all stamps
-      // we have parsed the block
+      if (foundAny) {
+        emitPendingCount();
+      }
       await this.redis.set(config.REDIS_SCRAPER_KEY, this.currentBlock + 1);
     } catch (e) {
       log.error(e);
