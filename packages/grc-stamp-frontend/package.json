@@ -28,6 +28,7 @@
     "react": "19.2.5",
     "react-dom": "19.2.5",
     "react-dropzone": "15.0.0",
+    "react-transition-group": "^4.4.5",
     "sharp": "^0.34.5",
     "yayson": "^3.0.0"
   },
