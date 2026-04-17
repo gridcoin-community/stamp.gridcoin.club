@@ -1,3 +1,17 @@
+# [grc-stamp-frontend-v1.4.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.3.1...grc-stamp-frontend-v1.4.0) (2026-04-17)
+
+
+### Bug Fixes
+
+* fix SSE connection issues ([3115c0f](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/3115c0fa03df3f0fed933ae6a16c8eae51c6b245))
+* **grc-stamp-frontend:** restore URL updates on client-side navigation ([1b7e423](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1b7e423f8c1586bc425fde4507a46647bf69aa8d))
+
+
+### Features
+
+* **grc-stamp-frontend:** animate incoming stamps in the recent list ([9dac4a1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/9dac4a105fb0dfb0a001921fdc55f06d0e6b9064))
+* **grc-stamp-frontend:** live pending-stamp counter on homepage ([a416f73](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/a416f732675cbe4ba866b1b105523f3305ca67c2))
+
 # [grc-stamp-frontend-v1.3.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.3.0...grc-stamp-frontend-v1.3.1) (2026-04-11)
 
 
