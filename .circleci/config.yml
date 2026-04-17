@@ -195,6 +195,12 @@ jobs:
           name: Trust SSH key
           command: mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts && ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run:
+          name: Sync with master
+          command: |
+            cd ~/app
+            git fetch origin master
+            git reset --hard origin/master
+      - run:
           name: Semantic release
           command: cd ~/app/packages/grc-stamp && npm run semantic-release
 
@@ -316,17 +322,18 @@ workflows:
           requires:
             - install-and-detect
 
-      - grc-stamp-release:
+      - grc-stamp-frontend-release:
           requires:
-            - grc-stamp-checks
-            - grc-stamp-integration
+            - grc-stamp-frontend-checks
           filters:
             branches:
               only: master
 
-      - grc-stamp-frontend-release:
+      - grc-stamp-release:
           requires:
-            - grc-stamp-frontend-checks
+            - grc-stamp-checks
+            - grc-stamp-integration
+            - grc-stamp-frontend-release
           filters:
             branches:
               only: master
