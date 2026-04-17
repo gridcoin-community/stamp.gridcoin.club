@@ -1,3 +1,25 @@
+# [grc-stamp-v1.3.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.2.2...grc-stamp-v1.3.0) (2026-04-17)
+
+
+### Bug Fixes
+
+* add clear cache function, fix integration tests ([71c9b8f](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/71c9b8fe19e10b2836689228d64eb6022544c083))
+* fix stale pending message ([59852f1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/59852f1bd33ad52388870dfe30cfd055a1076cc0))
+* **grc-stamp:** prevent duplicate stamps from concurrent requests with same hash ([fd4d699](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/fd4d6992b6689fd8de331d20ccc5e4d24bacc6f4))
+
+
+### Features
+
+* **grc-stamp:** broadcast live pending-stamp count via SSE ([f8a88ae](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f8a88ae2ae1edc2ba8e2e78012f19bb29d75efd8))
+
+
+### Performance Improvements
+
+* **grc-stamp:** account for queued stamps' burn cost in balance check ([766d9b6](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/766d9b697c867e8d32225e11f62c7386170e2429))
+* **grc-stamp:** cache wallet balance with 15s TTL and coalesce concurrent calls ([cffe622](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/cffe622589b382ca6bcd2a171344c36a53b23389))
+* **grc-stamp:** drain pending stamps per publish cycle ([4e59429](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/4e59429b3b9b61e35f23f3cbc6c3b71f92569e3e))
+* **grc-stamp:** index tx column to speed up pending-stamp queries ([f68654d](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f68654d2fa80e9c353e6f40145c628774b0b13b5))
+
 # [grc-stamp-v1.2.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.2.1...grc-stamp-v1.2.2) (2026-04-11)
 
 
