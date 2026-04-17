@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable no-console */
 import React from 'react';
 import path from 'node:path';
 import { promises as fs } from 'node:fs';
+import sharp from 'sharp';
+import Identicon from 'identicon.js';
 import { ImageResponse } from 'next/og';
 import type { GetServerSideProps } from 'next';
 import type { ServerResponse } from 'node:http';
-import { identiconDataUrl } from '@/lib/identicon';
 import { StampRepository } from '@/repositories/StampsRepository';
 
 const WIDTH = 1200;
@@ -37,17 +37,27 @@ function toArrayBuffer(buf: Buffer): ArrayBuffer {
 }
 
 async function loadAssets(): Promise<OgAssets> {
-  const [regular, semibold, logo] = await Promise.all([
+  const [regular, semibold, logoSvg] = await Promise.all([
     fs.readFile(path.join(FONT_DIR, 'SFUIText-Regular.woff')),
     fs.readFile(path.join(FONT_DIR, 'SFUIText-Semibold.woff')),
-    fs.readFile(LOGO_PATH, 'utf-8').catch(() => null),
+    fs.readFile(LOGO_PATH).catch(() => null),
   ]);
+  // Rasterize the logo SVG to an RGBA PNG up front. Satori can technically
+  // accept `data:image/svg+xml` URLs, but the Satori→embedded-SVG→Sharp
+  // pipeline in @vercel/og trips up librsvg for any non-trivial SVG. Feeding
+  // Satori a plain PNG sidesteps that entirely.
+  let logoDataUrl: string | null = null;
+  if (logoSvg) {
+    const pngBuffer = await sharp(logoSvg)
+      .resize({ width: 500, fit: 'inside' })
+      .png({ palette: false })
+      .toBuffer();
+    logoDataUrl = `data:image/png;base64,${pngBuffer.toString('base64')}`;
+  }
   return {
     fontRegular: toArrayBuffer(regular),
     fontSemibold: toArrayBuffer(semibold),
-    logoDataUrl: logo
-      ? `data:image/svg+xml;base64,${Buffer.from(logo, 'utf-8').toString('base64')}`
-      : null,
+    logoDataUrl,
   };
 }
 
@@ -80,6 +90,17 @@ async function writeCache(hash: string, buffer: Buffer): Promise<void> {
   }
 }
 
+// Rasterize the identicon to an RGBA PNG server-side. Satori can't decode
+// identicon.js's colormap PNG, and passing identicon.js's raw SVG through
+// Satori → embedded-SVG → Sharp pipeline trips up librsvg. Running Sharp
+// ourselves first gives Satori a clean RGBA PNG data URL it can consume.
+async function identiconPngDataUrl(hash: string, size: number): Promise<string> {
+  const svgBase64 = new Identicon(hash, { size, format: 'svg' }).toString();
+  const svgBuffer = Buffer.from(svgBase64, 'base64');
+  const pngBuffer = await sharp(svgBuffer).png({ palette: false }).toBuffer();
+  return `data:image/png;base64,${pngBuffer.toString('base64')}`;
+}
+
 function writeError(res: ServerResponse, status: number, body: string): void {
   res.statusCode = status;
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
@@ -107,9 +128,10 @@ type RenderResult =
   | { status: 'ok'; buffer: Buffer };
 
 async function renderImage(hash: string): Promise<RenderResult> {
-  const [stamp, assets] = await Promise.all([
+  const [stamp, assets, identiconPng] = await Promise.all([
     stampRepository.findStampByHash(hash, true).catch(() => null),
     getAssets(),
+    identiconPngDataUrl(hash, 240),
   ]);
 
   // Only render images for fully-confirmed stamps. Pending stamps 404 so
@@ -148,8 +170,8 @@ async function renderImage(hash: string): Promise<RenderResult> {
           {assets.logoDataUrl ? (
             <img
               src={assets.logoDataUrl}
-              width="250"
-              height="80"
+              width={250}
+              height={80}
               alt=""
               style={{ objectFit: 'contain' }}
             />
@@ -184,9 +206,9 @@ async function renderImage(hash: string): Promise<RenderResult> {
             }}
           >
             <img
-              src={identiconDataUrl(hash, 240, 'svg')}
-              width="240"
-              height="240"
+              src={identiconPng}
+              width={240}
+              height={240}
               alt=""
               style={{ borderRadius: 20, display: 'block' }}
             />
@@ -207,8 +229,8 @@ async function renderImage(hash: string): Promise<RenderResult> {
               }}
             >
               <svg
-                width="50"
-                height="50"
+                width={50}
+                height={50}
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="white"

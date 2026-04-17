@@ -67,6 +67,37 @@ describe('StampsRepository', () => {
     });
   });
 
+  describe('countPending', () => {
+    it('should count stamps with no block or tx data', async () => {
+      mockCount.mockResolvedValue(42);
+
+      const result = await repository.countPending();
+
+      expect(result).toBe(42);
+      expect(mockCount).toHaveBeenCalledWith({
+        where: {
+          block: null,
+          tx: null,
+          raw_transaction: null,
+          time: null,
+        },
+      });
+    });
+  });
+
+  describe('countInProgress', () => {
+    it('should count stamps not yet confirmed on-chain', async () => {
+      mockCount.mockResolvedValue(10);
+
+      const result = await repository.countInProgress();
+
+      expect(result).toBe(10);
+      expect(mockCount).toHaveBeenCalledWith({
+        where: { block: null },
+      });
+    });
+  });
+
   describe('getByHash', () => {
     it('should find stamp by hash with default type', async () => {
       const hash = 'test-hash';

@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-one-expression-per-line */
+ 
+ 
 import React from 'react';
 import {
   Container,
@@ -99,7 +99,7 @@ export function Page() {
               <Contents />
             </Grid>
             <Grid size={{ sm: 9, xs: 12 }}>
-              <Typography component="h1" variant="h4" pb={2}>
+              <Typography component="h1" variant="h4" sx={{ pb: 2 }}>
                 Gridcoin Stamp — GitHub Action
               </Typography>
               <Typography gutterBottom variant="body1" component="p">
@@ -108,8 +108,8 @@ export function Page() {
                 verification row appended to the release notes.
               </Typography>
 
-              <Box pb={4} id="overview">
-                <Typography variant="h4" component="h2" pb={2}>
+              <Box id="overview" sx={{ pb: 4 }}>
+                <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
                   Overview
                 </Typography>
                 <Box component="article">
@@ -123,7 +123,7 @@ export function Page() {
                     release body with a verification link per file. The file contents
                     never leave your CI environment — only the 64-character hash does.
                   </Typography>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} pt={2}>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ pt: 2 }}>
                     <Button
                       variant="contained"
                       color="primary"
@@ -140,8 +140,8 @@ export function Page() {
                 </Box>
               </Box>
 
-              <Box pb={4} id="why">
-                <Typography variant="h4" component="h2" pb={2}>
+              <Box id="why" sx={{ pb: 4 }}>
+                <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
                   Why timestamp a release?
                 </Typography>
                 <Box component="article">
@@ -173,14 +173,14 @@ export function Page() {
                 </Box>
               </Box>
 
-              <Box pb={4} id="highlights">
-                <Typography variant="h4" component="h2" pb={2}>
+              <Box id="highlights" sx={{ pb: 4 }}>
+                <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
                   Design notes
                 </Typography>
                 <Box component="article">
                   {features.map((feature) => (
-                    <Box key={feature.title} pb={2}>
-                      <Typography variant="h6" component="h3" pb={0.5}>
+                    <Box key={feature.title} sx={{ pb: 2 }}>
+                      <Typography variant="h6" component="h3" sx={{ pb: 0.5 }}>
                         {feature.title}
                       </Typography>
                       <Typography gutterBottom variant="body1" component="p">
@@ -191,8 +191,8 @@ export function Page() {
                 </Box>
               </Box>
 
-              <Box pb={4} id="quick-start">
-                <Typography variant="h4" component="h2" pb={2}>
+              <Box id="quick-start" sx={{ pb: 4 }}>
+                <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
                   Drop-in workflow
                 </Typography>
                 <Box component="article">
@@ -236,8 +236,8 @@ jobs:
                 </Box>
               </Box>
 
-              <Box pb={4} id="confirmation">
-                <Typography variant="h4" component="h2" pb={2}>
+              <Box id="confirmation" sx={{ pb: 4 }}>
+                <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
                   Wait for confirmation
                 </Typography>
                 <Box component="article">
@@ -264,8 +264,8 @@ jobs:
                 </Box>
               </Box>
 
-              <Box pb={4} id="verify">
-                <Typography variant="h4" component="h2" pb={2}>
+              <Box id="verify" sx={{ pb: 4 }}>
+                <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
                   Verifying a release later
                 </Typography>
                 <Box component="article">
@@ -307,8 +307,8 @@ jobs:
                 </Box>
               </Box>
 
-              <Box pb={4} id="learn-more">
-                <Typography variant="h4" component="h2" pb={2}>
+              <Box id="learn-more" sx={{ pb: 4 }}>
+                <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
                   Learn more
                 </Typography>
                 <Box component="article">

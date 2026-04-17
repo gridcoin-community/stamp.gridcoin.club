@@ -8,7 +8,7 @@ interface DefaultFilesContext {
 
 export const FilesContext = createContext<DefaultFilesContext>({
   state: {} as StateInterface,
-  dispatch: () => {},
+  dispatch: () => undefined,
 });
 
 interface DefaultErrorContext {
@@ -18,5 +18,5 @@ interface DefaultErrorContext {
 
 export const ErrorContext = createContext<DefaultErrorContext>({
   error: undefined,
-  setError: () => {},
+  setError: () => undefined,
 });

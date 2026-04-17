@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-one-expression-per-line */
+ 
+ 
 import React from 'react';
 import {
   Typography,
@@ -13,8 +13,8 @@ import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 
 export function Overview() {
   return (
-    <Box pb={4} id="overview">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="overview" sx={{ pb: 4 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Overview
       </Typography>
       <Box component="article">
@@ -39,14 +39,14 @@ export function Overview() {
             <ListItemText
               primary="Base URL"
               secondary="https://stamp.gridcoin.club/api"
-              secondaryTypographyProps={{ sx: { fontFamily: 'monospace' } }}
+              slotProps={{ secondary: { sx: { fontFamily: 'monospace' } } }}
             />
           </ListItem>
           <ListItem disableGutters>
             <ListItemText
               primary="Content-Type"
               secondary="application/vnd.api+json"
-              secondaryTypographyProps={{ sx: { fontFamily: 'monospace' } }}
+              slotProps={{ secondary: { sx: { fontFamily: 'monospace' } } }}
             />
           </ListItem>
           <ListItem disableGutters>
@@ -89,7 +89,7 @@ export function Overview() {
 }`}
         />
 
-        <Typography variant="h6" component="h3" pt={3} pb={1}>
+        <Typography variant="h6" component="h3" sx={{ pt: 3, pb: 1 }}>
           A note on curl and JSON:API brackets
         </Typography>
         <Typography gutterBottom variant="body1" component="p">

@@ -10,6 +10,10 @@ module.exports = {
       tsconfig: 'tsconfig.jest.json',
     },
   },
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+  ],
   moduleDirectories: [
     '<rootDir>',
     'src',

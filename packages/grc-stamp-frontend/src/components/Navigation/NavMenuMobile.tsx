@@ -63,7 +63,7 @@ function LeafLink({
 }: LeafLinkProps) {
   const isCurrent = currentPath === leaf.href;
   return (
-    <Link href={leaf.href} passHref>
+    <Link href={leaf.href} style={{ textDecoration: 'none' }}>
       <ButtonComponent
         variant={isCurrent ? 'contained' : 'text'}
         disableElevation
@@ -153,14 +153,13 @@ export function NavMenuMobile() {
           </Toolbar>
         </SubMenuContainer>
         <MenuContainer>
-          <Stack alignItems="center" spacing={1}>
+          <Stack spacing={1} sx={{ alignItems: 'center' }}>
             {menuItems.map((entry) => {
               if (isMenuGroup(entry)) {
                 return (
                   <Box
                     key={`mmenu-group-${entry.label}`}
-                    pt={2}
-                    sx={{ textAlign: 'center' }}
+                    sx={{ pt: 2, textAlign: 'center' }}
                   >
                     <Typography
                       variant="overline"
@@ -173,7 +172,7 @@ export function NavMenuMobile() {
                     >
                       {entry.label}
                     </Typography>
-                    <Stack alignItems="center" spacing={0.5}>
+                    <Stack spacing={0.5} sx={{ alignItems: 'center' }}>
                       {entry.children.map((child) => (
                         <LeafLink
                           key={child.href}

@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-one-expression-per-line */
+ 
+ 
 import React from 'react';
 import {
   Typography,
@@ -14,8 +14,8 @@ import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 
 export function Events() {
   return (
-    <Box pb={4} id="events">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="events" sx={{ pb: 4 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Events (Server-Sent Events)
       </Typography>
       <Box component="article">
@@ -73,7 +73,7 @@ es.onerror = () => {
   console.warn('SSE connection lost, reconnecting...');
 };`}
         />
-        <Typography variant="h6" component="h3" pt={2} pb={1}>
+        <Typography variant="h6" component="h3" sx={{ pt: 2, pb: 1 }}>
           Event types
         </Typography>
         <Typography gutterBottom variant="body1" component="p">

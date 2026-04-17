@@ -38,14 +38,14 @@ export function Footer() {
       <div>
         <Divider />
       </div>
-      <Grid container spacing={0} mt={2} mb={2}>
+      <Grid container spacing={0} sx={{ mt: 2, mb: 2 }}>
         <Grid size={{ xs: 12, md: 6 }}>
           <FooterTextTypography variant="caption">
             <Balance />
           </FooterTextTypography>
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <FooterTextTypography variant="caption" textAlign="right">
+          <FooterTextTypography variant="caption" sx={{ textAlign: 'right' }}>
             <a
               href="https://github.com/gridcoin-community/stamp.gridcoin.club"
               target="_blank"

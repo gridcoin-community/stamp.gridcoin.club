@@ -1,4 +1,4 @@
-export type EventType = 'processBlock' | 'stampSubmitted' | 'transactionFound';
+export type EventType = 'processBlock' | 'stampSubmitted' | 'transactionFound' | 'pendingCount';
 
 export interface BaseEvent {
   type: EventType;
@@ -24,6 +24,13 @@ export interface TransactionFoundEvent extends BaseEvent {
   type: 'transactionFound',
   data: {
     hash: string;
+  }
+}
+
+export interface PendingCountEvent extends BaseEvent {
+  type: 'pendingCount',
+  data: {
+    count: number;
   }
 }
 

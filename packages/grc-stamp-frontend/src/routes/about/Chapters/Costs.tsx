@@ -1,11 +1,11 @@
-/* eslint-disable max-len */
+ 
 import { Typography, Box } from '@mui/material';
 import React from 'react';
 
 export function Costs() {
   return (
-    <Box pb={3} id="costs">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="costs" sx={{ pb: 3 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Costs
       </Typography>
       <Box component="article">

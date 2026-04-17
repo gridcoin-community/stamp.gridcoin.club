@@ -3,8 +3,8 @@ import React from 'react';
 
 export function Credits() {
   return (
-    <Box pb={2} id="credits">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="credits" sx={{ pb: 2 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Credits
       </Typography>
       <Box component="article">

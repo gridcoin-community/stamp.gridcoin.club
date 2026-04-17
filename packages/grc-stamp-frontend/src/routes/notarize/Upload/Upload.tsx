@@ -84,7 +84,11 @@ export function Upload({ next }: Props) {
     >
       <DropBox {...getRootProps()}>
         <input {...getInputProps()} />
-        <Typography variant="body1" gutterBottom pl={1} pr={1} textAlign="center">
+        <Typography variant="body1" gutterBottom sx={{
+          pl: 1,
+          pr: 1,
+          textAlign: 'center',
+        }}>
           Drag n drop your file here, or click to select.
         </Typography>
       </DropBox>

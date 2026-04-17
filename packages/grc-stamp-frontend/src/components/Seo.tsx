@@ -7,15 +7,15 @@ interface SeoProps {
   title: string;
   description: string;
   path: string;
-  // eslint-disable-next-line react/require-default-props
+   
   ogType?: 'website' | 'article';
-  // eslint-disable-next-line react/require-default-props
+   
   jsonLd?: Record<string, unknown>;
-  // eslint-disable-next-line react/require-default-props
+   
   noindex?: boolean;
-  // eslint-disable-next-line react/require-default-props
+   
   iconDataUrl?: string;
-  // eslint-disable-next-line react/require-default-props
+   
   ogImagePath?: string;
 }
 
@@ -69,7 +69,7 @@ export function Seo({
         <script
           key="jsonld"
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
+           
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/<\//g, '<\\/') }}
         />
       )}

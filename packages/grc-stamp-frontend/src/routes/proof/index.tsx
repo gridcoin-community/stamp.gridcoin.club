@@ -149,9 +149,8 @@ export function Page({ stamp: initialStamp }: Props) {
           <Typography
             component="h1"
             variant="h5"
-            textAlign="center"
             gutterBottom
-            sx={{ overflowWrap: 'anywhere' }}
+            sx={{ overflowWrap: 'anywhere', textAlign: 'center' }}
           >
             {isPending ? 'Pending proof of ' : 'Proof of '}
             {hash}

@@ -14,7 +14,7 @@ export default function IndexPage() {
 }
 
 export const getServerSideProps = withThemeDataServerSide(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   async (_context: GetServerSidePropsContext) => ({
     props: {},
   }),

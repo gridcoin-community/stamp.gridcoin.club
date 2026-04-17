@@ -75,11 +75,13 @@ export function PageContents({ entries }: PageContentsProps) {
                 >
                   <ListItemText
                     primary={label}
-                    primaryTypographyProps={{
-                      variant: 'body2',
-                      sx: {
-                        color: getColor(isActive, indent),
-                        fontWeight: isActive ? 600 : 400,
+                    slotProps={{
+                      primary: {
+                        variant: 'body2',
+                        sx: {
+                          color: getColor(isActive, indent),
+                          fontWeight: isActive ? 600 : 400,
+                        },
                       },
                     }}
                   />

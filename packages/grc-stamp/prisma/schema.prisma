@@ -22,6 +22,7 @@ model stamps {
 
   @@index([block], name: "stamps_block_index")
   @@index([hash], name: "stamps_hash_index")
+  @@index([tx], name: "stamps_tx_index")
 }
 
 enum StampsType {

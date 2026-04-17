@@ -5,63 +5,64 @@ import {
 import { rpc } from '../lib/gridcoin';
 import { log } from '../lib/log';
 import { StampSubmittedEvent } from '../types';
-import { getEmitter } from '../lib/emitter';
+import { emitPendingCount, getEmitter } from '../lib/emitter';
 
 export class StampService {
   constructor(private prisma = new PrismaClient()) {}
 
   public async publishStamp(): Promise<void> {
-    const readyStamps = await this.prisma.stamps.findMany({
-      where: {
-        block: null,
-        tx: null,
-        raw_transaction: null,
-        time: null,
-      },
-      take: 2,
-      orderBy: {
-        id: 'asc',
-      },
-    });
-    // generate query
-    const hashes = readyStamps.map((stamp) => stamp.hash);
+    // Drain until the queue is empty so burst load doesn't have to wait for
+    // the next interval tick to make progress.
+    let published = 0;
+    let hasMore = true;
+    while (hasMore) {
+      const readyStamps = await this.prisma.stamps.findMany({
+        where: {
+          block: null,
+          tx: null,
+          raw_transaction: null,
+          time: null,
+        },
+        take: 2,
+        orderBy: { id: 'asc' },
+      });
 
-    if (!hashes.length) {
+      if (readyStamps.length === 0) {
+        hasMore = false;
+        break;
+      }
+
+      const hashes = readyStamps.map((stamp) => stamp.hash);
+      // OP_RETURN max 80 bytes / 160 hex chars → prefix (12) + 2 hashes (128)
+      const string = `${PREFIX}000001${hashes.join('')}`;
+
+      await rpc.setTXfee(MIN_FEE);
+      const tx = await rpc.burn(MINIMUM, string);
+      log.debug(`[StampService] Publishing ${JSON.stringify(tx)}`);
+      if (tx) {
+        await this.prisma.stamps.updateMany({
+          where: { id: { in: readyStamps.map((stamp) => stamp.id) } },
+          data: { tx },
+        });
+      }
+
+      hashes.forEach((hash) => {
+        log.info(`[StampService] Stamp submitted: ${hash}/${tx}`);
+        const stampSubmittedEvent: StampSubmittedEvent = {
+          type: 'stampSubmitted',
+          data: { hash, tx },
+        };
+        getEmitter().emit('stampSubmitted', stampSubmittedEvent);
+      });
+      published += hashes.length;
+    }
+
+    if (published === 0) {
       log.info('[StampService] Nothing to publish');
       return;
     }
 
-    const string = `${PREFIX}000001${hashes.join('')}`;
-    // console.log(string);
-    // console.log(string.length);
-    // maximum 160 characters (80 bytes)
-
-    await rpc.setTXfee(MIN_FEE);
-    const tx = await rpc.burn(MINIMUM, string);
-    log.debug(`[StampService] Publishing ${JSON.stringify(tx)}`);
-    if (tx) {
-      await this.prisma.stamps.updateMany({
-        where: {
-          id: { in: readyStamps.map((stamp) => stamp.id) },
-        },
-        data: {
-          tx,
-        },
-      });
-    }
-
-    // Send events
-    hashes.forEach((hash) => {
-      log.info(`[StampService] Stamp submitted: ${hash}/${tx}`);
-      const stampSubmittedEvent: StampSubmittedEvent = {
-        type: 'stampSubmitted',
-        data: {
-          hash,
-          tx,
-        },
-      };
-      getEmitter().emit('stampSubmitted', stampSubmittedEvent);
-    });
+    emitPendingCount();
   }
 }
 

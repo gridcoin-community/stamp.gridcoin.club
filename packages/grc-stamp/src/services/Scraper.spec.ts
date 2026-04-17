@@ -5,6 +5,10 @@ import { Stamp } from '../models/Stamp';
 jest.mock('.prisma/client');
 jest.mock('../lib/log');
 jest.mock('../models/Stamp');
+jest.mock('../lib/emitter', () => ({
+  getEmitter: () => ({ emit: jest.fn() }),
+  emitPendingCount: jest.fn(),
+}));
 jest.mock('../config', () => ({
   config: {
     START_BLOCK: 1000,

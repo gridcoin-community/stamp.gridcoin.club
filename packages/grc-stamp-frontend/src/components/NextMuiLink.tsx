@@ -16,9 +16,9 @@ export const NextMuiLink = forwardRef<HTMLAnchorElement, NextMuiLinkProps>(
       as,
       replace,
       scroll,
-      shallow,
+      shallow: _shallow,
       prefetch,
-      locale,
+      locale: _locale,
       ...muiProps
     } = props;
 
@@ -30,9 +30,7 @@ export const NextMuiLink = forwardRef<HTMLAnchorElement, NextMuiLinkProps>(
         as={as}
         replace={replace}
         scroll={scroll}
-        shallow={shallow}
         prefetch={prefetch}
-        locale={locale}
         {...muiProps}
       />
     );

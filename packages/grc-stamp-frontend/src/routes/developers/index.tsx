@@ -65,7 +65,7 @@ export function Page() {
               <Contents />
             </Grid>
             <Grid size={{ sm: 9, xs: 12 }}>
-              <Typography component="h1" variant="h4" pb={2}>
+              <Typography component="h1" variant="h4" sx={{ pb: 2 }}>
                 API Reference
               </Typography>
               <Typography gutterBottom variant="body1" component="p">

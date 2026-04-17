@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+ 
 import React from 'react';
 import { Typography, Box } from '@mui/material';
 import { Endpoint } from '@/components/Endpoint/Endpoint';
@@ -6,8 +6,8 @@ import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 
 export function Hashes() {
   return (
-    <Box pb={4} id="hashes">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="hashes" sx={{ pb: 4 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Hashes
       </Typography>
       <Box component="article">

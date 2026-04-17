@@ -1,11 +1,11 @@
-/* eslint-disable max-len */
+ 
 import { Typography, Box } from '@mui/material';
 import React from 'react';
 
 export function ProofOfExistence() {
   return (
-    <Box pb={3}>
-      <Typography variant="h4" component="h2" pb={2} id="proof-of-existence">
+    <Box sx={{ pb: 3 }}>
+      <Typography variant="h4" component="h2" id="proof-of-existence" sx={{ pb: 2 }}>
         Proof of Existence
       </Typography>
       <Box component="article">

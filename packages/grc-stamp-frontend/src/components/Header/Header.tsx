@@ -14,7 +14,7 @@ import { useRouteNavigating } from '@/hooks';
 import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
 interface Props {
-  children: React.ReactElement;
+  children: React.ReactElement<React.ComponentProps<typeof AppBar>>;
 }
 
 export function ElevationScroll({ children }: Props) {
@@ -31,7 +31,7 @@ export function ElevationScroll({ children }: Props) {
 }
 
 interface HeaderProps {
-  // eslint-disable-next-line react/require-default-props
+   
   showLinks?: boolean;
 }
 
@@ -64,7 +64,7 @@ export function Header({ showLinks = true }: HeaderProps) {
           )}
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
             <Box>
-              <Link passHref href="/">
+              <Link href="/">
                 {isMobile && mounted ? (
                   <Image
                     src="/ic-logo-mobile.svg"

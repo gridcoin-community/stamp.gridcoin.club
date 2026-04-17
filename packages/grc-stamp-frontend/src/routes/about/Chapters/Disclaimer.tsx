@@ -1,11 +1,11 @@
-/* eslint-disable max-len */
+ 
 import React from 'react';
 import { Typography, Box } from '@mui/material';
 
 export function Disclaimer() {
   return (
-    <Box pb={3} id="disclaimer">
-      <Typography variant="h4" component="h2" pb={2}>
+    <Box id="disclaimer" sx={{ pb: 3 }}>
+      <Typography variant="h4" component="h2" sx={{ pb: 2 }}>
         Disclaimer
       </Typography>
       <Box component="article">
