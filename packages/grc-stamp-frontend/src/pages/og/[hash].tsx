@@ -3,11 +3,12 @@ import React from 'react';
 import path from 'node:path';
 import { promises as fs } from 'node:fs';
 import sharp from 'sharp';
-import Identicon from 'identicon.js';
 import { ImageResponse } from 'next/og';
 import type { GetServerSideProps } from 'next';
 import type { ServerResponse } from 'node:http';
 import { StampRepository } from '@/repositories/StampsRepository';
+import { identiconPngDataUrl } from '@/lib/serverImage';
+import { CACHE_CONTROL_DAY } from '@/lib/httpCache';
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -88,17 +89,6 @@ async function writeCache(hash: string, buffer: Buffer): Promise<void> {
   } catch (e) {
     console.warn('[og] cache write failed:', e);
   }
-}
-
-// Rasterize the identicon to an RGBA PNG server-side. Satori can't decode
-// identicon.js's colormap PNG, and passing identicon.js's raw SVG through
-// Satori → embedded-SVG → Sharp pipeline trips up librsvg. Running Sharp
-// ourselves first gives Satori a clean RGBA PNG data URL it can consume.
-async function identiconPngDataUrl(hash: string, size: number): Promise<string> {
-  const svgBase64 = new Identicon(hash, { size, format: 'svg' }).toString();
-  const svgBuffer = Buffer.from(svgBase64, 'base64');
-  const pngBuffer = await sharp(svgBuffer).png({ palette: false }).toBuffer();
-  return `data:image/png;base64,${pngBuffer.toString('base64')}`;
 }
 
 function writeError(res: ServerResponse, status: number, body: string): void {
@@ -318,10 +308,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (cached) {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'image/png');
-      res.setHeader(
-        'Cache-Control',
-        'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800',
-      );
+      res.setHeader('Cache-Control', CACHE_CONTROL_DAY);
       res.setHeader('X-Og-Cache', 'HIT');
       res.write(cached);
       res.end();
@@ -335,10 +322,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'image/png');
-    res.setHeader(
-      'Cache-Control',
-      'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800',
-    );
+    res.setHeader('Cache-Control', CACHE_CONTROL_DAY);
     res.setHeader('X-Og-Cache', 'MISS');
     res.write(result.buffer);
     res.end();
