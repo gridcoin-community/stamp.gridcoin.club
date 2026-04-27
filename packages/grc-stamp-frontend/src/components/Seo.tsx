@@ -1,7 +1,7 @@
 import Head from 'next/head';
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://stamp.gridcoin.club';
-export const SITE_NAME = 'Gridcoin Blockchain Stamping';
+export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'Gridcoin Blockchain Stamping';
 
 interface SeoProps {
   title: string;

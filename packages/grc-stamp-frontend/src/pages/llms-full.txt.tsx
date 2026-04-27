@@ -61,6 +61,7 @@ This service is provided as-is, without any warranty of any kind, express or imp
 - \`/developers\` — Full API reference with request and response examples
 - \`/developers/github-action\` — Drop-in GitHub Actions workflow that timestamps release assets on the Gridcoin blockchain
 - \`/proof/{sha256hash}\` — Verification page for a specific blockchain-certified document hash. Renders the full proof once the transaction is confirmed on chain, or a "pending" state while it is still in the mempool (the page updates automatically when confirmation lands).
+- \`/proof/{sha256hash}/certificate.pdf\` — One-page printable PDF certificate of the proof. Includes the SHA-256 hash, identicon, transaction id, block, UTC timestamp, a QR code linking back to the proof page, and step-by-step instructions for verifying the proof against any Gridcoin block explorer without trusting stamp.gridcoin.club. Available only after the stamp is confirmed on-chain — pending stamps return 404. Suitable for attaching to court filings, articles, or grant submissions.
 
 ## GitHub Action
 

@@ -7,6 +7,7 @@ import React, {
 import {
   Container,
   Box,
+  Button,
   List,
   Divider,
   Typography,
@@ -14,6 +15,7 @@ import {
   Badge,
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { styled } from '@mui/material/styles';
 import { identiconDataUrl } from '@/lib/identicon';
 import { Seo, SITE_NAME } from '@/components/Seo';
@@ -203,6 +205,19 @@ export function Page({ stamp: initialStamp }: Props) {
                 <Divider variant="fullWidth" component="li" />
                 <StampBlockchainData stamp={stamp} />
               </List>
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <Button
+                  component="a"
+                  href={`/proof/${hash}/certificate.pdf`}
+                  target="_blank"
+                  rel="noopener"
+                  variant="contained"
+                  color="primary"
+                  startIcon={<PictureAsPdfIcon />}
+                >
+                  Download certificate
+                </Button>
+              </Box>
             </>
           )}
         </Container>
