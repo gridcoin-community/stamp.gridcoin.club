@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.5.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.4.0...grc-stamp-frontend-v1.5.0) (2026-04-27)
+
+
+### Features
+
+* add downloadable PDF with a proof of existance ([9e4652c](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/9e4652c751da4e537f84f48b655d7d5058113d28))
+
 # [grc-stamp-frontend-v1.4.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.3.1...grc-stamp-frontend-v1.4.0) (2026-04-17)
 
 
