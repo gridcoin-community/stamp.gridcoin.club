@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.13.0",
-    "axios": "^1.6.8",
+    "axios": "^1.15.0",
     "colors": "^1.4.0",
     "express": "^5.2.1",
     "gridcoin-rpc": "^4.0.2",
