@@ -64,6 +64,13 @@ export function Footer() {
         <span style={{ color: 'red' }}>❤</span>
         {' '}
         by @gridcat
+        {' · '}
+        <a
+          href="https://gridcoin.club"
+          style={{ color: 'inherit' }}
+        >
+          Part of Gridcoin Club ↗
+        </a>
       </SubFooterTypography>
     </Container>
   );
