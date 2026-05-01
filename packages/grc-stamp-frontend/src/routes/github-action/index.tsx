@@ -100,7 +100,7 @@ export function Page() {
             </Grid>
             <Grid size={{ sm: 9, xs: 12 }}>
               <Typography component="h1" variant="h4" sx={{ pb: 2 }}>
-                Gridcoin Stamp — GitHub Action
+                Gridcoin Stamp: GitHub Action
               </Typography>
               <Typography gutterBottom variant="body1" component="p">
                 Publish a release on GitHub and the action runs automatically: every
