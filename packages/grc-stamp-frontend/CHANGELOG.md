@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.6.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.6.0...grc-stamp-frontend-v1.6.1) (2026-05-01)
+
+
+### Bug Fixes
+
+* clean up legacy theme cookie ([0510ed3](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/0510ed3a0d6878bca3ed53bd153cd526b931d3be))
+
 # [grc-stamp-frontend-v1.6.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.5.0...grc-stamp-frontend-v1.6.0) (2026-05-01)
 
 
