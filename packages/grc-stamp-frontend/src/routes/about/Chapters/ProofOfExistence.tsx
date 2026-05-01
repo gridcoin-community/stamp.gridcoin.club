@@ -11,8 +11,8 @@ export function ProofOfExistence() {
       <Box component="article">
         <Typography gutterBottom variant="body1" component="p">
           Proof of Existence is a method of verifying and recording that specific data existed at a certain time.
-          To establish proof, a timestamp and signature linked to the entity are needed to demonstrate its creation at a particular time.
-          Blockchain technology provides a convenient solution for this purpose, as proof is stored on a public ledger that is transparent, unalterable, and permanent.
+          Establishing proof requires a timestamp and a signature linked to the data, showing it existed at a particular point in time.
+          A blockchain is a convenient way to do this: proof is stored on a public ledger that is transparent, unalterable, and permanent.
         </Typography>
         <Typography gutterBottom variant="body1" component="section">
           Common Use Cases:

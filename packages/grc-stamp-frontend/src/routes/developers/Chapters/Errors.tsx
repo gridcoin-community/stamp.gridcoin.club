@@ -80,7 +80,7 @@ export function Errors() {
           <ListItem disableGutters>
             <ListItemText
               primary="500 Internal Server Error"
-              secondary="Database, Redis, or Gridcoin RPC failure. Usually transient — retry after a short delay."
+              secondary="Database, Redis, or Gridcoin RPC failure. Usually transient. Retry after a short delay."
             />
           </ListItem>
         </List>
@@ -91,7 +91,7 @@ export function Errors() {
           sending a small amount of GRC to the wallet address returned by
           {' '}
           <code>GET /api/wallet</code>
-          . Any GRC you contribute funds stamps for everyone, including you — there
+          . Any GRC you contribute funds stamps for everyone, including you. There
           is no per-sender accounting.
         </Typography>
       </Box>

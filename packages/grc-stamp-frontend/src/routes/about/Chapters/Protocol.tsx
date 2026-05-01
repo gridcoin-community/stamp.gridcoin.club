@@ -34,11 +34,11 @@ export function Protocol() {
         <Typography gutterBottom variant="body1" component="p">
           The key difference between the two transactions is that the second one includes two hashes,
           while the first one only has one.
-          The OP_RETURN script is capable of accommodating two sha256 hashes, allowing for more than one record to be stored in a single transaction.
-          This not only helps to save on fees but also makes it more efficient.
+          The OP_RETURN script can accommodate two SHA-256 hashes, so more than one record can be stored in a single transaction.
+          That saves on fees.
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
-          Let&apos;s take a closer look at what makes up the transaction:
+          The transaction breaks down as:
         </Typography>
         <CodeBlock
           caption="Transaction anatomy"
@@ -46,16 +46,16 @@ export function Protocol() {
           code={`# OP_RETURN script opcode (hex)
 6a46
 
-# "Sealed" identifier — hex word that marks stamp transactions
+# "Sealed" identifier: hex word that marks stamp transactions
 5ea1ed
 
-# Protocol version (0.0.1, semantic versioning — legacy versions stay supported)
+# Protocol version (0.0.1, semantic versioning; legacy versions stay supported)
 000001
 
 # First SHA-256 hash
 5bbbbbee48b735693478140de1b7f09fe0acddc0c7bce87f8665074efe53410f
 
-# Second SHA-256 hash (optional — present only in two-hash transactions)
+# Second SHA-256 hash (optional; present only in two-hash transactions)
 7158380aca149fa8422fb1274a69155303d4aaa76bf67defe0bb31628293afd2`}
         />
         <Typography gutterBottom variant="body1" component="p" sx={{ pt: 1 }}>

@@ -1,4 +1,4 @@
-// eslint-disable jsx-a11y/alt-text — react-pdf's <Image> is a PDF primitive,
+// eslint-disable jsx-a11y/alt-text: react-pdf's <Image> is a PDF primitive,
 // not an HTML <img>; it does not accept an alt prop.
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
@@ -47,7 +47,7 @@ export interface CertificateProps {
    * visible "verify online" text after manual line-breaking. */
   proofUrl: string;
   /** Host of a representative block-explorer (e.g. "gridcoinstats.eu") used
-   * inline in the verification instructions. Optional — when missing, the
+   * inline in the verification instructions. Optional; when missing, the
    * step refers to "any Gridcoin block explorer" without a concrete example. */
   explorerHost?: string;
   protocol: string;
@@ -317,7 +317,7 @@ export function Certificate(props: CertificateProps) {
               {' '}
               <Link src={siteUrl} style={styles.monoInline}>{siteHost}</Link>
               {' '}
-              does this locally — your file is hashed in the browser and is
+              does this locally. Your file is hashed in the browser and is
               never uploaded.
             </Text>
             <Text style={styles.listItem}>

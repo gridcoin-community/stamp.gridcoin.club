@@ -93,7 +93,7 @@ export function Overview() {
           A note on curl and JSON:API brackets
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
-          JSON:API query parameters use literal square brackets — for example
+          JSON:API query parameters use literal square brackets, for example
           {' '}
           <code>page[size]=10</code>
           {' '}
@@ -134,7 +134,7 @@ export function Overview() {
           {' '}
           <code>-G --data-urlencode</code>
           {' '}
-          form — whichever is the most convenient inside your tooling.
+          form, whichever is the most convenient inside your tooling.
         </Typography>
       </Box>
     </Box>

@@ -13,7 +13,7 @@ export function Status() {
       <Box component="article">
         <Typography gutterBottom variant="body1" component="p">
           Returns the service name, version, and whether the stamping service is
-          currently in maintenance mode. A cheap call — use it for health checks.
+          currently in maintenance mode. A cheap call. Use it for health checks.
         </Typography>
         <Endpoint method="GET" path="/api/status" title="Service health" />
         <CodeBlock
@@ -43,8 +43,7 @@ export function Status() {
           resource has no
           {' '}
           <code>id</code>
-          {' '}
-          — it represents the service as a whole.
+          : it represents the service as a whole.
         </Typography>
         <Typography gutterBottom variant="body1" component="p" sx={{ color: 'text.secondary' }}>
           When

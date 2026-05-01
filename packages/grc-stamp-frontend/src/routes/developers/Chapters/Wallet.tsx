@@ -93,8 +93,7 @@ export function Wallet() {
           resource has no
           {' '}
           <code>id</code>
-          {' '}
-          — it represents the current balance value, not an addressable record.
+          : it represents the current balance value, not an addressable record.
         </Typography>
       </Box>
     </Box>

@@ -30,14 +30,14 @@ export function Page() {
     <>
       <Seo
         title={`${SITE_NAME} :: About`}
-        description="Learn about Gridcoin blockchain stamping, how it works, the protocol behind it, and the costs involved in certifying your documents on the Gridcoin blockchain."
+        description="How Gridcoin blockchain stamping works, the on-chain protocol it uses, and what it costs to certify a document."
         path="/about"
         ogType="article"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'Article',
           headline: `About ${SITE_NAME}`,
-          description: 'Learn how Proof of Existence works on the Gridcoin blockchain.',
+          description: 'How Proof of Existence works on the Gridcoin blockchain.',
           author: { '@type': 'Person', name: '@gridcat' },
           publisher: {
             '@type': 'Organization',
@@ -59,7 +59,7 @@ export function Page() {
                 {`About ${SITE_NAME}`}
               </Typography>
               <Typography gutterBottom variant="body1" component="p">
-                {`${SITE_NAME} is a free, privacy-first Proof of Existence service. Drop any file into the app, a SHA-256 hash is computed entirely in your browser, and that hash is written to the Gridcoin blockchain — your document never leaves your device. This page walks through the idea behind the service, the on-chain protocol it uses, and what it costs to run.`}
+                {`${SITE_NAME} is a free Proof of Existence service. Drop a file into the app: the browser computes its SHA-256 hash and writes that hash to the Gridcoin blockchain. The document itself never leaves your device. This page walks through the idea behind the service, the on-chain protocol it uses, and what it costs to run.`}
               </Typography>
               <ProofOfExistence />
               <About />

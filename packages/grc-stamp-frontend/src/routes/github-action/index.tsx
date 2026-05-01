@@ -24,7 +24,7 @@ import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 import { Contents } from './Contents';
 
 const ACTION_REPO_URL = 'https://github.com/gridcat/gridcoin-stamp-action';
-const DESCRIPTION = 'A GitHub Action that anchors your release artifacts to the Gridcoin blockchain — automated, privacy-first, and purpose-built for the release lifecycle.';
+const DESCRIPTION = 'A GitHub Action that hashes every release artifact locally and timestamps the hashes on the Gridcoin blockchain, without any file leaving CI.';
 
 interface Feature {
   title: string;
@@ -34,19 +34,19 @@ interface Feature {
 const features: Feature[] = [
   {
     title: 'Byte-stable source archives',
-    body: 'GitHub\'s auto-generated "Source code" downloads are regenerated on every click and their hashes have drifted silently in the past — in January 2023 a server-side git upgrade broke checksum pinning across Homebrew, Bazel and Go modules. The action sidesteps that by fetching each archive once, re-uploading it under a dedicated -stamped name, and stamping the uploaded copy. Uploaded assets are immutable CDN blobs, so the bytes you attested to are the bytes everyone downloads later.',
+    body: 'GitHub\'s auto-generated "Source code" downloads are regenerated on every click and their hashes have drifted silently in the past. In January 2023, a server-side git upgrade broke checksum pinning across Homebrew, Bazel and Go modules. The action sidesteps that by fetching each archive once, re-uploading it under a dedicated -stamped name, and stamping the uploaded copy. Uploaded assets are immutable CDN blobs, so the bytes you attested to are the bytes everyone downloads later.',
   },
   {
     title: 'Reproducible commit proof',
-    body: 'Every run emits a tiny .stamp.txt manifest containing the repository, tag, commit SHA, and tree SHA. Anyone with a clone can regenerate it line-for-line and recompute the hash with sha256sum — no archive download, no trusted third party, no long-term dependency on GitHub being nice.',
+    body: 'Every run emits a tiny .stamp.txt manifest containing the repository, tag, commit SHA, and tree SHA. Anyone with a clone can regenerate it line-for-line and recompute the hash with sha256sum. No archive download, no trusted third party, no long-term dependency on GitHub being nice.',
   },
   {
     title: 'Refuses to attest to a mutated tag',
-    body: 'Git tags can be force-pushed. The action reads the manifest from the previous run, compares the pinned commit against whatever the tag currently resolves to, and aborts with a clear error on mismatch — you never end up with a release whose stamped artifacts disagree about which commit they represent.',
+    body: 'Git tags can be force-pushed. The action reads the manifest from the previous run, compares the pinned commit against whatever the tag currently resolves to, and aborts with a clear error on mismatch. You never end up with a release whose stamped artifacts disagree about which commit they represent.',
   },
   {
     title: 'Verification stays local',
-    body: 'To verify a stamped release, the recipient drops the file onto stamp.gridcoin.club — the SHA-256 is computed client-side in the browser and only the 64-character hash is ever sent. Nothing about the file contents leaves the verifier\'s machine.',
+    body: 'To verify a stamped release, the recipient drops the file onto stamp.gridcoin.club. The SHA-256 is computed client-side in the browser and only the 64-character hash is ever sent. Nothing about the file contents leaves the verifier\'s machine.',
   },
   {
     title: 'Idempotent reruns',
@@ -54,7 +54,7 @@ const features: Feature[] = [
   },
   {
     title: 'Anchored on a chain that rewards real science',
-    body: 'Gridcoin rewards participants in BOINC volunteer computing — protein folding, pulsar searches, climate modelling, cancer research. Timestamps live on a ledger that exists to support actual research, not to burn electricity on empty hashes.',
+    body: 'Gridcoin rewards participants in BOINC volunteer computing: protein folding, pulsar searches, climate modelling, cancer research. Timestamps live on a ledger that exists to support actual research, not to burn electricity on empty hashes.',
   },
 ];
 
@@ -103,9 +103,9 @@ export function Page() {
                 Gridcoin Stamp — GitHub Action
               </Typography>
               <Typography gutterBottom variant="body1" component="p">
-                Ship a release on GitHub, and — without you lifting a finger — every
-                asset gets a SHA-256 timestamped on the Gridcoin blockchain and a
-                verification row appended to the release notes.
+                Publish a release on GitHub and the action runs automatically: every
+                asset gets a SHA-256 timestamped on the Gridcoin blockchain, and the
+                release notes pick up a verification row per file.
               </Typography>
 
               <Box id="overview" sx={{ pb: 4 }}>
@@ -121,7 +121,7 @@ export function Page() {
                     <NextMuiLink href="/" color="primary">stamp.gridcoin.club</NextMuiLink>
                     , and writes a &ldquo;Blockchain Timestamps&rdquo; table into the
                     release body with a verification link per file. The file contents
-                    never leave your CI environment — only the 64-character hash does.
+                    never leave your CI environment. Only the 64-character hash does.
                   </Typography>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ pt: 2 }}>
                     <Button
@@ -150,25 +150,24 @@ export function Page() {
                     auto-generated source archives can drift byte-wise between
                     downloads, release notes can be rewritten, and the whole release
                     can be deleted by anyone with write access. None of that changes
-                    the fact that at some specific moment you intended a specific set
-                    of bytes to represent a specific version — but after the fact,
+                    the fact that at one specific moment you intended a particular
+                    set of bytes to represent a given version. After the fact,
                     proving that intent in a way other people can independently check
                     is surprisingly hard.
                   </Typography>
                   <Typography gutterBottom variant="body1" component="p">
                     Timestamping each release asset against a public blockchain pins
-                    a cryptographic fingerprint to an immutable ledger. Anyone —
-                    downstream packagers, compliance auditors, a distant forensic
-                    investigator — can later hash the file they have in hand and
+                    a cryptographic fingerprint to an immutable ledger. Anyone
+                    (downstream packagers, compliance auditors, a distant forensic
+                    investigator) can later hash the file they have in hand and
                     confirm that those exact bytes existed under your release&apos;s
-                    name at the time of publication. It&apos;s the same idea that
+                    name on the day you published. It&apos;s the same idea that
                     notaries have been selling for centuries, minus the notary.
                   </Typography>
                   <Typography gutterBottom variant="body1" component="p">
-                    The interesting question is not whether to timestamp, but how to
-                    do it so that the proof survives every edge case that release
-                    tooling quietly walks into. That&apos;s what this action exists
-                    to answer.
+                    The interesting question is how to timestamp in a way that
+                    survives every edge case release tooling quietly walks into.
+                    That is what this action is for.
                   </Typography>
                 </Box>
               </Box>
@@ -203,7 +202,7 @@ export function Page() {
                     {' '}
                     <code>release: published</code>
                     {' '}
-                    event — semantic-release, goreleaser, manual clicks, all work.
+                    event, including semantic-release, goreleaser, and manual clicks.
                   </Typography>
                   <CodeBlock
                     caption=".github/workflows/stamp.yml"
@@ -229,9 +228,9 @@ jobs:
                     <code>contents: write</code>
                     {' '}
                     permission is required because the action uploads assets back to
-                    the release and edits the release body. Everything else —
-                    source-archive re-upload, manifest generation, idempotent
-                    reruns — is on by default.
+                    the release and edits the release body. Everything else
+                    (source-archive re-upload, manifest generation, idempotent
+                    reruns) is on by default.
                   </Typography>
                 </Box>
               </Box>
@@ -242,11 +241,11 @@ jobs:
                 </Typography>
                 <Box component="article">
                   <Typography gutterBottom variant="body1" component="p">
-                    By default the action submits the hashes and returns immediately
-                    — the blockchain typically confirms within 2–5 minutes, and the
-                    verification URLs will start resolving some time after the
-                    workflow completes. If you&apos;d rather have the workflow block
-                    until every stamp is confirmed on-chain, flip
+                    By default the action submits the hashes and returns immediately.
+                    The blockchain typically confirms within 2–5 minutes, and the
+                    verification URLs start resolving some time after the workflow
+                    completes. If you&apos;d rather have the workflow block until
+                    every stamp is confirmed on-chain, flip
                     {' '}
                     <code>wait-for-confirmation</code>
                     {' '}
@@ -282,7 +281,7 @@ jobs:
                     {' '}
                     <NextMuiLink href="/" color="primary">stamp.gridcoin.club</NextMuiLink>
                     . The hash is computed in the browser, looked up against the
-                    blockchain, and rendered as a proof page — the file itself never
+                    blockchain, and rendered as a proof page. The file itself never
                     leaves the verifier&apos;s machine.
                   </Typography>
                   <Typography gutterBottom variant="body1" component="p">
@@ -325,9 +324,9 @@ jobs:
                     >
                       GitHub repository
                     </NextMuiLink>
-                    . Issues, pull requests, and feedback are all welcome — this is a
-                    young project and the ecosystem it serves is small, so every
-                    piece of input materially shapes where it goes next.
+                    . Issues, pull requests, and feedback are all welcome. The project
+                    is young and the ecosystem it serves is small, so feedback
+                    genuinely shapes where it goes next.
                   </Typography>
                   <Typography gutterBottom variant="body1" component="p">
                     If you build anything on top of it, or if the stamp table on one

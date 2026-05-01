@@ -24,8 +24,8 @@ import {
   Wallet,
 } from './Chapters';
 
-const DESCRIPTION = 'Public JSON:API for the Gridcoin blockchain stamping service — '
-  + 'create stamps, look up SHA-256 hashes, query the service wallet, and stream real-time blockchain events.';
+const DESCRIPTION = 'Public JSON:API for the Gridcoin blockchain stamping service: '
+  + 'create stamps, look up SHA-256 hashes, query the service wallet, and stream blockchain events.';
 
 export function Page() {
   const theme = useTheme();
