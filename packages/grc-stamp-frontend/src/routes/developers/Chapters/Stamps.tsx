@@ -42,7 +42,7 @@ export function Stamps() {
           different <code>id</code>. Treat it as an opaque handle for talking to
           <em> this </em>
           server only. The durable, universal identifier for any stamp is its
-          SHA-256 <code>hash</code> — use
+          SHA-256 <code>hash</code>. Use
           {' '}
           <NextMuiLink href="#hashes" color="primary">
             GET /api/hashes/:hash
@@ -196,19 +196,19 @@ export function Stamps() {
         <List dense>
           <ListItem disableGutters>
             <ListItemText
-              primary={<><code>data.attributes.hash</code> — required</>}
-              secondary={<>Exactly 64 hex characters matching <code>/^[a-fA-F0-9]{'{64}'}$/</code> — lower- or upper-case both work. The SHA-256 digest of the document you want to stamp.</>}
+              primary={<><code>data.attributes.hash</code> (required)</>}
+              secondary={<>Exactly 64 hex characters matching <code>/^[a-fA-F0-9]{'{64}'}$/</code>. Lower- or upper-case both work. The SHA-256 digest of the document you want to stamp.</>}
             />
           </ListItem>
           <ListItem disableGutters>
             <ListItemText
-              primary={<><code>data.attributes.hashType</code> — optional</>}
+              primary={<><code>data.attributes.hashType</code> (optional)</>}
               secondary={<>Only <code>&quot;sha256&quot;</code> is currently accepted. Defaults to <code>&quot;sha256&quot;</code>.</>}
             />
           </ListItem>
           <ListItem disableGutters>
             <ListItemText
-              primary={<><code>data.attributes.protocol</code> — optional</>}
+              primary={<><code>data.attributes.protocol</code> (optional)</>}
               secondary={<>Stamping protocol version. Only <code>&quot;0.0.1&quot;</code> is currently accepted. Defaults to <code>&quot;0.0.1&quot;</code>.</>}
             />
           </ListItem>
@@ -288,7 +288,7 @@ export function Stamps() {
           <ListItem disableGutters>
             <ListItemText
               primary="400 Bad Request"
-              secondary="Validation failed — most commonly an incorrect hash length or an unsupported hashType."
+              secondary="Validation failed. Most commonly an incorrect hash length or an unsupported hashType."
             />
           </ListItem>
           <ListItem disableGutters>

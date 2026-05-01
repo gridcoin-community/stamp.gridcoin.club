@@ -53,7 +53,7 @@ export function Page() {
     <>
       <Seo
         title={SITE_NAME}
-        description="Permanently certify your documents on the Gridcoin blockchain with our easy-to-use stamping service."
+        description="Stamp documents permanently on the Gridcoin blockchain. Drop a file in the browser, the SHA-256 hash gets written to the chain, the document itself never leaves your device."
         path="/"
         jsonLd={{
           '@context': 'https://schema.org',

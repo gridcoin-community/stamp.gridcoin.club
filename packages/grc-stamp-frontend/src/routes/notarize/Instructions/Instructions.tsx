@@ -36,23 +36,23 @@ export function Instructions() {
       <TextBox>
         <GradientLine />
         <Typography component="h1" variant="h4" sx={{ pb: 2 }}>
-          Notarize Documents with the Gridcoin Blockchain
+          Notarize documents with the Gridcoin blockchain
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
-          Timestamping your documents with the Gridcoin blockchain allows for a publicly
-          verifiable record of their creation and history.
-          This ensures that there is no possibility of malicious
-          modifications being made at a later time. To learn more, click
+          Stamping a document on the Gridcoin blockchain creates a publicly
+          verifiable record that it existed at a specific time. Any later edit,
+          even a single bit, produces a different hash, so tampering shows up
+          immediately.
           {' '}
-          <NextMuiLink href="/about" passHref>here</NextMuiLink>
+          <NextMuiLink href="/about" passHref>More about how it works</NextMuiLink>
           .
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
-          To notarize a document or verify its existence,
-          simply drag and drop the target file below and follow the provided instructions.
+          To notarize a document or verify it later, drag and drop the file
+          below.
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
-          Our service is offered at no cost to you.
+          The service is free to use.
         </Typography>
       </TextBox>
     </Wrapper>

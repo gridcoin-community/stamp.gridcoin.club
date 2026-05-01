@@ -184,7 +184,7 @@ export function Page({ stamp: initialStamp }: Props) {
                 confirmation on the Gridcoin blockchain.
                 <br />
                 This page will update automatically once the transaction is
-                confirmed — usually within a few minutes.
+                confirmed, usually within a few minutes.
               </Message>
               <List>
                 <Info title="Hash" value={hash} />
@@ -193,9 +193,9 @@ export function Page({ stamp: initialStamp }: Props) {
           ) : (
             <>
               <Message gutterBottom variant="body1">
-                This document&apos;s digest was successfully embedded in the Gridcoin blockchain.
+                This document&apos;s digest is embedded in the Gridcoin blockchain.
                 <br />
-                It is permanently certified and proven to exist since the transaction was confirmed.
+                It is permanently certified and proven to have existed since the transaction was confirmed.
               </Message>
               <List>
                 <Info
@@ -214,6 +214,7 @@ export function Page({ stamp: initialStamp }: Props) {
                   variant="contained"
                   color="primary"
                   startIcon={<PictureAsPdfIcon />}
+                  className="plausible-event-name=Download+Certificate+PDF"
                 >
                   Download certificate
                 </Button>

@@ -33,19 +33,19 @@ export function Conventions() {
         <List dense>
           <ListItem disableGutters>
             <ListItemText
-              primary={<><code>page[size]</code> — items per page</>}
+              primary={<><code>page[size]</code>: items per page</>}
               secondary="Default 25, maximum 100. Values above 100 are silently capped. A value of 0 falls back to the default of 25."
             />
           </ListItem>
           <ListItem disableGutters>
             <ListItemText
-              primary={<><code>page[number]</code> — zero-indexed page number</>}
+              primary={<><code>page[number]</code>: zero-indexed page number</>}
               secondary="Offset is computed as page[number] × page[size]. Mutually exclusive with page[offset]."
             />
           </ListItem>
           <ListItem disableGutters>
             <ListItemText
-              primary={<><code>page[offset]</code> — absolute record offset</>}
+              primary={<><code>page[offset]</code>: absolute record offset</>}
               secondary="Skip N records before returning results."
             />
           </ListItem>
@@ -92,7 +92,7 @@ export function Conventions() {
           {' '}
           <code>id</code>
           {' '}
-          in the list — JSON:API requires it on every resource object.
+          in the list. JSON:API requires it on every resource object.
         </Typography>
 
         <Typography variant="h6" component="h3" sx={{ pt: 2, pb: 1 }}>

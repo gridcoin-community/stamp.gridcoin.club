@@ -14,7 +14,7 @@ export function Hashes() {
         <Typography gutterBottom variant="body1" component="p">
           Look up a stamp by its SHA-256 hash instead of its internal id. If the same
           hash has been stamped more than once (for example, by different callers),
-          the endpoint returns the earliest record — the one with the smallest time.
+          the endpoint returns the earliest record: the one with the smallest time.
         </Typography>
         <Endpoint method="GET" path="/api/hashes/:hash" title="Lookup by hash" />
         <CodeBlock
@@ -50,7 +50,7 @@ export function Hashes() {
           <code>404 Not Found</code>
           {' '}
           if the hash has never been stamped by this service. The lookup is
-          case-insensitive — upper- and lower-case hex both resolve to the same
+          case-insensitive; upper- and lower-case hex both resolve to the same
           record.
         </Typography>
       </Box>

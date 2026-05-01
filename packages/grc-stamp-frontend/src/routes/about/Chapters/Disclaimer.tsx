@@ -18,7 +18,7 @@ export function Disclaimer() {
         <Typography gutterBottom variant="body1" component="p">
           To the maximum extent permitted by applicable law, the operators of this service shall
           not be liable for any direct, indirect, incidental, consequential, or any other damages
-          arising from the use — or inability to use — any part of it. By using any component
+          arising from the use (or inability to use) any part of it. By using any component
           you accept full responsibility for how you integrate and rely on it.
         </Typography>
       </Box>
