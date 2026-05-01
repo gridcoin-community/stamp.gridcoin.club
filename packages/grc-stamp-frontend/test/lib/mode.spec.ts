@@ -53,7 +53,10 @@ describe('mode', () => {
   describe('saveTheme', () => {
     it('should set cookie with theme value and max-age', () => {
       saveTheme('dark');
-      expect(cookieValue).toBe('theme=dark; path=/; max-age=31536000');
+      expect(cookieValue).toContain('theme=dark');
+      expect(cookieValue).toContain('path=/');
+      expect(cookieValue).toContain('max-age=31536000');
+      expect(cookieValue).toContain('samesite=lax');
     });
   });
 
