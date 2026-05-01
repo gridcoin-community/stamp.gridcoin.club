@@ -1,3 +1,17 @@
+# [grc-stamp-frontend-v1.6.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.5.0...grc-stamp-frontend-v1.6.0) (2026-05-01)
+
+
+### Bug Fixes
+
+* fix the title ([966ce00](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/966ce006bd1b55e2884709e544f535565513df52))
+* improve content ([97f8c26](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/97f8c26ef004590392ba7d488f19b4a3dc6d6540))
+
+
+### Features
+
+* add link to the hub ([f05a5bc](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f05a5bca63b285680a5d8ec99e695082454a63de))
+* align dark mode with the hub website ([2043023](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/2043023e4f97ff596dc8c39e455de824a5402549))
+
 # [grc-stamp-frontend-v1.5.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.4.0...grc-stamp-frontend-v1.5.0) (2026-04-27)
 
 
