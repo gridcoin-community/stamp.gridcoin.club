@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import Script from 'next/script';
-import { ThemeMode } from '@/lib/mode';
+import { cleanupLegacyThemeCookie, ThemeMode } from '@/lib/mode';
 import sseManager from '@/lib/sseManager';
 import { themeCreator } from '../theme';
 import createEmotionCache from '../createEmotionCache';
@@ -28,6 +28,8 @@ export default function MyApp(props: MyAppProps) {
   const { mode } = pageProps;
 
   React.useEffect(() => {
+    // See `cleanupLegacyThemeCookie` — temporary migration shim, remove with it.
+    cleanupLegacyThemeCookie();
     sseManager.connect(`${process.env.NEXT_PUBLIC_API_URL}/events`);
     return () => {
       sseManager.disconnect();

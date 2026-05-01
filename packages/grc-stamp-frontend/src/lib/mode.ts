@@ -16,9 +16,27 @@ function sharedCookieDomain(): string | null {
   return null;
 }
 
+// MIGRATION (added 2026-05-01): expire any host-only `theme` cookie left over
+// from the pre-shared-domain code. Without this, the older host-only cookie
+// keeps shadowing the shared one (RFC 6265 §5.4 sorts by creation time;
+// `cookie.parse` keeps the first occurrence), locking the subdomain to
+// whatever value it was last set to. A no-op once the legacy cookie is gone,
+// which is why it's safe to call eagerly on mount.
+// TODO(remove after 2026-08-01): once the 3-month window has passed most
+// active users will have self-healed; drop this helper and its caller in
+// `_app.tsx`. The `domain` guard in `saveTheme` can stay.
+export function cleanupLegacyThemeCookie(): void {
+  if (typeof document === 'undefined') return;
+  if (!sharedCookieDomain()) return;
+  document.cookie = 'theme=; path=/; max-age=0; samesite=lax';
+}
+
 export function saveTheme(theme: ThemeMode) {
   const domain = sharedCookieDomain();
   const isSecure = typeof window !== 'undefined' && window.location.protocol === 'https:';
+  if (domain) {
+    cleanupLegacyThemeCookie();
+  }
   const parts = [
     `theme=${theme}`,
     'path=/',
