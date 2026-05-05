@@ -23,6 +23,12 @@ interface Config {
   PORT: number;
   MINIMUM_WALLET_AMOUNT: number;
   REDIS_SCRAPER_KEY: string;
+  // Number of trusted reverse-proxy hops in front of this process. Express
+  // uses this to derive `req.ip` from `X-Forwarded-For`, which feeds the
+  // per-IP rate limiter and SSE caps. 1 (single nginx hop).
+  // Defaults is 2 if Cloudflare fronts your nginx, etc. Setting it too high
+  // lets clients spoof their IP via the X-Forwarded-For header.
+  TRUST_PROXY_HOPS: number;
 }
 
 /**
@@ -55,6 +61,7 @@ nconf
     'PORT',
     'MINIMUM_WALLET_AMOUNT',
     'REDIS_SCRAPER_KEY',
+    'TRUST_PROXY_HOPS',
   ])
   // 3. Config file
   .file({
@@ -79,6 +86,7 @@ nconf
     PUBLISH_TIMEOUT: 2 * 60 * 1000,
     PORT: packageJson.port,
     MINIMUM_WALLET_AMOUNT: 1,
+    TRUST_PROXY_HOPS: 2,
   });
 
 // Check required settings

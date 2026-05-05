@@ -4,9 +4,17 @@ import { emitPendingCount, getEmitter } from '../lib/emitter';
 import { Events, PendingCountEvent, ProcessBlockEvent } from '../types';
 import { log } from '../lib/log';
 
+// SSE connections are long-lived and consume an FD + heap entry each. These
+// caps stop a single host (or the whole internet) from holding the process
+// hostage with kept-open sockets. Tuned for "obvious DDoS" — legitimate
+// browsers open one stream per tab.
+export const MAX_TOTAL_CLIENTS = 1000;
+export const MAX_CLIENTS_PER_IP = 15;
+
 interface Client {
   id: string;
-  res: Response
+  ip: string;
+  res: Response;
 }
 
 export class EventsService {
@@ -54,9 +62,19 @@ export class EventsService {
     }
   }
 
-  public addClient(res: Response): string {
+  public addClient(res: Response, ip: string): string | null {
+    if (this.clients.length >= MAX_TOTAL_CLIENTS) {
+      log.warn(`[EventsService] Refusing new client from ${ip}: total cap (${MAX_TOTAL_CLIENTS}) reached`);
+      return null;
+    }
+    const perIpCount = this.clients.reduce((n, c) => (c.ip === ip ? n + 1 : n), 0);
+    if (perIpCount >= MAX_CLIENTS_PER_IP) {
+      log.warn(`[EventsService] Refusing new client from ${ip}: per-IP cap (${MAX_CLIENTS_PER_IP}) reached`);
+      return null;
+    }
+
     const id = randomUUID();
-    this.clients.push({ id, res });
+    this.clients.push({ id, ip, res });
     log.info(`[EventsService] Clients connected: ${this.clients.length}`);
 
     // Send last known pending count so the client doesn't start blank
