@@ -8,6 +8,18 @@ import { Stamp } from '../models/Stamp';
 import { emitPendingCount, getEmitter } from '../lib/emitter';
 import { ProcessBlockEvent, TransactionFoundEvent } from '../types';
 
+// OP_RETURN + push-data length byte. The spec at /about#protocol-overview
+// allows two layouts: 0x26 (38 bytes — single hash) and 0x46 (70 bytes — two
+// hashes). Anything else (push-data-1 wrappers, foreign lengths) doesn't
+// match the published protocol and is skipped.
+const PUSH_SINGLE = '6a26';
+const PUSH_DOUBLE = '6a46';
+// On-chain encoding of supported protocol versions. `PROTOCOL = '0.0.1'` →
+// `000001` here. New entries are added when this indexer learns to decode a
+// new layout; until then unknown versions are skipped rather than mis-sliced.
+const KNOWN_PROTOCOL_VERSIONS = new Set(['000001']);
+const HEX64 = /^[0-9a-f]{64}$/;
+
 export class Scraper {
   private currentBlock: number;
 
@@ -65,13 +77,33 @@ export class Scraper {
           const { hex: hexString, asm } = vout.scriptPubKey;
           if (!re.test(asm)) continue;
 
+          // Protocol-compliance gate. The asm regex above is a coarse filter
+          // (any push of bytes starting with the prefix matches), so verify
+          // the full layout against the spec before we slice and index.
+          const wrapper = hexString.slice(0, 4);
+          if (wrapper !== PUSH_SINGLE && wrapper !== PUSH_DOUBLE) {
+            log.info(`[Scraper] Skipping ${TXID}: unsupported OP_RETURN wrapper ${wrapper}`);
+            continue;
+          }
+          const version = hexString.slice(10, 16);
+          if (!KNOWN_PROTOCOL_VERSIONS.has(version)) {
+            log.info(`[Scraper] Skipping ${TXID}: unknown protocol version ${version}`);
+            continue;
+          }
+          const hashCount = wrapper === PUSH_SINGLE ? 1 : 2;
+          const hashSlots = [
+            hexString.slice(16, 80),
+            hashCount === 2 ? hexString.slice(80, 144) : '',
+          ];
+          if (!HEX64.test(hashSlots[0])
+              || (hashCount === 2 && !HEX64.test(hashSlots[1]))) {
+            log.info(`[Scraper] Skipping ${TXID}: hash slot is not 64 hex chars`);
+            continue;
+          }
+
           log.info('[Scraper] We have found transaction');
           const hex = Buffer.from(hexString);
-          // Payload format: 12-hex-char prefix + up to two 64-hex-char hashes
-          const stamps2save = [
-            hex.toString('utf8', 16, 16 + 64),
-            hex.toString('utf8', 16 + 64, 16 + 128),
-          ].map((hash: string) => {
+          const stamps2save = hashSlots.map((hash: string) => {
             if (!hash || !hash.length) return Promise.resolve();
             const stamp = new Stamp();
             stamp.block = this.currentBlock + 1;
