@@ -8,9 +8,25 @@ import { StampSubmittedEvent } from '../types';
 import { emitPendingCount, getEmitter } from '../lib/emitter';
 
 export class StampService {
+  private publishing = false;
+
   constructor(private prisma = new PrismaClient()) {}
 
   public async publishStamp(): Promise<void> {
+    // Re-entry guard: prevents overlapping ticks from double-burning fees.
+    if (this.publishing) {
+      log.info('[StampService] Previous publish run still in progress, skipping tick');
+      return;
+    }
+    this.publishing = true;
+    try {
+      await this.publishStampInner();
+    } finally {
+      this.publishing = false;
+    }
+  }
+
+  private async publishStampInner(): Promise<void> {
     // Drain until the queue is empty so burst load doesn't have to wait for
     // the next interval tick to make progress.
     let published = 0;

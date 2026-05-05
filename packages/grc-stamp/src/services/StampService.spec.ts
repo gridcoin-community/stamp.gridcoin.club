@@ -66,6 +66,32 @@ describe('StampService', () => {
       });
     });
 
+    it('skips overlapping ticks while a publish run is still in progress', async () => {
+      const mockStamps = [
+        { id: 1, hash: 'hash1' },
+        { id: 2, hash: 'hash2' },
+      ];
+      let resolveBurn!: (tx: string) => void;
+      const burnPromise = new Promise<string>((r) => { resolveBurn = r; });
+
+      (mockPrisma.stamps.findMany as any)
+        .mockResolvedValueOnce(mockStamps)
+        .mockResolvedValueOnce([]);
+      (rpc.burn as jest.Mock).mockReturnValueOnce(burnPromise);
+
+      // First call enters the critical section and parks on rpc.burn.
+      const first = service.publishStamp();
+      // Second call should observe `publishing=true` and bail without
+      // touching prisma or rpc.
+      const second = service.publishStamp();
+
+      resolveBurn('tx-1');
+      await Promise.all([first, second]);
+
+      expect(rpc.burn).toHaveBeenCalledTimes(1);
+      expect(mockPrisma.stamps.updateMany).toHaveBeenCalledTimes(1);
+    });
+
     it('should drain multiple batches until the queue is empty', async () => {
       const batch1 = [
         { id: 1, hash: 'hash1' },
