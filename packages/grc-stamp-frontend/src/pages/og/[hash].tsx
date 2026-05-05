@@ -5,10 +5,10 @@ import { promises as fs } from 'node:fs';
 import sharp from 'sharp';
 import { ImageResponse } from 'next/og';
 import type { GetServerSideProps } from 'next';
-import type { ServerResponse } from 'node:http';
 import { StampRepository } from '@/repositories/StampsRepository';
 import { identiconPngDataUrl } from '@/lib/serverImage';
 import { CACHE_CONTROL_DAY } from '@/lib/httpCache';
+import { writeError, writeServerError } from '@/lib/ssrError';
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -89,13 +89,6 @@ async function writeCache(hash: string, buffer: Buffer): Promise<void> {
   } catch (e) {
     console.warn('[og] cache write failed:', e);
   }
-}
-
-function writeError(res: ServerResponse, status: number, body: string): void {
-  res.statusCode = status;
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.write(body);
-  res.end();
 }
 
 const labelStyle = {
@@ -328,9 +321,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     res.end();
     return { props: {} };
   } catch (err) {
-    const message = err instanceof Error ? err.stack ?? err.message : String(err);
-    console.error('[og] render failed:', message);
-    writeError(res, 500, `OG image render failed: ${message}`);
+    writeServerError(res, '[og] render failed:', 'OG image render failed', err);
     return { props: {} };
   }
 };

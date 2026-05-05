@@ -12,6 +12,7 @@ import { txUrl } from '@/lib/explorerLinks';
 import { SITE_NAME, SITE_URL } from '@/components/Seo';
 import { identiconPngDataUrl } from '@/lib/serverImage';
 import { CACHE_CONTROL_DAY } from '@/lib/httpCache';
+import { writeError, writeServerError } from '@/lib/ssrError';
 
 // Bumped when the certificate template changes shape so that on-disk caches
 // from the prior template are not served for new requests. Old files become
@@ -89,13 +90,6 @@ async function writeCache(hash: string, buffer: Buffer): Promise<void> {
   } catch (e) {
     console.warn('[pdf] cache write failed:', e);
   }
-}
-
-function writeError(res: ServerResponse, status: number, body: string): void {
-  res.statusCode = status;
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.write(body);
-  res.end();
 }
 
 // Manual ISO-slice rather than date-fns `format` because `format` runs in the
@@ -198,9 +192,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     res.end();
     return { props: {} };
   } catch (err) {
-    const message = err instanceof Error ? err.stack ?? err.message : String(err);
-    console.error('[pdf] render failed:', message);
-    writeError(res, 500, `PDF render failed: ${message}`);
+    writeServerError(res, '[pdf] render failed:', 'PDF render failed', err);
     return { props: {} };
   }
 };
