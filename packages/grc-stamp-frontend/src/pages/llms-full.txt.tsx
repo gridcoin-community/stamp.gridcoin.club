@@ -1,4 +1,10 @@
 import { GetServerSideProps } from 'next';
+import { IS_TESTNET } from '@/lib/network';
+import { SITE_URL } from '@/components/Seo';
+
+// Mainnet only: testnet is noindex/nofollow, so we don't ship llms-full
+// there either — the route returns 404 when NEXT_PUBLIC_NETWORK=testnet.
+// All canonical URLs come from NEXT_PUBLIC_SITE_URL via SITE_URL.
 
 const content = `# Gridcoin Blockchain Stamping
 
@@ -73,7 +79,7 @@ The Gridcoin Stamp Action (https://github.com/gridcat/gridcoin-stamp-action) is 
 4. Computes the SHA-256 of every artifact locally on the runner, submits the hashes to the stamping API, and writes a "Blockchain Timestamps" table into the release body with a verification link per file
 5. Is idempotent on reruns: existing \`-stamped\` assets are reused, partial failures from a prior run are picked up, and the release body is rewritten only if it would actually change
 
-Verification is privacy-first: recipients drop the stamped file onto https://stamp.gridcoin.club and the SHA-256 is computed client-side in the browser — the file itself never leaves the verifier's machine.
+Verification is privacy-first: recipients drop the stamped file onto ${SITE_URL} and the SHA-256 is computed client-side in the browser — the file itself never leaves the verifier's machine.
 
 Minimal workflow:
 
@@ -93,9 +99,9 @@ Minimal workflow:
 
 ## API
 
-The API is public, unauthenticated, and CORS-enabled. Full human-readable docs live at https://stamp.gridcoin.club/developers.
+The API is public, unauthenticated, and CORS-enabled. Full human-readable docs live at ${SITE_URL}/developers.
 
-- **Base URL**: https://stamp.gridcoin.club/api
+- **Base URL**: ${SITE_URL}/api
 - **Content-Type**: application/vnd.api+json (JSON:API specification)
 - **Authentication**: none — every endpoint is publicly accessible
 - **Error format**: { "errors": [{ "status": number, "title": string, "detail"?: string }] }
@@ -125,22 +131,24 @@ Collection endpoints support these query parameters:
 
 Check service health:
 
-    curl https://stamp.gridcoin.club/api/status
+    curl ${SITE_URL}/api/status
 
 Stamp a SHA-256 hash:
 
-    curl -X POST 'https://stamp.gridcoin.club/api/stamps' \\
+    curl -X POST '${SITE_URL}/api/stamps' \\
       -H 'Content-Type: application/vnd.api+json' \\
       -d '{"data":{"type":"stamps","attributes":{"hash":"87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7"}}}'
 
 Look up a hash:
 
-    curl https://stamp.gridcoin.club/api/hashes/87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7
+    curl ${SITE_URL}/api/hashes/87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7
 `;
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+  if (IS_TESTNET) return { notFound: true };
+
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=3600');
+  res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=86400');
   res.write(content);
   res.end();
 

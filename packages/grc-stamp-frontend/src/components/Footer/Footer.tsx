@@ -8,6 +8,7 @@ import GithubIcon from '@mui/icons-material/GitHub';
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Balance } from '@/components/Footer/Balance';
+import { IS_TESTNET, SISTER_NETWORK_LABEL, SISTER_NETWORK_URL } from '@/lib/network';
 
 const SubFooterTypography = styled(Typography)(({ theme }) => ({
   textAlign: 'left',
@@ -71,6 +72,19 @@ export function Footer() {
         >
           Part of Gridcoin Club ↗
         </a>
+        {SISTER_NETWORK_URL && (
+          <>
+            {' · '}
+            <a
+              href={SISTER_NETWORK_URL}
+              style={{ color: 'inherit' }}
+              rel={IS_TESTNET ? undefined : 'nofollow'}
+            >
+              {SISTER_NETWORK_LABEL}
+              {' ↗'}
+            </a>
+          </>
+        )}
       </SubFooterTypography>
     </Container>
   );

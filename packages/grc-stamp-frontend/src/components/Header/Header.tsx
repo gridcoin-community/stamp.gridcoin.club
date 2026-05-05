@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { NavMenuMobile } from '@/components/Navigation/NavMenuMobile';
 import { useRouteNavigating } from '@/hooks';
+import { IS_TESTNET } from '@/lib/network';
 import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
 interface Props {
@@ -63,8 +64,8 @@ export function Header({ showLinks = true }: HeaderProps) {
             />
           )}
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box>
-              <Link href="/">
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+              <Link href="/" style={{ display: 'inline-flex', alignItems: 'center' }}>
                 {isMobile && mounted ? (
                   <Image
                     src="/ic-logo-mobile.svg"
@@ -83,6 +84,24 @@ export function Header({ showLinks = true }: HeaderProps) {
                   />
                 )}
               </Link>
+              {IS_TESTNET && (
+                <Box
+                  component="span"
+                  sx={{
+                    px: 1,
+                    py: 0.25,
+                    fontSize: '0.65rem',
+                    fontWeight: 700,
+                    letterSpacing: 1.4,
+                    color: theme.palette.primary.main,
+                    border: `1px solid ${theme.palette.primary.main}`,
+                    borderRadius: 1,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  TESTNET
+                </Box>
+              )}
             </Box>
 
             <Toolbar

@@ -112,10 +112,12 @@
     ]
   },
   "scripts": {
+    "prebuild": "npx prisma generate",
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json -w",
     "clean": "rimraf ./dist",
     "commit": "git-cz",
+    "predev": "npx prisma generate",
     "dev": "npm-run-all -p build:watch start:dev",
     "prisma": "npx prisma generate",
     "semantic-release": "semantic-release -e semantic-release-monorepo",

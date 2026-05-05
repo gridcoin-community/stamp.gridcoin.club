@@ -73,6 +73,19 @@ jobs:
           paths:
             - ~/app/packages/grc-stamp-frontend/node_modules
       - run:
+          name: Audit production dependencies for known vulnerabilities
+          command: |
+            # Hard-fail at high+ severity on production deps. Dev deps
+            # (test/lint toolchain) are excluded — they don't ship and
+            # noise from them would dull the signal here.
+            set +e
+            FAIL=0
+            for dir in ~/app ~/app/packages/grc-stamp ~/app/packages/grc-stamp-frontend; do
+              echo "::: Auditing $dir"
+              ( cd "$dir" && npm audit --audit-level=high --omit=dev ) || FAIL=1
+            done
+            exit $FAIL
+      - run:
           name: Detect affected projects
           command: |
             mkdir -p ~/app/.affected
@@ -302,6 +315,56 @@ jobs:
             docker tag app "ghcr.io/gridcat/$(jq -r '.name' package.json):latest"
             docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):latest"
 
+  # Testnet sibling of grc-stamp-frontend_build_image. Same Dockerfile,
+  # same source, but built with NETWORK=testnet so the Dockerfile
+  # overlays .env.testnet onto .env.production.local before `next build`
+  # — every NEXT_PUBLIC_* in the client bundle gets baked to its testnet
+  # value. Pushed under the matching :{version}-testnet and :latest-testnet
+  # tags so prod compose can pin the testnet stack to a stable testnet
+  # build.
+  grc-stamp-frontend_build_image-testnet:
+    <<: *defaults
+    docker:
+      - image: docker:git
+    steps:
+      - checkout
+      - run:
+          name: Get the recent changes
+          command: git pull origin master
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Install dependencies
+          command: apk add --no-cache jq
+      - restore_cache:
+          keys:
+            - v1-testnet-{{ .Branch }}
+          paths:
+            - /caches/grc-stamp-frontend-testnet.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/grc-stamp-frontend-testnet.tar | true
+      - run:
+          name: Build application Docker image (testnet)
+          command: |
+            cd ~/app/packages/grc-stamp-frontend && docker build --cache-from=app-testnet --build-arg NETWORK=testnet -t app-testnet .
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            cd ~/app/packages/grc-stamp-frontend && docker save -o /caches/grc-stamp-frontend-testnet.tar app-testnet
+      - deploy:
+          name: Push testnet application Docker image
+          command: |
+            cd ~/app/packages/grc-stamp-frontend
+            docker login ghcr.io -u gridcat -p${CR_PAT}
+            docker tag app-testnet "ghcr.io/gridcat/$(jq -r '.name' package.json):$(jq -r '.version' package.json)-testnet"
+            docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):$(jq -r '.version' package.json)-testnet"
+            docker tag app-testnet "ghcr.io/gridcat/$(jq -r '.name' package.json):latest-testnet"
+            docker push "ghcr.io/gridcat/$(jq -r '.name' package.json):latest-testnet"
+
 workflows:
   ci:
     jobs:
@@ -350,6 +413,12 @@ workflows:
   grc-stamp-frontend_deploy-tag:
     jobs:
       - grc-stamp-frontend_build_image:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^grc-stamp-frontend-v.*/
+      - grc-stamp-frontend_build_image-testnet:
           filters:
             branches:
               ignore: /.*/

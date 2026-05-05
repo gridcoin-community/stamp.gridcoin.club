@@ -21,7 +21,7 @@ describe('Scraper', () => {
   let scraper: Scraper;
   let mockRedis: any;
   let mockRpc: any;
-  const blockPrefix = 'f055aa';
+  const blockPrefix = '5ea1ed';
 
   beforeEach(() => {
     mockRedis = {

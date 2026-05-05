@@ -3,6 +3,10 @@ import path from 'path';
 import packageJson from '../package.json';
 
 interface Config {
+  // Which Gridcoin network this instance is anchored to. Required and
+  // validated against {'mainnet','testnet'} so a typo or omission fails
+  // loud at startup instead of silently inheriting the wrong identity.
+  NETWORK: 'mainnet' | 'testnet';
   DATABASE_URL: string;
   REDIS_HOST: string;
   REDIS_PORT: string;
@@ -17,7 +21,6 @@ interface Config {
   SCRAPER_TIMEOUT: number;
   PUBLISH_TIMEOUT: number;
   PORT: number;
-  BLOCK_PREFIX: string;
   MINIMUM_WALLET_AMOUNT: number;
   REDIS_SCRAPER_KEY: string;
 }
@@ -39,6 +42,7 @@ nconf
   .argv()
   // 2. Environment variables
   .env([
+    'NETWORK',
     'DATABASE_URL',
     'REDIS_HOST',
     'REDIS_PORT',
@@ -49,14 +53,19 @@ nconf
     'GRC_RPC_PORT',
     'START_BLOCK',
     'PORT',
-    'BLOCK_PREFIX',
     'MINIMUM_WALLET_AMOUNT',
+    'REDIS_SCRAPER_KEY',
   ])
   // 3. Config file
   .file({
     file: path.join(__dirname, '../config.json'),
   })
   // 4. Defaults
+  //
+  // REDIS_SCRAPER_KEY is deliberately NOT defaulted — mainnet uses
+  // `grc-stamp:processedBlock`, testnet uses `grc-stamp-testnet:…`,
+  // and a missing env var should fail loud at startup rather than
+  // silently colliding the two cursors on one key.
   .defaults({
     MYSQL_HOST: 'mysql',
     MYSQL_LOGIN: '',
@@ -66,19 +75,15 @@ nconf
     isProduction: process.env.NODE_ENV === 'production',
     START_BLOCK: 1581500,
     BLOCK_GROUPS: 1500,
-    // Run scraper once per minute by default
     SCRAPER_TIMEOUT: 60000,
-    // SCRAPER_TIMEOUT: 10 * 1000,
     PUBLISH_TIMEOUT: 2 * 60 * 1000,
-    // PUBLISH_TIMEOUT: 20 * 1000,
     PORT: packageJson.port,
-    BLOCK_PREFIX: 'f055aa',
     MINIMUM_WALLET_AMOUNT: 1,
-    REDIS_SCRAPER_KEY: 'grc-stamp:processedBlock',
   });
 
 // Check required settings
 checkConfig([
+  'NETWORK',
   'DATABASE_URL',
   'GRC_RPC_USER',
   'GRC_RPC_PASSWORD',
@@ -87,9 +92,13 @@ checkConfig([
   'START_BLOCK',
   'BLOCK_GROUPS',
   'PORT',
-  'BLOCK_PREFIX',
   'MINIMUM_WALLET_AMOUNT',
   'REDIS_SCRAPER_KEY',
 ]);
+
+const networkValue = nconf.get('NETWORK');
+if (networkValue !== 'mainnet' && networkValue !== 'testnet') {
+  throw new Error(`NETWORK must be either 'mainnet' or 'testnet', got: ${networkValue}`);
+}
 
 export const config = Object.freeze(nconf.get()) as Config;
