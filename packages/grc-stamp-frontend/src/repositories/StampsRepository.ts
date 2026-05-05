@@ -37,7 +37,9 @@ export class StampRepository {
    */
   public async findStampByHash(hash: string, isServer = false): Promise<StampEntity | null> {
     const store = new Store();
-    let url = `stamps?filter[hash]=${hash}`;
+    // Encode the hash so a crafted /proof/<weird-input> URL can't smuggle
+    // extra query params (e.g. `&filter[block][gt]=0`) into the API call.
+    let url = `stamps?filter[hash]=${encodeURIComponent(hash)}`;
     if (isServer) {
       url = `${process.env.NEXT_PUBLIC_API_URL_SERVER}/${url}`;
     } else {
