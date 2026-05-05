@@ -23,15 +23,15 @@ describe('explorerLinks', () => {
       expect(txUrl('abc123')).toBe('https://explorer.example.com/tx/abc123');
     });
 
-    it('should return void link when tx is undefined', () => {
-      expect(txUrl(undefined)).toBe('javascript:void(0);');
+    it('returns undefined when tx is undefined', () => {
+      expect(txUrl(undefined)).toBeUndefined();
     });
 
-    it('should return void link when tx is empty string', () => {
-      expect(txUrl('')).toBe('javascript:void(0);');
+    it('returns undefined when tx is empty string', () => {
+      expect(txUrl('')).toBeUndefined();
     });
 
-    it('should return undefined when env var is not set', () => {
+    it('returns undefined when env var is not set', () => {
       delete process.env.NEXT_PUBLIC_EXPLORER_TX_URL;
       expect(txUrl('abc123')).toBeUndefined();
     });
@@ -42,15 +42,15 @@ describe('explorerLinks', () => {
       expect(blockUrl(12345)).toBe('https://explorer.example.com/block/12345');
     });
 
-    it('should return void link when block is undefined', () => {
-      expect(blockUrl(undefined)).toBe('javascript:void(0);');
+    it('returns undefined when block is undefined', () => {
+      expect(blockUrl(undefined)).toBeUndefined();
     });
 
-    it('should return void link when block is 0', () => {
-      expect(blockUrl(0)).toBe('javascript:void(0);');
+    it('returns undefined when block is 0', () => {
+      expect(blockUrl(0)).toBeUndefined();
     });
 
-    it('should return undefined when env var is not set', () => {
+    it('returns undefined when env var is not set', () => {
       delete process.env.NEXT_PUBLIC_EXPLORER_BLOCK_URL;
       expect(blockUrl(12345)).toBeUndefined();
     });
