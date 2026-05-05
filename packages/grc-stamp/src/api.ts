@@ -17,6 +17,18 @@ export const app = express();
 // Set up port
 app.set('port', config.PORT);
 
+// Behind a reverse proxy. With `trust proxy` set to a hop count, Express
+// peels exactly that many entries off the right-hand side of the
+// `X-Forwarded-For` header to derive `req.ip` — i.e. the IP that the
+// last-trusted proxy saw as the client. Setting it too high (or `true`)
+// would let clients spoof their IP by injecting fake X-F-F entries on the
+// way in, defeating the per-IP rate limiter and SSE caps.
+//
+// nginx must be configured with
+//   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+// so it appends the real client IP to the chain rather than overwriting it.
+app.set('trust proxy', Number(config.TRUST_PROXY_HOPS));
+
 // Express 5 changed the default query parser from "extended" (qs) to "simple"
 // (node:querystring), which does NOT understand JSON:API bracket syntax like
 // page[size]=5 or filter[block][gt]=0. Restore the qs-backed parser so nested
