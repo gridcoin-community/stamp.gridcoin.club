@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Chance from 'chance';
+import { sql } from 'kysely';
 import { db } from '../../src/lib/db';
 import { NewStamp, StampsType } from '../../src/lib/database';
 import { PROTOCOL } from '../../src/constants';
@@ -12,9 +13,10 @@ function fakeHash() {
 
 // Schema is created once by tests/globalSetup.ts. Per-test isolation is
 // just a truncate, which is fast and avoids a roundtrip to the migration
-// runner.
+// runner. TRUNCATE (not DELETE) so AUTO_INCREMENT resets between files —
+// hash.test.ts asserts on id='1', which requires a clean counter.
 export async function initDatabase(): Promise<void> {
-  await db.deleteFrom('stamps').execute();
+  await sql`TRUNCATE TABLE stamps`.execute(db);
 }
 
 interface SeedStamp {
@@ -78,5 +80,5 @@ export async function createManyCompletedStamps(amount = 10): Promise<void> {
 }
 
 export async function cleanUp(): Promise<void> {
-  await db.deleteFrom('stamps').execute();
+  await sql`TRUNCATE TABLE stamps`.execute(db);
 }
