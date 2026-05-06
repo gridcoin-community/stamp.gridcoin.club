@@ -203,4 +203,23 @@ describe('GET /stamps', () => {
         title: 'Invalid query parameters',
       });
   });
+
+  it('should return 400 when a scalar operator is given an array value', async () => {
+    // qs delivers `filter[hash][ne][]=a&filter[hash][ne][]=b` as an array.
+    // Scalar operators (eq/ne/gt/lt/gte/lte) can't bind an array — the
+    // repo translator rejects it with BadFilterError so the controller
+    // returns a clean 400 instead of letting MySQL surface a tuple-arity
+    // error and the catch-all map it to 404.
+    const res = await request(app)
+      .get('/stamps?filter[hash][ne][]=a&filter[hash][ne][]=b')
+      .send();
+    expect(res.status).to.be.equal(HttpStatus.BAD_REQUEST);
+    const { errors } = res.body;
+    expect(errors).to.be.an('array')
+      .to.have.lengthOf(1)
+      .that.deep.includes({
+        status: HttpStatus.BAD_REQUEST,
+        title: 'Invalid query parameters',
+      });
+  });
 });

@@ -99,6 +99,13 @@ function translateFilter(
   if (!FILTER_OPS.has(op as FilterOp)) {
     throw new BadFilterError(`Unknown filter operator: ${op}`);
   }
+  // qs delivers `filter[k][op][]=a&filter[k][op][]=b` as an array. Scalar
+  // ops can't bind an array — Kysely would emit `k <op> (a, b)` and the
+  // driver would surface a MySQL "Operand should contain 1 column(s)"
+  // error which the controller's catch maps to 404. Reject up front.
+  if (Array.isArray(v[op])) {
+    throw new BadFilterError(`Filter ${key}[${op}] does not accept array values`);
+  }
   assertBigintCompatible(key, v[op], `${key}[${op}]`);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return eb(key, OPERATOR_MAP[op as FilterOp], v[op] as any);
