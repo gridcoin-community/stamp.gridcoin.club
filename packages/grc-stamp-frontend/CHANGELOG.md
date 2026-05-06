@@ -1,3 +1,20 @@
+# [grc-stamp-frontend-v1.7.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.6.1...grc-stamp-frontend-v1.7.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* do not leak server side error to the frontend ([25f3218](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/25f3218b028b9c549e6622edb1369747e2cf4aab))
+* get rid of nasty javascript voids for empty links ([86482c1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/86482c1e9023860863bc01f33831631d7d61f32e))
+* prevent query url and hash injections to the server side (mostly annoying than dangerous) ([71b29f1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/71b29f10c2adf0eaaac1ce9e53ee5e4837134734))
+
+
+### Features
+
+* backfill banner, out of funds banner, network awareness design ([8910ba3](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/8910ba338ca37ed02b30992c9ef368a191ae6a87))
+* introduce network awareness ([18bb2b0](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/18bb2b07ed58ad7f94053c57d1f6641d0439f4bc))
+* retire prisma, use boring stack ([1f1894a](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1f1894ac6e46c1da6fb06ba5b3750a29f4b343ea))
+* update the api documentation ([1a18e68](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1a18e68ba8e00775e4ecba2c8099ce90b35f4dfb))
+
 # [grc-stamp-frontend-v1.6.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.6.0...grc-stamp-frontend-v1.6.1) (2026-05-01)
 
 
