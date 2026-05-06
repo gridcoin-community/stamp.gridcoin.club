@@ -122,9 +122,9 @@ Collection endpoints support these query parameters:
 - \`GET /api/status\` — Service name, version, and maintenance flag. Use this for health checks.
 - \`GET /api/stamps\` — List stamps. Supports pagination, sorting, sparse fieldsets, and filtering.
 - \`GET /api/stamps/:id\` — Fetch a single stamp by its numeric id.
-- \`POST /api/stamps\` — Create a new stamp. JSON:API body: { data: { type: "stamps", attributes: { hash, hashType?, protocol? } } }. \`hash\` must be exactly 64 hex characters. Returns 201 Created for a new stamp, 200 OK if the hash was already stamped, 400 for validation errors, and 406 if the service wallet is below the minimum balance.
+- \`POST /api/stamps\` — Create a new stamp. JSON:API body: { data: { type: "stamps", attributes: { hash, hashType?, protocol? } } }. \`hash\` must be exactly 64 hex characters. Returns 201 Created for a new stamp, 200 OK if the hash was already stamped, 400 for validation errors, 406 if the service wallet is below the minimum balance, and 429 if the per-IP rate limit (90 requests / 60 seconds) is exceeded — 429 responses include a \`Retry-After\` header in seconds.
 - \`GET /api/hashes/:hash\` — Look up the earliest stamp for a given SHA-256 hash. Returns 404 if the hash has never been stamped.
-- \`GET /api/wallet\` — Returns the service wallet address, current balance (as a JSON number), and the last block processed by the scraper.
+- \`GET /api/wallet\` — Returns the service wallet address, current balance (as a JSON number), the last block processed by the scraper, the \`minimumBalance\` threshold below which new stamps are refused with 406, and \`effectiveBalance\` (balance minus GRC promised to pending stamps) — the value the server compares against \`minimumBalance\`.
 - \`GET /api/wallet/balance\` — Lightweight balance-only variant.
 
 ### Quick examples
