@@ -8,8 +8,11 @@ import Script from 'next/script';
 import { cleanupLegacyThemeCookie, ThemeMode } from '@/lib/mode';
 import sseManager from '@/lib/sseManager';
 import { IS_TESTNET, IS_MAINNET, NETWORK } from '@/lib/network';
+import { WalletProvider } from '@/lib/walletContext';
+import { IndexerStatusProvider } from '@/lib/indexerStatusContext';
+import { WalletRawData } from '@/entities/WalletEntity';
+import { IndexerStatusEvent } from '@/types';
 import { SITE_URL } from '@/components/Seo';
-import { BackfillBanner } from '@/components/BackfillBanner';
 import { themeCreator } from '../theme';
 import createEmotionCache from '../createEmotionCache';
 import '../styles/style.css';
@@ -27,13 +30,23 @@ interface MyAppProps extends AppProps {
   mode: ThemeMode;
 }
 
+interface CommonPageProps {
+  mode: ThemeMode;
+  initialWallet?: WalletRawData | null;
+  initialIndexerStatus?: IndexerStatusEvent['data'] | null;
+}
+
 export default function MyApp(props: MyAppProps) {
   const {
     Component,
     emotionCache = clientSideEmotionCache,
     pageProps,
   } = props;
-  const { mode } = pageProps;
+  const {
+    mode,
+    initialWallet = null,
+    initialIndexerStatus = null,
+  } = pageProps as CommonPageProps;
 
   React.useEffect(() => {
     cleanupLegacyThemeCookie();
@@ -65,8 +78,11 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <BackfillBanner />
-        <Component {...pageProps} />
+        <WalletProvider initialWallet={initialWallet}>
+          <IndexerStatusProvider initialStatus={initialIndexerStatus}>
+            <Component {...pageProps} />
+          </IndexerStatusProvider>
+        </WalletProvider>
       </ThemeProvider>
     </CacheProvider>
   );

@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const isProd = process.env.NODE_ENV === 'production';
+const isTestnet = process.env.NEXT_PUBLIC_NETWORK === 'testnet';
 
 // Production CSP. Kept off in dev because Next's HMR loader needs
 // `unsafe-eval` and inline bootstrap scripts that would noisily fail the
@@ -43,6 +44,12 @@ module.exports = {
     ];
     if (isProd) {
       baseHeaders.push({ key: 'Content-Security-Policy', value: csp });
+    }
+    if (isTestnet) {
+      // Belt-and-braces: meta robots + robots.txt cover HTML, but PDFs,
+      // OG PNGs, and JSON responses don't render <head>. The X-Robots-Tag
+      // header is honored by Google + Bing for any content type.
+      baseHeaders.push({ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' });
     }
     return [
       {

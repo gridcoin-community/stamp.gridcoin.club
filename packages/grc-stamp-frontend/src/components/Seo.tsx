@@ -1,7 +1,16 @@
 import Head from 'next/head';
+import { IS_TESTNET } from '@/lib/network';
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://stamp.gridcoin.club';
 export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'Gridcoin Blockchain Stamping';
+
+// Per-network favicon — same artwork as the in-app inline logo, gradient
+// stops swapped for the testnet orange palette so the browser tab is
+// recognizable at a glance. Modern browsers prefer the SVG; legacy
+// clients fall back to /favicon.ico (kept in place for that path only).
+const DEFAULT_FAVICON = IS_TESTNET
+  ? '/ic-favicon-testnet.svg'
+  : '/ic-favicon-mainnet.svg';
 
 interface SeoProps {
   title: string;
@@ -48,7 +57,7 @@ export function Seo({
       <link
         key="icon"
         rel="icon"
-        href={iconDataUrl ?? '/favicon.ico'}
+        href={iconDataUrl ?? DEFAULT_FAVICON}
       />
 
       <meta key="og:title" property="og:title" content={title} />

@@ -62,9 +62,14 @@ export interface CertificateProps {
    * "https://stamp.gridcoin.club/about#protocol-overview". Used both as the
    * visible string and as the Link target. */
   protocolDocUrl: string;
+  /** Renders a "TESTNET" badge next to the logo so a downloaded certificate
+   * from the testnet instance can't be mistaken for a mainnet stamp. No
+   * effect on mainnet. */
+  isTestnet?: boolean;
 }
 
 const PURPLE = '#732DE2';
+const ORANGE = '#ef6c00';
 const TEXT = '#1a1a1a';
 const MUTED = '#888888';
 const BORDER = '#e0e4ee';
@@ -93,10 +98,29 @@ const styles = StyleSheet.create({
     height: 36,
     objectFit: 'contain',
   },
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   brand: {
     fontSize: 16,
     fontFamily: 'Helvetica-Bold',
     color: PURPLE,
+  },
+  // Mirrors the in-app TESTNET chip (Header.tsx:88-105): orange border +
+  // letter-spaced caps in the same orange. Sits next to the logo so a
+  // printed certificate is unmistakably testnet at a glance.
+  testnetBadge: {
+    marginLeft: 10,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    fontSize: 8,
+    fontFamily: 'Helvetica-Bold',
+    color: ORANGE,
+    borderWidth: 1,
+    borderColor: ORANGE,
+    borderRadius: 2,
+    letterSpacing: 1.4,
   },
   headerSubtitle: {
     fontSize: 10,
@@ -238,6 +262,7 @@ export function Certificate(props: CertificateProps) {
     siteUrl,
     siteHost,
     protocolDocUrl,
+    isTestnet = false,
   } = props;
 
   const hashLines = chunkLines(hash, 32);
@@ -255,11 +280,14 @@ export function Certificate(props: CertificateProps) {
     >
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          {logoPng ? (
-            <Image src={logoPng} style={styles.logo} />
-          ) : (
-            <Text style={styles.brand}>{siteHost}</Text>
-          )}
+          <View style={styles.brandRow}>
+            {logoPng ? (
+              <Image src={logoPng} style={styles.logo} />
+            ) : (
+              <Text style={styles.brand}>{siteHost}</Text>
+            )}
+            {isTestnet && <Text style={styles.testnetBadge}>TESTNET</Text>}
+          </View>
           <Text style={styles.headerSubtitle}>PROOF OF EXISTENCE</Text>
         </View>
 

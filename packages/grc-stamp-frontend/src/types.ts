@@ -37,6 +37,10 @@ export interface PendingCountEvent extends BaseEvent {
 export interface IndexerStatusEvent extends BaseEvent {
   type: 'indexerStatus',
   data: {
+    // Lowest block the indexer ever touches. Progress percentages
+    // must be computed against this floor, not absolute block 0 —
+    // the indexer never sees the chain below startBlock.
+    startBlock: number;
     indexerBlock: number;
     chainTip: number;
     lag: number;
