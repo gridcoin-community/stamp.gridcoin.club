@@ -297,6 +297,24 @@ export function Stamps() {
               secondary="The service wallet is below the minimum balance and cannot broadcast new stamping transactions."
             />
           </ListItem>
+          <ListItem disableGutters>
+            <ListItemText
+              primary="429 Too Many Requests"
+              secondary={(
+                <>
+                  Per-IP rate limit exceeded for
+                  {' '}
+                  <code>POST /api/stamps</code>
+                  : 90 requests per 60-second window. The response includes a
+                  {' '}
+                  <code>Retry-After</code>
+                  {' '}
+                  header (seconds) indicating how long to wait before the
+                  current bucket resets. Read endpoints are not rate-limited.
+                </>
+              )}
+            />
+          </ListItem>
         </List>
       </Box>
     </Box>

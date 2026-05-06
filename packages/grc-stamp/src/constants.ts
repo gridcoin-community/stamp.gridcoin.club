@@ -1,7 +1,17 @@
-import { config } from './config';
-
 export const PROTOCOL = '0.0.1';
-export const PREFIX = config.BLOCK_PREFIX;
+// Protocol identity, not a deployment knob: every stamp transaction
+// across every Gridcoin network this service indexes is "Sealed" with
+// the same OP_RETURN namespace. Hardcoded so the same image scrapes
+// the same protocol on mainnet and testnet without diverging.
+export const PREFIX = '5ea1ed';
 export const MINIMUM = 0.00000001;
 export const MIN_FEE = 0.001;
 export const OP_RETURN = 'OP_RETURN';
+
+// Lag threshold (in blocks) at which the indexer is considered backfilling
+// rather than just trailing the chain by normal cadence. Gridcoin blocks
+// arrive ~every 90s, so 1000 blocks ≈ 25 hours behind — past that it's worth
+// (a) flipping the Scraper to batched getBlocksBatch fetches and (b) showing
+// the user the BackfillBanner. Below the threshold the per-block loop is
+// cheaper and the UI stays out of the way.
+export const BACKFILL_THRESHOLD_BLOCKS = 1000;

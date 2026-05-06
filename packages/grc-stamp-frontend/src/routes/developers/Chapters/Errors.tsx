@@ -79,6 +79,23 @@ export function Errors() {
           </ListItem>
           <ListItem disableGutters>
             <ListItemText
+              primary="429 Too Many Requests"
+              secondary={(
+                <>
+                  Per-IP rate limit exceeded on
+                  {' '}
+                  <code>POST /api/stamps</code>
+                  . Includes a
+                  {' '}
+                  <code>Retry-After</code>
+                  {' '}
+                  header (seconds) until the current 60-second window resets.
+                </>
+              )}
+            />
+          </ListItem>
+          <ListItem disableGutters>
+            <ListItemText
               primary="500 Internal Server Error"
               secondary="Database, Redis, or Gridcoin RPC failure. Usually transient. Retry after a short delay."
             />

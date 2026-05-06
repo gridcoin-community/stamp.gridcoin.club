@@ -1,4 +1,9 @@
 {
+  "ts-node": {
+    "compilerOptions": {
+      "resolveJsonModule": true
+    }
+  },
   "compilerOptions": {
     "target": "es2019",
     "module": "commonjs",
@@ -12,8 +17,8 @@
     "sourceMap": false,
     "skipLibCheck": true,
     "types": ["node", "jest"],
-    "useUnknownInCatchVariables": true
-    // "strict": true,
+    "useUnknownInCatchVariables": true,
+    "strict": true
   },
   "include": [
     "src",

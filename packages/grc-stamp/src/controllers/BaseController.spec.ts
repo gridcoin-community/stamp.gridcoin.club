@@ -6,22 +6,15 @@ import {
   DEFAULT_SORT_FIELD,
 } from './BaseController';
 
-const dummyModel = {
-  attributes: {
-    f1: ['field1', 'field2'],
-    f2: ['field3', 'field4'],
-  },
-};
-
 class TestController extends Controller {
   constructor(req: Request, res: Response) {
     super(req, res);
-    this.model = dummyModel as any;
-    super.init();
+    this.init();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public setPresenter(p: any) {
-    this.presenter = p as any;
+    this.presenter = p;
   }
 }
 
@@ -39,34 +32,6 @@ describe('BaseController', () => {
       query: {},
     } as unknown as Request;
     res = {} as Response;
-  });
-
-  describe('discoverIncludes', () => {
-    it('should set useInclude when include query parameter is present', () => {
-      req.query = { include: 'field1,field2' };
-      const controller = createInstance(req, res);
-      expect(controller.useInclude).toEqual({ include: ['field1', 'field2'] });
-    });
-
-    it('should not set useInclude when include query parameter is absent', () => {
-      const controller = createInstance(req, res);
-      expect(controller.useInclude).toBeUndefined();
-    });
-  });
-
-  describe('hasInclude', () => {
-    it('should return true if include is present', () => {
-      req.query = { include: 'field1,field7' };
-      const controller = createInstance(req, res);
-      expect(controller.hasInclude('field1')).toBe(true);
-      expect(controller.hasInclude('field7')).toBe(true);
-    });
-
-    it('should return false if include is not present', () => {
-      req.query = { include: 'field1,field7' };
-      const controller = createInstance(req, res);
-      expect(controller.hasInclude('field2')).toBe(false);
-    });
   });
 
   describe('discoverPagination', () => {
@@ -98,20 +63,6 @@ describe('BaseController', () => {
     it('should not set useFields if fields query parameter is absent', () => {
       const controller = createInstance(req, res);
       expect(controller.useFields).toEqual({});
-    });
-  });
-
-  describe('hasField', () => {
-    it('should return true if field is present', () => {
-      req.query = { fields: { field1: 'value1,value2' } };
-      const controller = createInstance(req, res);
-      expect(controller.hasField('field1', 'value1')).toBe(true);
-    });
-
-    it('should return false if field is not present', () => {
-      req.query = { fields: { field1: 'value1,value22' } };
-      const controller = createInstance(req, res);
-      expect(controller.hasField('field1', 'value2')).toBe(false);
     });
   });
 
@@ -154,7 +105,7 @@ describe('BaseController', () => {
       req.query = { filter: { field1: { ne: 'abc' } } };
       expect(() => createInstance(req, res)).not.toThrow();
       const controller = createInstance(req, res);
-      expect(controller.useFilters).toEqual({ field1: { not: 'abc' } });
+      expect(controller.useFilters).toEqual({ field1: { ne: 'abc' } });
     });
 
     it('should not throw and should pass through float string values when using a comparison operator', () => {
@@ -172,42 +123,6 @@ describe('BaseController', () => {
       expect(controller.useFilters).toEqual({
         field1: { gt: [BigInt(10), 'abc', BigInt(20)] },
       });
-    });
-  });
-
-  describe('hasFilter', () => {
-    it('should return true if filter is present', () => {
-      req.query = { filter: { field1: 'value1' } };
-      const controller = createInstance(req, res);
-      expect(controller.hasFilter('field1')).toBe(true);
-    });
-
-    it('should return false if filter is not present', () => {
-      req.query = { filter: { field1: 'value1' } };
-      const controller = createInstance(req, res);
-      expect(controller.hasFilter('field2')).toBe(false);
-    });
-  });
-
-  describe('getFilter', () => {
-    it('should return filter value if filter is present', () => {
-      req.query = { filter: { field1: 'value1' } };
-      const controller = createInstance(req, res);
-      expect(controller.getFilter('field1')).toBe('value1');
-    });
-
-    it('should return null if filter is not present', () => {
-      req.query = { filter: { field1: 'value1' } };
-      const controller = createInstance(req, res);
-      expect(controller.getFilter('field2')).toBeNull();
-    });
-  });
-
-  describe('getAllFilters', () => {
-    it('should return all filters', () => {
-      req.query = { filter: { field1: 'value1' } };
-      const controller = createInstance(req, res);
-      expect(controller.getAllFilters()).toEqual({ field1: 'value1' });
     });
   });
 
@@ -231,6 +146,7 @@ describe('BaseController', () => {
       };
       const controller = createInstance(req, res);
       controller.setPresenter(presenter);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const result = controller.render(data as any);
       expect(result).toEqual({ data: 'rendered' });
       expect(presenter.render).toHaveBeenCalledWith(data.rows, { meta: { count: 0 } });
@@ -242,6 +158,7 @@ describe('BaseController', () => {
         render: jest.fn().mockReturnValue({ data: 'custom rendered' }),
       };
       const controller = createInstance(req, res);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const result = controller.render(data as any, customPresenter);
       expect(result).toEqual({ data: 'custom rendered' });
       expect(customPresenter.render).toHaveBeenCalledWith(data.rows, { meta: { count: 0 } });

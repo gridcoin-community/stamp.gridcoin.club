@@ -2,11 +2,8 @@ import { Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
 import { HashController } from './HashController';
 import { StampsRepositoryClass } from '../repositories/StampsRepository';
-import { Stamp } from '../models/Stamp';
 
-// jest.mock('../repositories/StampsRepository');
-jest.mock('../models/Stamp');
-jest.mock('@prisma/client');
+jest.mock('../lib/db', () => ({ db: {} }));
 
 describe('HashController', () => {
   let req: Request;
@@ -14,8 +11,6 @@ describe('HashController', () => {
   let stampsRepository: {
     getByHash: jest.Mock;
   };
-  const stampMock = jest.fn();
-
   beforeEach(() => {
     req = {} as Request;
     res = {
@@ -37,7 +32,6 @@ describe('HashController', () => {
         req,
         res,
         stampsRepository as unknown as StampsRepositoryClass,
-        stampMock as unknown as Stamp,
       );
       await controller.getById(hash);
 
@@ -61,7 +55,6 @@ describe('HashController', () => {
         req,
         res,
         stampsRepository as unknown as StampsRepositoryClass,
-        stampMock as unknown as Stamp,
       );
       await controller.getById(hash);
 
@@ -86,7 +79,6 @@ describe('HashController', () => {
         req,
         res,
         stampsRepository as unknown as StampsRepositoryClass,
-        stampMock as unknown as Stamp,
       );
       await controller.getById(hash);
 

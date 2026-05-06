@@ -10,9 +10,6 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-RUN npm run prisma
-
-
 # Build the application
 RUN npm run build
 
@@ -28,9 +25,6 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci --only=production
 COPY --from=builder /usr/src/app/dist ./dist
-
-COPY --from=builder /usr/src/app/prisma ./prisma
-RUN npm run prisma
 
 # Create non-root user
 RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser && \

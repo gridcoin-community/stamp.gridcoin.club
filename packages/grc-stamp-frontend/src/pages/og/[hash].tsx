@@ -5,10 +5,11 @@ import { promises as fs } from 'node:fs';
 import sharp from 'sharp';
 import { ImageResponse } from 'next/og';
 import type { GetServerSideProps } from 'next';
-import type { ServerResponse } from 'node:http';
 import { StampRepository } from '@/repositories/StampsRepository';
 import { identiconPngDataUrl } from '@/lib/serverImage';
 import { CACHE_CONTROL_DAY } from '@/lib/httpCache';
+import { writeError, writeServerError } from '@/lib/ssrError';
+import { IS_TESTNET } from '@/lib/network';
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -16,8 +17,19 @@ const HEIGHT = 630;
 const CACHE_DIR = process.env.OG_CACHE_DIR
   || path.join(process.cwd(), '.cache/og');
 
+// Bumped when the OG card artwork changes shape so on-disk caches from
+// the prior template are not served.
+//   v1 → v2: per-network logo file (theme-aligned mainnet purples,
+//            new testnet orange variant)
+const CACHE_TEMPLATE_VERSION = 'v2';
+
 const FONT_DIR = path.join(process.cwd(), 'public/fonts/SFUIText');
-const LOGO_PATH = path.join(process.cwd(), 'public/ic-logo-desktop.svg');
+// Per-network logo files — the artwork's gradient + wordmark fill follow
+// the theme palette so the OG card matches the in-app logo on each net.
+const LOGO_PATH = path.join(
+  process.cwd(),
+  `public/ic-logo-desktop-${IS_TESTNET ? 'testnet' : 'mainnet'}.svg`,
+);
 
 const stampRepository = new StampRepository();
 
@@ -74,9 +86,13 @@ function getAssets(): Promise<OgAssets> {
   return assetsPromise;
 }
 
+function cachePath(hash: string): string {
+  return path.join(CACHE_DIR, `${hash}.${CACHE_TEMPLATE_VERSION}.png`);
+}
+
 async function readCache(hash: string): Promise<Buffer | null> {
   try {
-    return await fs.readFile(path.join(CACHE_DIR, `${hash}.png`));
+    return await fs.readFile(cachePath(hash));
   } catch {
     return null;
   }
@@ -85,17 +101,10 @@ async function readCache(hash: string): Promise<Buffer | null> {
 async function writeCache(hash: string, buffer: Buffer): Promise<void> {
   try {
     await fs.mkdir(CACHE_DIR, { recursive: true });
-    await fs.writeFile(path.join(CACHE_DIR, `${hash}.png`), buffer);
+    await fs.writeFile(cachePath(hash), buffer);
   } catch (e) {
     console.warn('[og] cache write failed:', e);
   }
-}
-
-function writeError(res: ServerResponse, status: number, body: string): void {
-  res.statusCode = status;
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.write(body);
-  res.end();
 }
 
 const labelStyle = {
@@ -328,9 +337,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     res.end();
     return { props: {} };
   } catch (err) {
-    const message = err instanceof Error ? err.stack ?? err.message : String(err);
-    console.error('[og] render failed:', message);
-    writeError(res, 500, `OG image render failed: ${message}`);
+    writeServerError(res, '[og] render failed:', 'OG image render failed', err);
     return { props: {} };
   }
 };

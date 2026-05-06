@@ -6,12 +6,26 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install --frozen-lockfile
 
-# Rebuild the source code only when needed
+# Rebuild the source code only when needed.
+#
+# `next build` inlines every NEXT_PUBLIC_* into the client bundle at
+# build time — they cannot be flipped at runtime. We therefore ship
+# one image per network: a single `NETWORK` build arg picks which
+# .env file is sourced. Mainnet uses the committed .env; testnet
+# overlays .env.testnet via .env.production.local (highest precedence
+# in Next.js's env-file load order).
 FROM node:22.16.0-alpine3.22 AS builder
+ARG NETWORK=mainnet
+ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-RUN npm run build && npm install --production --ignore-scripts --prefer-offline
+RUN if [ "$NETWORK" = "testnet" ]; then \
+      echo "Building for testnet — overlaying .env.testnet onto .env.production.local"; \
+      cp .env.testnet .env.production.local; \
+    fi && \
+    npm run build && \
+    npm install --production --ignore-scripts --prefer-offline
 
 # Production image, copy all the files and run next
 FROM node:22.16.0-alpine3.22 AS runner

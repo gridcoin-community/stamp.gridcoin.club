@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
+import HttpStatus from 'http-status-codes';
 import { Controller } from './BaseController';
 import { EventsService } from '../services/EventsService';
 import { log } from '../lib/log';
+import { ErrorModel } from '../models/Error';
 
 export class EventsController extends Controller {
   private service: EventsService;
@@ -17,6 +19,26 @@ export class EventsController extends Controller {
 
   public async subscribe(): Promise<void> {
     log.debug('[EventsController] Creating new subscription');
+    const ip = this.req.ip ?? 'unknown';
+
+    // Cap check first. addClient writes cached primer events to the
+    // response, which would commit headers — at which point we can no
+    // longer reply with a JSON 503. Reserve the slot via canAccept,
+    // surface the rate-limit error, THEN switch to SSE mode.
+    if (!this.service.canAccept(ip)) {
+      this.res
+        .status(HttpStatus.SERVICE_UNAVAILABLE)
+        .send({
+          errors: [
+            new ErrorModel(
+              HttpStatus.SERVICE_UNAVAILABLE,
+              'Too many active subscriptions',
+            ),
+          ],
+        });
+      return;
+    }
+
     this.res.setHeader('Content-Type', 'text/event-stream');
     this.res.setHeader('Connection', 'keep-alive');
     // no-transform tells intermediaries (Cloudflare, nginx) not to gzip; gzip
@@ -34,8 +56,8 @@ export class EventsController extends Controller {
     // real event fires (which could be minutes later on a quiet chain).
     this.res.write(':ok\n\n');
 
-    const clientId = this.service.addClient(this.res);
-    log.debug(`[EventsController] Client ${clientId} connected`);
+    const clientId = this.service.addClient(this.res, ip);
+    log.debug(`[EventsController] Client ${clientId} connected from ${ip}`);
 
     this.req.on('close', () => {
       log.debug(`[EventsController] ${clientId} Connection closed`);

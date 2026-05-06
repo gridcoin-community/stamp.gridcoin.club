@@ -27,7 +27,7 @@ export class StatusController {
   }
 
   public getStatus(serviceInfo: ServiceInfo): void {
-    const errors = [];
+    const errors: ErrorModel[] = [];
     if (!errors.length) {
       this.res
         .status(HttpStatus.OK)

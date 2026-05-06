@@ -4,6 +4,7 @@ import { useDropzone, FileRejection } from 'react-dropzone';
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import router from 'next/router';
+import { useWallet } from '@/lib/walletContext';
 import { FilesContext, ErrorContext } from '../context';
 import { ActionType } from '../reducer';
 import { hashFiles, checkForExistence } from '../actions';
@@ -28,6 +29,8 @@ const DropBox = styled('div')(({ theme }) => ({
 export function Upload({ next }: Props) {
   const { dispatch } = useContext(FilesContext);
   const { setError } = useContext(ErrorContext);
+  const { wallet } = useWallet();
+  const isLowFunds = wallet?.isLowFunds ?? false;
 
   const onDrop = (acceptedFiles: File[]) => {
     setError(undefined);
@@ -89,7 +92,9 @@ export function Upload({ next }: Props) {
           pr: 1,
           textAlign: 'center',
         }}>
-          Drag n drop your file here, or click to select.
+          {isLowFunds
+            ? "Stamping is paused. Drop a file to check whether it's already on-chain."
+            : 'Drag n drop your file here, or click to select.'}
         </Typography>
       </DropBox>
     </Box>

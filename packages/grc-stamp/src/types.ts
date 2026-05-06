@@ -2,7 +2,8 @@ export type EventType =
   | 'processBlock'
   | 'stampSubmitted'
   | 'transactionFound'
-  | 'pendingCount';
+  | 'pendingCount'
+  | 'indexerStatus';
 
 export interface BaseEvent {
   type: EventType;
@@ -38,8 +39,24 @@ export interface PendingCountEvent extends BaseEvent {
   }
 }
 
+export interface IndexerStatusEvent extends BaseEvent {
+  type: 'indexerStatus',
+  data: {
+    // Lowest block this indexer ever touches. The protocol pre-dates
+    // genesis on Gridcoin's chain, so START_BLOCK is the true zero of
+    // any progress metric — UIs computing percent-complete must
+    // measure (indexerBlock - startBlock) / (chainTip - startBlock).
+    startBlock: number;
+    indexerBlock: number;
+    chainTip: number;
+    lag: number;
+    isBackfilling: boolean;
+  }
+}
+
 export type Events =
   | ProcessBlockEvent
   | StampSubmittedEvent
   | TransactionFoundEvent
-  | PendingCountEvent;
+  | PendingCountEvent
+  | IndexerStatusEvent;

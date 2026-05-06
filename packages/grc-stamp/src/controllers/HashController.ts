@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
-import { stamps } from '@prisma/client';
-import { Stamp } from '../models/Stamp';
+import { Stamp as StampRow } from '../lib/database';
 import { StampPresenter } from '../presenters/stamp.presenter';
 import { StampsRepository } from '../repositories/StampsRepository';
 import { Controller } from './BaseController';
@@ -13,7 +12,6 @@ export class HashController extends Controller {
     req: Request,
     res: Response,
     private repository = StampsRepository,
-    protected model = new Stamp(),
     protected presenter = StampPresenter,
   ) {
     super(req, res);
@@ -29,7 +27,7 @@ export class HashController extends Controller {
       }
       this.res
         .status(HttpStatus.OK)
-        .send(this.render<stamps>(result));
+        .send(this.render<StampRow>(result));
     } catch (e) {
       log.error(e);
       this.res.status(HttpStatus.NOT_FOUND).send({

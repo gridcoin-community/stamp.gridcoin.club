@@ -12,16 +12,25 @@ import { txUrl } from '@/lib/explorerLinks';
 import { SITE_NAME, SITE_URL } from '@/components/Seo';
 import { identiconPngDataUrl } from '@/lib/serverImage';
 import { CACHE_CONTROL_DAY } from '@/lib/httpCache';
+import { writeError, writeServerError } from '@/lib/ssrError';
+import { IS_TESTNET } from '@/lib/network';
 
 // Bumped when the certificate template changes shape so that on-disk caches
 // from the prior template are not served for new requests. Old files become
 // orphans and can be reaped manually.
-const CACHE_TEMPLATE_VERSION = 'v1';
+//   v1 → v2: per-network logo file + testnet header badge
+const CACHE_TEMPLATE_VERSION = 'v2';
 
 const CACHE_DIR = process.env.PDF_CACHE_DIR
   || path.join(process.cwd(), '.cache/pdf');
 
-const LOGO_PATH = path.join(process.cwd(), 'public/ic-logo-desktop.svg');
+// Per-network logo. Mainnet uses the purple variant, testnet the orange
+// one — same artwork, gradient stops and wordmark fill swapped for each
+// theme so the certificate header matches the in-app logo per network.
+const LOGO_PATH = path.join(
+  process.cwd(),
+  `public/ic-logo-desktop-${IS_TESTNET ? 'testnet' : 'mainnet'}.svg`,
+);
 
 const stampRepository = new StampRepository();
 
@@ -91,13 +100,6 @@ async function writeCache(hash: string, buffer: Buffer): Promise<void> {
   }
 }
 
-function writeError(res: ServerResponse, status: number, body: string): void {
-  res.statusCode = status;
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.write(body);
-  res.end();
-}
-
 // Manual ISO-slice rather than date-fns `format` because `format` runs in the
 // server's local timezone; the certificate must show UTC unambiguously.
 function formatUtc(unixSeconds: number): string {
@@ -141,6 +143,7 @@ async function renderPdf(hash: string): Promise<RenderResult> {
       siteUrl={SITE_URL}
       siteHost={SITE_HOST}
       protocolDocUrl={PROTOCOL_DOC_URL}
+      isTestnet={IS_TESTNET}
     />,
   );
 
@@ -198,9 +201,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     res.end();
     return { props: {} };
   } catch (err) {
-    const message = err instanceof Error ? err.stack ?? err.message : String(err);
-    console.error('[pdf] render failed:', message);
-    writeError(res, 500, `PDF render failed: ${message}`);
+    writeServerError(res, '[pdf] render failed:', 'PDF render failed', err);
     return { props: {} };
   }
 };

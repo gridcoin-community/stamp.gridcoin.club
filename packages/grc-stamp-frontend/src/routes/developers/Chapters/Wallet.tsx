@@ -38,7 +38,9 @@ export function Wallet() {
     "attributes": {
       "address": "S16teVjxKNaptDLFnPwxkjQE3aiHRcgpr5",
       "balance": 3001.73952722,
-      "block": 3940586
+      "block": 3940586,
+      "minimumBalance": 0.01,
+      "effectiveBalance": 3001.71952722
     },
     "links": { "self": "/wallet/" }
   }
@@ -61,6 +63,32 @@ export function Wallet() {
           <code>block</code>
           {' '}
           is the last Gridcoin block the scraper has processed.
+        </Typography>
+        <Typography gutterBottom variant="body1" component="p" sx={{ color: 'text.secondary' }}>
+          <code>minimumBalance</code>
+          {' '}
+          is the threshold below which the service refuses new stamps with
+          {' '}
+          <code>406 Not Acceptable</code>
+          .
+          {' '}
+          <code>effectiveBalance</code>
+          {' '}
+          is
+          {' '}
+          <code>balance</code>
+          {' '}
+          minus the GRC already promised to pending stamps that have not yet
+          been mined; this is the value the server compares against
+          {' '}
+          <code>minimumBalance</code>
+          {' '}
+          when deciding whether to accept the next stamp. Frontends can branch
+          their UI on
+          {' '}
+          <code>effectiveBalance &lt; minimumBalance</code>
+          {' '}
+          ahead of an attempted submission.
         </Typography>
 
         <Typography variant="h6" component="h3" id="wallet-balance" sx={{ pt: 3, pb: 1 }}>

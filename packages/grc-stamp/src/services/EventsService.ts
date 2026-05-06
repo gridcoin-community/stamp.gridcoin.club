@@ -1,16 +1,27 @@
 import { Response } from 'express';
 import { randomUUID } from 'node:crypto';
 import { emitPendingCount, getEmitter } from '../lib/emitter';
-import { Events, PendingCountEvent, ProcessBlockEvent } from '../types';
+import {
+  Events, IndexerStatusEvent, PendingCountEvent, ProcessBlockEvent,
+} from '../types';
 import { log } from '../lib/log';
+
+// SSE connections are long-lived and consume an FD + heap entry each. These
+// caps stop a single host (or the whole internet) from holding the process
+// hostage with kept-open sockets. Tuned for "obvious DDoS" — legitimate
+// browsers open one stream per tab.
+export const MAX_TOTAL_CLIENTS = 1000;
+export const MAX_CLIENTS_PER_IP = 15;
 
 interface Client {
   id: string;
-  res: Response
+  ip: string;
+  res: Response;
 }
 
 export class EventsService {
-  public static instance;
+  // eslint-disable-next-line no-use-before-define
+  public static instance: EventsService | undefined;
 
   public static getInstance(): EventsService {
     if (!this.instance) {
@@ -22,6 +33,8 @@ export class EventsService {
   private lastPendingCount: number | null = null;
 
   private lastPendingCountAt = 0;
+
+  private lastIndexerStatus: IndexerStatusEvent | null = null;
 
   private constructor(
     private clients: Client[] = [],
@@ -40,6 +53,10 @@ export class EventsService {
       this.lastPendingCountAt = Date.now();
       this.broadcast(data);
     });
+    getEmitter().on('indexerStatus', (data: IndexerStatusEvent) => {
+      this.lastIndexerStatus = data;
+      this.broadcast(data);
+    });
     setInterval(() => {
       this.ping();
     }, 15000);
@@ -54,12 +71,33 @@ export class EventsService {
     }
   }
 
-  public addClient(res: Response): string {
+  // Cheap, synchronous capacity check. Split out from addClient so the
+  // controller can answer with a JSON 503 BEFORE switching the response
+  // to SSE mode (writing SSE headers commits the response and we can't
+  // change content-type after that).
+  public canAccept(ip: string): boolean {
+    if (this.clients.length >= MAX_TOTAL_CLIENTS) {
+      log.warn(`[EventsService] Refusing new client from ${ip}: total cap (${MAX_TOTAL_CLIENTS}) reached`);
+      return false;
+    }
+    const perIpCount = this.clients.reduce((n, c) => (c.ip === ip ? n + 1 : n), 0);
+    if (perIpCount >= MAX_CLIENTS_PER_IP) {
+      log.warn(`[EventsService] Refusing new client from ${ip}: per-IP cap (${MAX_CLIENTS_PER_IP}) reached`);
+      return false;
+    }
+    return true;
+  }
+
+  // Registers a new client and writes any cached "first impression"
+  // events. Caller MUST have already set SSE headers + flushHeaders on
+  // the response — otherwise the first res.write() below commits the
+  // response with default text/html headers and any subsequent
+  // setHeader call throws ERR_HTTP_HEADERS_SENT.
+  public addClient(res: Response, ip: string): string {
     const id = randomUUID();
-    this.clients.push({ id, res });
+    this.clients.push({ id, ip, res });
     log.info(`[EventsService] Clients connected: ${this.clients.length}`);
 
-    // Send last known pending count so the client doesn't start blank
     if (this.lastPendingCount !== null) {
       const event: PendingCountEvent = {
         type: 'pendingCount',
@@ -68,12 +106,23 @@ export class EventsService {
       res.write(`data: ${JSON.stringify(event)}\n\n`);
     }
 
-    // Refresh if the cache is stale or missing
+    if (this.lastIndexerStatus !== null) {
+      res.write(`data: ${JSON.stringify(this.lastIndexerStatus)}\n\n`);
+    }
+
     if (Date.now() - this.lastPendingCountAt > 30_000) {
       emitPendingCount();
     }
 
     return id;
+  }
+
+  // Public read-only view of the cached indexerStatus snapshot. Used by
+  // the REST /indexer/status route so SSR can prefill the footer/banner
+  // with the same payload the SSE stream would deliver. Returns just
+  // the `data` field — the SSE envelope shape stays internal.
+  public getLastIndexerStatusData(): IndexerStatusEvent['data'] | null {
+    return this.lastIndexerStatus?.data ?? null;
   }
 
   public removeClient(id: string): void {

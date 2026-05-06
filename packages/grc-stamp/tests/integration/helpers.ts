@@ -1,33 +1,25 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Chance from 'chance';
-import path from 'path';
-import util from 'util';
-import { exec } from 'child_process';
-import { StampsType } from '@prisma/client';
-import { getPrisma } from '../../src/lib/prisma';
+import { sql } from 'kysely';
+import { db } from '../../src/lib/db';
+import { NewStamp, StampsType } from '../../src/lib/database';
 import { PROTOCOL } from '../../src/constants';
 
 const chance = new Chance();
-const execPromise = util.promisify(exec);
-
-const prismaBinary = path.join(
-  __dirname,
-  '..',
-  '..',
-  'node_modules',
-  '.bin',
-  'prisma',
-);
 
 function fakeHash() {
   return chance.hash({ length: 64 });
 }
 
+// Schema is created once by tests/globalSetup.ts. Per-test isolation is
+// just a truncate, which is fast and avoids a roundtrip to the migration
+// runner. TRUNCATE (not DELETE) so AUTO_INCREMENT resets between files —
+// hash.test.ts asserts on id='1', which requires a clean counter.
 export async function initDatabase(): Promise<void> {
-  await execPromise(`DATABASE_URL=${process.env.DATABASE_URL} ${prismaBinary} db push  --force-reset `);
+  await sql`TRUNCATE TABLE stamps`.execute(db);
 }
 
-interface IStamp {
+interface SeedStamp {
   protocol: string;
   type: StampsType;
   hash: string;
@@ -38,11 +30,11 @@ interface IStamp {
 }
 
 export async function createManyWithSameHash(hash: string, amount = 3): Promise<void> {
-  const data: IStamp[] = [];
+  const data: SeedStamp[] = [];
   for (let i = 0; i < amount; i++) {
     data.push({
       protocol: PROTOCOL,
-      type: StampsType.sha256,
+      type: 'sha256',
       hash,
       block: 10000 + i,
       tx: fakeHash(),
@@ -50,15 +42,24 @@ export async function createManyWithSameHash(hash: string, amount = 3): Promise<
       time: i,
     });
   }
-  await getPrisma().stamps.createMany({ data });
+  const rows: NewStamp[] = data.map((d) => ({
+    protocol: d.protocol,
+    type: d.type,
+    hash: d.hash,
+    block: BigInt(d.block),
+    tx: d.tx,
+    raw_transaction: d.raw_transaction,
+    time: d.time,
+  }));
+  await db.insertInto('stamps').values(rows).execute();
 }
 
 export async function createManyCompletedStamps(amount = 10): Promise<void> {
-  const data: IStamp[] = [];
+  const data: SeedStamp[] = [];
   for (let i = 0; i < amount; i++) {
     data.push({
       protocol: PROTOCOL,
-      type: StampsType.sha256,
+      type: 'sha256',
       hash: `${fakeHash()}${fakeHash()}`.substr(0, 64),
       block: chance.integer({ min: 0, max: 99999999 }),
       tx: fakeHash(),
@@ -66,12 +67,18 @@ export async function createManyCompletedStamps(amount = 10): Promise<void> {
       time: chance.integer({ min: 0, max: 163736024 }),
     });
   }
-
-  await getPrisma().stamps.createMany({ data });
+  const rows: NewStamp[] = data.map((d) => ({
+    protocol: d.protocol,
+    type: d.type,
+    hash: d.hash,
+    block: BigInt(d.block),
+    tx: d.tx,
+    raw_transaction: d.raw_transaction,
+    time: d.time,
+  }));
+  await db.insertInto('stamps').values(rows).execute();
 }
 
 export async function cleanUp(): Promise<void> {
-  await getPrisma().$transaction([
-    getPrisma().stamps.deleteMany(),
-  ]);
+  await sql`TRUNCATE TABLE stamps`.execute(db);
 }

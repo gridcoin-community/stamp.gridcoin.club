@@ -1,31 +1,49 @@
-import { PrismaClient } from '@prisma/client';
+import { Kysely } from 'kysely';
 import {
   MINIMUM, PREFIX, MIN_FEE,
 } from '../constants';
 import { rpc } from '../lib/gridcoin';
+import { db as defaultDb } from '../lib/db';
+import { Database } from '../lib/database';
 import { log } from '../lib/log';
 import { StampSubmittedEvent } from '../types';
 import { emitPendingCount, getEmitter } from '../lib/emitter';
 
 export class StampService {
-  constructor(private prisma = new PrismaClient()) {}
+  private publishing = false;
+
+  constructor(private db: Kysely<Database> = defaultDb) {}
 
   public async publishStamp(): Promise<void> {
+    // Re-entry guard: prevents overlapping ticks from double-burning fees.
+    if (this.publishing) {
+      log.info('[StampService] Previous publish run still in progress, skipping tick');
+      return;
+    }
+    this.publishing = true;
+    try {
+      await this.publishStampInner();
+    } finally {
+      this.publishing = false;
+    }
+  }
+
+  private async publishStampInner(): Promise<void> {
     // Drain until the queue is empty so burst load doesn't have to wait for
     // the next interval tick to make progress.
     let published = 0;
     let hasMore = true;
     while (hasMore) {
-      const readyStamps = await this.prisma.stamps.findMany({
-        where: {
-          block: null,
-          tx: null,
-          raw_transaction: null,
-          time: null,
-        },
-        take: 2,
-        orderBy: { id: 'asc' },
-      });
+      const readyStamps = await this.db
+        .selectFrom('stamps')
+        .select(['id', 'hash'])
+        .where('block', 'is', null)
+        .where('tx', 'is', null)
+        .where('raw_transaction', 'is', null)
+        .where('time', 'is', null)
+        .orderBy('id', 'asc')
+        .limit(2)
+        .execute();
 
       if (readyStamps.length === 0) {
         hasMore = false;
@@ -40,10 +58,11 @@ export class StampService {
       const tx = await rpc.burn(MINIMUM, string);
       log.debug(`[StampService] Publishing ${JSON.stringify(tx)}`);
       if (tx) {
-        await this.prisma.stamps.updateMany({
-          where: { id: { in: readyStamps.map((stamp) => stamp.id) } },
-          data: { tx },
-        });
+        await this.db
+          .updateTable('stamps')
+          .set({ tx })
+          .where('id', 'in', readyStamps.map((stamp) => stamp.id))
+          .execute();
       }
 
       hashes.forEach((hash) => {

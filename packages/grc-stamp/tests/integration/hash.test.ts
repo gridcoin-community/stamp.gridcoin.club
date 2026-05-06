@@ -1,11 +1,9 @@
 import HttpStatus from 'http-status-codes';
 import { expect } from 'chai';
 import request from 'supertest';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { StampsType } from '.prisma/client';
 import { app, server } from '../../src/api';
 import { PROTOCOL } from '../../src/constants';
-import { disconnect } from '../../src/lib/prisma';
+import { db } from '../../src/lib/db';
 import { cleanUp, createManyWithSameHash, initDatabase } from './helpers';
 
 jest.mock('../../src/lib/gridcoin', () => ({
@@ -19,7 +17,7 @@ beforeAll(async () => {
 afterAll(async () => {
   server.close();
   await cleanUp();
-  await disconnect();
+  await db.destroy();
 });
 
 afterEach(async () => {
@@ -44,7 +42,7 @@ describe('GET /hashes', () => {
       .that.equal(PROTOCOL);
     expect(attributes)
       .to.have.property('type')
-      .that.equal(StampsType.sha256);
+      .that.equal('sha256');
     expect(attributes)
       .to.have.property('time')
       .that.equal(0);

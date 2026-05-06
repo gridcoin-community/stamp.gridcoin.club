@@ -13,11 +13,11 @@ import {
   LinearProgress,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
 import { useRouteNavigating } from '@/hooks';
+import { LogoMobile } from '@/components/Logo';
 import {
   menuItems,
   isMenuGroup,
@@ -127,14 +127,7 @@ export function NavMenuMobile() {
           />
         )}
         <SubMenuContainer>
-          <Box>
-            <Image
-              src="/ic-logo-mobile.svg"
-              width={140}
-              height={32}
-              alt="Gridcoin stamp"
-            />
-          </Box>
+          <LogoMobile />
           <Toolbar
             sx={{
               justifyContent: 'flex-end',

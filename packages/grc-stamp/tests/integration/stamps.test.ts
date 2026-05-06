@@ -1,12 +1,10 @@
 import { expect } from 'chai';
 import request from 'supertest';
 import HttpStatus from 'http-status-codes';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { StampsType } from '.prisma/client';
 import { app, server } from '../../src/api';
 import { PROTOCOL } from '../../src/constants';
 import { rpc } from '../../src/lib/gridcoin';
-import { disconnect, getPrisma } from '../../src/lib/prisma';
+import { db } from '../../src/lib/db';
 import { WalletRepository } from '../../src/repositories/WalletRepository';
 import { cleanUp, initDatabase } from './helpers';
 import { EntityType } from '../../src/presenters/types';
@@ -28,7 +26,7 @@ beforeAll(async () => {
 afterAll(async () => {
   server.close();
   await cleanUp();
-  await disconnect();
+  await db.destroy();
 });
 
 afterEach(async () => {
@@ -58,18 +56,18 @@ describe('POST /stamps', () => {
     expect(attributes).to.have.property('protocol')
       .that.equal(PROTOCOL);
     expect(attributes).to.have.property('type')
-      .that.equal(StampsType.sha256);
+      .that.equal('sha256');
     expect(attributes).to.have.property('tx')
       .that.equal(null);
     expect(attributes).to.have.property('rawTransaction')
       .that.equal(null);
     expect(attributes).to.have.property('time')
       .that.equal(null);
-    const records = await getPrisma().stamps.findMany({
-      where: {
-        id: BigInt(id),
-      },
-    });
+    const records = await db
+      .selectFrom('stamps')
+      .selectAll()
+      .where('id', '=', BigInt(id))
+      .execute();
     expect(records).to.be.an('array').lengthOf(1);
     const [record] = records;
     expect(record).to.have.property('hash')
@@ -77,7 +75,7 @@ describe('POST /stamps', () => {
     expect(record).to.have.property('protocol')
       .that.equal(PROTOCOL);
     expect(record).to.have.property('type')
-      .that.equal(StampsType.sha256);
+      .that.equal('sha256');
     expect(record).to.have.property('tx')
       .that.equal(null);
     expect(record).to.have.property('raw_transaction')

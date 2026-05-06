@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /api/
-
-Sitemap: https://stamp.gridcoin.club/sitemap.xml
-
-# LLMs
-llms.txt: https://stamp.gridcoin.club/llms.txt

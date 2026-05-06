@@ -4,10 +4,16 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {
-  Button, CardActions, Stack, useMediaQuery, useTheme,
+  Alert,
+  Button,
+  CardActions,
+  Stack,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
+import { useWallet } from '@/lib/walletContext';
 import { getFirstFromTheStore, storeToBlockchain } from '../actions';
 import { FilesContext, ErrorContext } from '../context';
 import { FilePreview } from './FilePreview';
@@ -37,6 +43,8 @@ interface Props {
 export function Result({ back, next, activeStep }: Props) {
   const { state, dispatch } = React.useContext(FilesContext);
   const { setError } = React.useContext(ErrorContext);
+  const { wallet } = useWallet();
+  const isLowFunds = wallet?.isLowFunds ?? false;
   const [isUploading, setUploading] = React.useState(false);
   const [isFundError, setFundError] = React.useState(false);
   const theme = useTheme();
@@ -49,7 +57,7 @@ export function Result({ back, next, activeStep }: Props) {
 
   const fileData = getFirstFromTheStore(state);
 
-  const saveButtonDisabled = !fileData.hash || fileData.existing || isUploading;
+  const saveButtonDisabled = !fileData.hash || fileData.existing || isUploading || isLowFunds;
   const cancelButtonDisabled = !fileData.hash || isUploading;
   const transaction = fileData.blockchainData?.tx;
   const block = fileData.blockchainData?.block;
@@ -105,6 +113,15 @@ export function Result({ back, next, activeStep }: Props) {
                 {fileData.file.name}
               </Typography>
               <BlockchainData isUploading={isUploading} />
+              {isLowFunds && !fileData.existing && !finished && (
+                <Alert severity="warning" sx={{ mt: 2 }}>
+                  We&apos;re out of funds, so stamping is paused. Your file
+                  {' '}
+                  wasn&apos;t uploaded; we only checked its hash to see if
+                  {' '}
+                  it&apos;s already on-chain.
+                </Alert>
+              )}
             </CardContent>
           </Box>
         </Box>

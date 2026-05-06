@@ -7,9 +7,20 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import Script from 'next/script';
 import { cleanupLegacyThemeCookie, ThemeMode } from '@/lib/mode';
 import sseManager from '@/lib/sseManager';
+import { IS_TESTNET, IS_MAINNET, NETWORK } from '@/lib/network';
+import { WalletProvider } from '@/lib/walletContext';
+import { IndexerStatusProvider } from '@/lib/indexerStatusContext';
+import { WalletRawData } from '@/entities/WalletEntity';
+import { IndexerStatusEvent } from '@/types';
+import { SITE_URL } from '@/components/Seo';
 import { themeCreator } from '../theme';
 import createEmotionCache from '../createEmotionCache';
 import '../styles/style.css';
+
+// Plausible's data-domain is just the analytics bucket label. Derive it
+// from the deployment's canonical URL so each environment's traffic
+// segments correctly without a separate hardcoded mapping per network.
+const PLAUSIBLE_DOMAIN = SITE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -19,16 +30,25 @@ interface MyAppProps extends AppProps {
   mode: ThemeMode;
 }
 
+interface CommonPageProps {
+  mode: ThemeMode;
+  initialWallet?: WalletRawData | null;
+  initialIndexerStatus?: IndexerStatusEvent['data'] | null;
+}
+
 export default function MyApp(props: MyAppProps) {
   const {
     Component,
     emotionCache = clientSideEmotionCache,
     pageProps,
   } = props;
-  const { mode } = pageProps;
+  const {
+    mode,
+    initialWallet = null,
+    initialIndexerStatus = null,
+  } = pageProps as CommonPageProps;
 
   React.useEffect(() => {
-    // See `cleanupLegacyThemeCookie` — temporary migration shim, remove with it.
     cleanupLegacyThemeCookie();
     sseManager.connect(`${process.env.NEXT_PUBLIC_API_URL}/events`);
     return () => {
@@ -37,7 +57,7 @@ export default function MyApp(props: MyAppProps) {
   }, []);
 
   const theme = React.useMemo(
-    () => themeCreator(mode),
+    () => themeCreator(mode, NETWORK),
     [mode],
   );
 
@@ -46,15 +66,23 @@ export default function MyApp(props: MyAppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="theme-color" content={theme.palette.primary.main} />
-        <meta httpEquiv="onion-location" content="http://u4embjw2uzwpdubgm72ywbmixte4kqgwurc4r4rp6elhlokutdfsy4id.onion" />
+        {IS_MAINNET && <meta httpEquiv="onion-location" content="http://u4embjw2uzwpdubgm72ywbmixte4kqgwurc4r4rp6elhlokutdfsy4id.onion" />}
+        {IS_TESTNET && <meta name="robots" content="noindex,nofollow" />}
       </Head>
-      {process.env.NEXT_PUBLIC_TRACK === 'true' && (
-        <Script src="https://daj.pw/js/plausible.js" data-domain="stamp.gridcoin.club" />
+      {process.env.NEXT_PUBLIC_TRACK === 'true' && PLAUSIBLE_DOMAIN && (
+        <Script
+          src="https://daj.pw/js/plausible.js"
+          data-domain={PLAUSIBLE_DOMAIN}
+        />
       )}
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <WalletProvider initialWallet={initialWallet}>
+          <IndexerStatusProvider initialStatus={initialIndexerStatus}>
+            <Component {...pageProps} />
+          </IndexerStatusProvider>
+        </WalletProvider>
       </ThemeProvider>
     </CacheProvider>
   );

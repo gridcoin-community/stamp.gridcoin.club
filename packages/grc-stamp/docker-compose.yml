@@ -1,7 +1,8 @@
 services:
-  # Mysql storage for the admin interface (mainly for statistics and users)
+  # Test DB for grc-stamp integration tests. MariaDB 11.4 LTS, wire-
+  # compatible with mysql2 and accepts MYSQL_* env vars unchanged.
   test_grc_mysql:
-    image: mysql:5.7
+    image: mariadb:11.4
     container_name: test_grc_mysql
     command: --character-set-server=utf8mb4
     ports:

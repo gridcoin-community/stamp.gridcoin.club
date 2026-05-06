@@ -1,78 +1,65 @@
-import { StampsType } from '@prisma/client';
 import { TX } from 'gridcoin-rpc/dist/types';
+import { db } from '../lib/db';
 import { log } from '../lib/log';
-import { getPrisma } from '../lib/prisma';
-import { GenericInterface } from './Generic';
+import { StampsType } from '../lib/database';
 
-export class Stamp implements GenericInterface {
-  public protocol: string;
+export class Stamp {
+  public protocol!: string;
 
-  public type: StampsType;
+  public type!: StampsType;
 
-  public hash: string;
+  public hash!: string;
 
-  public block: number;
+  public block!: number;
 
-  public tx: TX;
+  public tx!: TX;
 
-  public rawTransaction: string;
+  public rawTransaction!: string;
 
-  public time: number;
+  public time!: number;
 
-  public createdAt: Date;
+  public createdAt!: Date;
 
-  public updatedAt: Date;
+  public updatedAt!: Date;
 
-  public attributes = [
-    'protocol',
-    'type',
-    'hash',
-    'block',
-    'tx',
-    'rawTransaction',
-    'time',
-    'createdAt',
-    'updatedAt',
-  ];
-
-  constructor(public model = getPrisma().stamps) {}
-
-  public async saveOrUpdate(): Promise<any> {
+  public async saveOrUpdate(): Promise<void> {
     // Try to find existing one
-    const result = await this.model.findFirst({
-      where: {
-        protocol: this.protocol,
-        hash: this.hash,
-        tx: this.tx,
-      },
-    });
+    const result = await db
+      .selectFrom('stamps')
+      .select(['id', 'block'])
+      .where('protocol', '=', this.protocol)
+      .where('hash', '=', this.hash)
+      .where('tx', '=', this.tx)
+      .executeTakeFirst();
+
     if (result && result.id && result.block === null) {
       log.info('Update existing record');
-      return this.model.update({
-        where: {
-          id: result.id,
-        },
-        data: {
-          block: this.block,
+      await db
+        .updateTable('stamps')
+        .set({
+          block: BigInt(this.block),
           raw_transaction: this.rawTransaction,
           time: this.time,
-        },
-      });
+        })
+        .where('id', '=', result.id)
+        .execute();
+      return;
     }
+
     if (!result || !result.id) {
       log.info('Create new record');
-      return this.model.create({
-        data: {
+      await db
+        .insertInto('stamps')
+        .values({
           protocol: this.protocol,
           hash: this.hash,
           type: this.type,
-          block: this.block,
+          block: BigInt(this.block),
           raw_transaction: this.rawTransaction,
           time: this.time,
           tx: this.tx,
-        },
-      });
+        })
+        .execute();
     }
-    return Promise.resolve();
   }
 }

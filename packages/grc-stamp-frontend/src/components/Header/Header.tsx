@@ -4,13 +4,16 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import LinearProgress from '@mui/material/LinearProgress';
-import Image from 'next/image';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { NavMenuMobile } from '@/components/Navigation/NavMenuMobile';
 import { useRouteNavigating } from '@/hooks';
+import { IS_TESTNET } from '@/lib/network';
+import { BackfillBanner } from '@/components/BackfillBanner';
+import { LowFundsBanner } from '@/components/LowFundsBanner';
+import { LogoDesktop, LogoMobile } from '@/components/Logo';
 import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
 interface Props {
@@ -63,26 +66,28 @@ export function Header({ showLinks = true }: HeaderProps) {
             />
           )}
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box>
-              <Link href="/">
-                {isMobile && mounted ? (
-                  <Image
-                    src="/ic-logo-mobile.svg"
-                    width={140}
-                    height={32}
-                    alt="Gridcoin stamp"
-                    priority
-                  />
-                ) : (
-                  <Image
-                    src="/ic-logo-desktop.svg"
-                    width={158}
-                    height={50}
-                    alt="Gridcoin stamp"
-                    priority
-                  />
-                )}
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+              <Link href="/" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                {isMobile && mounted ? <LogoMobile /> : <LogoDesktop />}
               </Link>
+              {IS_TESTNET && (
+                <Box
+                  component="span"
+                  sx={{
+                    px: 1,
+                    py: 0.25,
+                    fontSize: '0.65rem',
+                    fontWeight: 700,
+                    letterSpacing: 1.4,
+                    color: theme.palette.primary.main,
+                    border: `1px solid ${theme.palette.primary.main}`,
+                    borderRadius: 1,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  TESTNET
+                </Box>
+              )}
             </Box>
 
             <Toolbar
@@ -98,6 +103,8 @@ export function Header({ showLinks = true }: HeaderProps) {
         </AppBar>
       </ElevationScroll>
       <Toolbar />
+      <LowFundsBanner />
+      <BackfillBanner />
     </>
   );
 }
