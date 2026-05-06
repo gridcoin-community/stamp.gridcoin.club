@@ -16,7 +16,7 @@ export enum SortOrder {
 }
 
 interface Query {
-  readonly page: {
+  readonly page?: {
     readonly size?: string;
     readonly offset?: string;
     readonly number?: string;
@@ -24,7 +24,10 @@ interface Query {
   readonly fields?: {
     readonly [key: string]: string;
   };
-  readonly sort: string;
+  readonly filter?: {
+    readonly [key: string]: string | { readonly [op: string]: string };
+  };
+  readonly sort?: string;
 }
 
 export interface Pagination {
@@ -51,15 +54,15 @@ export class Controller {
 
   protected res: Response;
 
-  public useSort: Sorting;
+  public useSort?: Sorting;
 
   public useFields: Fields;
 
-  public usePagination: Pagination;
+  public usePagination!: Pagination;
 
-  public useFilters: Filters;
+  public useFilters?: Filters;
 
-  protected presenter: PresenterInterface;
+  protected presenter!: PresenterInterface;
 
   public constructor(req: Request, res: Response) {
     this.req = req;
@@ -76,16 +79,16 @@ export class Controller {
 
   private discoverPagination(): void {
     const query = this.req.query as unknown as Query;
-    if (query && 'page' in query) {
+    if (query?.page) {
       // we keep "limit" keyword in the data structure for compatibility
-      let paginationLimit = parseInt(query.page.size, 10) || DEFAULT_PAGINATION_LIMIT;
+      let paginationLimit = parseInt(query.page.size ?? '', 10) || DEFAULT_PAGINATION_LIMIT;
       // Do not allow it to be too big
       if (paginationLimit > MAXIMUM_PAGINATION_LIMIT) {
         paginationLimit = MAXIMUM_PAGINATION_LIMIT;
       }
       this.usePagination = {
-        offset: parseInt(query.page.offset, 10)
-          || parseInt(query.page.number, 10) * paginationLimit
+        offset: parseInt(query.page.offset ?? '', 10)
+          || parseInt(query.page.number ?? '', 10) * paginationLimit
           || 0,
         limit: paginationLimit,
       };
@@ -98,31 +101,29 @@ export class Controller {
 
   private discoverFields(): void {
     const query = this.req.query as unknown as Query;
-    if (!query) return;
+    if (!query?.fields) return;
     let empty = true;
-    if ('fields' in query) {
-      const fields = Object.entries(query.fields).reduce((prev, curr) => {
-        const [key, values] = curr;
-        if (values) {
-          empty = false;
-          const newFields = prev;
-          // Filter out all non-fields-like values
-          newFields[key] = values.split(/,/).filter((field) => field.match(/^[a-zA-Z_0-9]+$/)).filter(Boolean);
-          return newFields;
-        }
-        return prev;
-      }, {});
-      if (!empty) {
-        this.useFields = fields;
+    const fields = Object.entries(query.fields).reduce<Fields>((prev, curr) => {
+      const [key, values] = curr;
+      if (values) {
+        empty = false;
+        const newFields = prev;
+        // Filter out all non-fields-like values
+        newFields[key] = values.split(/,/).filter((field) => field.match(/^[a-zA-Z_0-9]+$/)).filter(Boolean);
+        return newFields;
       }
+      return prev;
+    }, {});
+    if (!empty) {
+      this.useFields = fields;
     }
   }
 
   private discoverSorting(): void {
     const query = this.req.query as unknown as Query;
     if (!query) return;
-    if ('sort' in query) {
-      const fields: [{ [key: string]: SortOrder }] = query.sort.split(/,/).reduce((orderByArray, currentElem) => {
+    if (query.sort) {
+      const fields = query.sort.split(/,/).reduce<{ [key: string]: SortOrder }[]>((orderByArray, currentElem) => {
         let fieldName: string = currentElem;
         let order: SortOrder;
         order = SortOrder.asc;
@@ -136,9 +137,9 @@ export class Controller {
 
         orderByArray.push({ [fieldName]: order });
         return orderByArray;
-      }, [] as any);
-      if (fields) {
-        this.useSort = { order: fields };
+      }, []);
+      if (fields.length) {
+        this.useSort = { order: fields as Sorting['order'] };
       }
     } else {
       this.useSort = { order: [{ [DEFAULT_SORT_FIELD]: SortOrder.asc }] };
@@ -151,22 +152,25 @@ export class Controller {
   //   { field: { in: [a, b, c] } }          comma-separated list
   //   { field: { eq|ne|gt|lt|gte|lte: x } } operator filter
   private discoverFilters(): void {
-    const { query } = this.req;
-    if (!query || !('filter' in query)) return;
-    let filters = {};
-    Object.keys(query.filter).forEach((key) => {
-      if (this.isObject(query.filter[key])) {
-        const [op] = Object.keys(query.filter[key]);
+    const query = this.req.query as unknown as Query;
+    if (!query?.filter) return;
+    const filterQuery = query.filter;
+    let filters: Filters = {};
+    Object.keys(filterQuery).forEach((key) => {
+      const value = filterQuery[key];
+      if (this.isObject(value)) {
+        const opMap = value as { readonly [op: string]: string };
+        const [op] = Object.keys(opMap);
         if (FILTER_OPS.has(op as FilterOp)) {
-          const raw = query.filter[key][op];
+          const raw = opMap[op];
           // Coerce via String() — express's qs parser can deliver arrays or
           // objects for the same key, and .split() would throw TypeError.
           // BigInt() throws on non-numeric input; fall through to the raw string.
-          const list = String(raw).split(',').map((value: any) => {
+          const list = String(raw).split(',').map((v) => {
             try {
-              return BigInt(value);
+              return BigInt(v);
             } catch {
-              return value;
+              return v;
             }
           });
 
@@ -176,7 +180,7 @@ export class Controller {
           };
         }
       } else {
-        const list = String(query.filter[key]).split(',');
+        const list = String(value).split(',');
         if (list.length > 1) {
           filters = { ...filters, [key]: { in: list } };
         } else if (list[0]) {

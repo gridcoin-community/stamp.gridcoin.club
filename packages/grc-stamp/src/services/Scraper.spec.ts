@@ -14,9 +14,14 @@ jest.mock('../config', () => ({
   config: {
     START_BLOCK: 1000,
     BLOCK_GROUPS: 2,
+    BACKFILL_BATCH_SIZE: 1000,
     REDIS_SCRAPER_KEY: 'grc-stamp:processedBlock',
   },
 }));
+
+// Matches src/constants.ts. Inlined here so tests stay self-contained
+// and don't reach across module boundaries for a constant.
+const BACKFILL_THRESHOLD_BLOCKS = 1000;
 
 describe('Scraper', () => {
   let scraper: Scraper;
@@ -33,13 +38,14 @@ describe('Scraper', () => {
     mockRpc = {
       getStakingInfo: jest.fn(),
       getBlockByNumber: jest.fn(),
+      getBlocksBatch: jest.fn(),
     };
 
     scraper = new Scraper(mockRedis, mockRpc, blockPrefix);
   });
 
-  describe('scrape', () => {
-    it('should process blocks up to BLOCK_GROUPS limit', async () => {
+  describe('scrape — tip mode (lag ≤ threshold)', () => {
+    it('processes blocks one by one when only a couple behind', async () => {
       mockRedis.get.mockResolvedValue('1000');
       mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1002 });
       mockRpc.getBlockByNumber.mockResolvedValue({
@@ -51,9 +57,10 @@ describe('Scraper', () => {
 
       expect(mockRpc.getBlockByNumber).toHaveBeenCalledTimes(2);
       expect(mockRpc.getBlockByNumber).toHaveBeenCalledWith(1001, true);
+      expect(mockRpc.getBlocksBatch).not.toHaveBeenCalled();
     });
 
-    it('should use START_BLOCK when no redis value exists', async () => {
+    it('uses START_BLOCK when no redis value exists', async () => {
       mockRedis.get.mockResolvedValue(null);
       mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1005 });
       mockRpc.getBlockByNumber.mockResolvedValue({
@@ -66,7 +73,7 @@ describe('Scraper', () => {
       expect(mockRpc.getBlockByNumber).toHaveBeenCalledWith(1001, true);
     });
 
-    it('should process remaining blocks when near chain tip', async () => {
+    it('processes remaining blocks when one block behind chain tip', async () => {
       mockRedis.get.mockResolvedValue('1003');
       mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1004 });
       mockRpc.getBlockByNumber.mockResolvedValue({
@@ -78,6 +85,92 @@ describe('Scraper', () => {
 
       expect(mockRpc.getBlockByNumber).toHaveBeenCalledTimes(1);
       expect(mockRpc.getBlockByNumber).toHaveBeenCalledWith(1004, true);
+    });
+
+    it('returns false when at the tip', async () => {
+      mockRedis.get.mockResolvedValue('1004');
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1004 });
+
+      const moreWork = await scraper.scrape();
+
+      expect(moreWork).toBe(false);
+      expect(mockRpc.getBlockByNumber).not.toHaveBeenCalled();
+      expect(mockRpc.getBlocksBatch).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('scrape — backfill mode (lag > threshold)', () => {
+    it('uses getBlocksBatch when far behind chain tip', async () => {
+      // 1500 blocks of lag (well past the 1000-block threshold).
+      mockRedis.get.mockResolvedValue('1000');
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 2500 });
+      mockRpc.getBlocksBatch.mockResolvedValue({
+        blocks: Array.from({ length: 1000 }, (_, i) => ({
+          height: 1001 + i,
+          tx: [],
+          time: 123456789,
+        })),
+        blockCount: 1000,
+      });
+
+      const moreWork = await scraper.scrape();
+
+      expect(mockRpc.getBlocksBatch).toHaveBeenCalledTimes(1);
+      // First batch is capped at BACKFILL_BATCH_SIZE (1000), not the full lag.
+      expect(mockRpc.getBlocksBatch).toHaveBeenCalledWith(1001, 1000, true);
+      expect(mockRpc.getBlockByNumber).not.toHaveBeenCalled();
+      // Cursor persisted exactly once at the end of the batch.
+      expect(mockRedis.set).toHaveBeenCalledTimes(1);
+      expect(mockRedis.set).toHaveBeenCalledWith('grc-stamp:processedBlock', 2000);
+      // 500 blocks still remain (under threshold) — caller should NOT schedule
+      // immediately; the next tick will pick up tip-mode.
+      expect(moreWork).toBe(false);
+    });
+
+    it('caps the batch at BACKFILL_BATCH_SIZE when lag is huge', async () => {
+      mockRedis.get.mockResolvedValue('1000');
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 100000 });
+      mockRpc.getBlocksBatch.mockResolvedValue({
+        blocks: Array.from({ length: 1000 }, (_, i) => ({
+          height: 1001 + i,
+          tx: [],
+          time: 123456789,
+        })),
+        blockCount: 1000,
+      });
+
+      const moreWork = await scraper.scrape();
+
+      expect(mockRpc.getBlocksBatch).toHaveBeenCalledWith(1001, 1000, true);
+      expect(mockRedis.set).toHaveBeenCalledWith('grc-stamp:processedBlock', 2000);
+      // Plenty of lag remains — caller should schedule the next batch immediately.
+      expect(moreWork).toBe(true);
+    });
+
+    it('flips back to per-block path once lag drops to the threshold', async () => {
+      // Cursor sits exactly threshold-distance from tip → tip mode.
+      mockRedis.get.mockResolvedValue(String(1100 - BACKFILL_THRESHOLD_BLOCKS));
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1100 });
+      mockRpc.getBlockByNumber.mockResolvedValue({
+        tx: [],
+        time: 123456789,
+      });
+
+      await scraper.scrape();
+
+      expect(mockRpc.getBlocksBatch).not.toHaveBeenCalled();
+      expect(mockRpc.getBlockByNumber).toHaveBeenCalledTimes(BACKFILL_THRESHOLD_BLOCKS);
+    });
+
+    it('does NOT advance the cursor if the batch RPC fails', async () => {
+      mockRedis.get.mockResolvedValue('1000');
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1200 });
+      mockRpc.getBlocksBatch.mockRejectedValue(new Error('RPC Error'));
+
+      await scraper.scrape();
+
+      expect(log.error).toHaveBeenCalled();
+      expect(mockRedis.set).not.toHaveBeenCalled();
     });
   });
 
@@ -103,7 +196,9 @@ describe('Scraper', () => {
 
     function setupMocks(tx: any) {
       // blocks=1001 keeps the loop to a single iteration so saveOrUpdate
-      // call counts reflect the fixture and not BLOCK_GROUPS=2.
+      // call counts reflect the fixture and not BLOCK_GROUPS=2. Lag=1
+      // also keeps us in tip mode (per-block path) which exercises
+      // getBlockByNumber.
       mockRedis.get.mockResolvedValue('1000');
       mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1001 });
       mockRpc.getBlockByNumber.mockResolvedValue({

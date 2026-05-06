@@ -10,6 +10,8 @@ export const OP_RETURN = 'OP_RETURN';
 
 // Lag threshold (in blocks) at which the indexer is considered backfilling
 // rather than just trailing the chain by normal cadence. Gridcoin blocks
-// arrive ~every 90s, so 10 blocks ≈ 15 min behind — past that it's worth
-// telling users their stamps will appear once we catch up.
-export const BACKFILL_THRESHOLD_BLOCKS = 10;
+// arrive ~every 90s, so 1000 blocks ≈ 25 hours behind — past that it's worth
+// (a) flipping the Scraper to batched getBlocksBatch fetches and (b) showing
+// the user the BackfillBanner. Below the threshold the per-block loop is
+// cheaper and the UI stays out of the way.
+export const BACKFILL_THRESHOLD_BLOCKS = 1000;

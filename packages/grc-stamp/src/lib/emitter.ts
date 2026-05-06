@@ -2,6 +2,7 @@ import { EventEmitter } from 'node:stream';
 import { StampsRepository } from '../repositories/StampsRepository';
 import { IndexerStatusEvent, PendingCountEvent } from '../types';
 import { BACKFILL_THRESHOLD_BLOCKS } from '../constants';
+import { config } from '../config';
 import { log } from './log';
 
 let emitter: EventEmitter;
@@ -31,6 +32,7 @@ export function emitIndexerStatus(indexerBlock: number, chainTip: number): void 
   const event: IndexerStatusEvent = {
     type: 'indexerStatus',
     data: {
+      startBlock: config.START_BLOCK,
       indexerBlock,
       chainTip,
       lag,

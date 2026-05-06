@@ -20,8 +20,12 @@ export class EventsController extends Controller {
   public async subscribe(): Promise<void> {
     log.debug('[EventsController] Creating new subscription');
     const ip = this.req.ip ?? 'unknown';
-    const clientId = this.service.addClient(this.res, ip);
-    if (!clientId) {
+
+    // Cap check first. addClient writes cached primer events to the
+    // response, which would commit headers — at which point we can no
+    // longer reply with a JSON 503. Reserve the slot via canAccept,
+    // surface the rate-limit error, THEN switch to SSE mode.
+    if (!this.service.canAccept(ip)) {
       this.res
         .status(HttpStatus.SERVICE_UNAVAILABLE)
         .send({
@@ -52,6 +56,7 @@ export class EventsController extends Controller {
     // real event fires (which could be minutes later on a quiet chain).
     this.res.write(':ok\n\n');
 
+    const clientId = this.service.addClient(this.res, ip);
     log.debug(`[EventsController] Client ${clientId} connected from ${ip}`);
 
     this.req.on('close', () => {

@@ -1,5 +1,5 @@
 import HttpStatus from 'http-status-codes';
-import express from 'express';
+import express, { ErrorRequestHandler } from 'express';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
 import { config } from './config';
@@ -9,6 +9,7 @@ import { stampsRouter } from './routes/stamps';
 import { walletRouter } from './routes/wallet';
 import { hashesRouter } from './routes/hashes';
 import { eventsRouter } from './routes/events';
+import { indexerRouter } from './routes/indexer';
 import packageJson from '../package.json';
 import { log } from './lib/log';
 
@@ -77,6 +78,7 @@ app.use('/stamps', stampsRouter);
 app.use('/wallet', walletRouter);
 app.use('/hashes', hashesRouter);
 app.use('/events', eventsRouter);
+app.use('/indexer', indexerRouter);
 
 // Not found error handling
 app.use((req, res) => {
@@ -91,9 +93,10 @@ app.use((req, res) => {
 });
 
 // 500 error handling — catches any error forwarded via next(err), including
-// rejections from async route handlers wrapped with asyncHandler().
+// rejections from async route handlers wrapped with asyncHandler(). Express
+// identifies error middleware by arity, so the 4th `next` param must stay.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err, req, res, _next) => {
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   log.error(`Internal server error: ${err && err.stack ? err.stack : err}`);
   if (res.headersSent) {
     return;
@@ -108,7 +111,8 @@ app.use((err, req, res, _next) => {
         ),
       ],
     });
-});
+};
+app.use(errorHandler);
 
 // Start web server using defined port
 export const server = app.listen(app.get('port'), () => {

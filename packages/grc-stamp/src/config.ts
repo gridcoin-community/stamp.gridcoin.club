@@ -18,6 +18,10 @@ interface Config {
   isTesting: boolean;
   START_BLOCK: number;
   BLOCK_GROUPS: number;
+  // Blocks per getBlocksBatch RPC call when in backfill mode (lag >
+  // BACKFILL_THRESHOLD_BLOCKS). Capped at 1000 by gridcoin-rpc. Tip
+  // mode ignores this and fetches one block at a time.
+  BACKFILL_BATCH_SIZE: number;
   SCRAPER_TIMEOUT: number;
   PUBLISH_TIMEOUT: number;
   PORT: number;
@@ -58,6 +62,7 @@ nconf
     'GRC_RPC_HOST',
     'GRC_RPC_PORT',
     'START_BLOCK',
+    'BACKFILL_BATCH_SIZE',
     'PORT',
     'MINIMUM_WALLET_AMOUNT',
     'REDIS_SCRAPER_KEY',
@@ -82,6 +87,7 @@ nconf
     isProduction: process.env.NODE_ENV === 'production',
     START_BLOCK: 1581500,
     BLOCK_GROUPS: 1500,
+    BACKFILL_BATCH_SIZE: 1000,
     SCRAPER_TIMEOUT: 60000,
     PUBLISH_TIMEOUT: 2 * 60 * 1000,
     PORT: packageJson.port,

@@ -9,6 +9,7 @@ export enum EntityType {
   WALLET = 'wallet',
   STAMPS = 'stamps',
   BALANCE = 'balance',
+  INDEXER_STATUS = 'indexerStatus',
 }
 
 export interface PresenterInterface {

@@ -8,7 +8,7 @@ import { Controller } from './BaseController';
 import { StampData, StampInput, StampSchema } from './schemas/StampSchema';
 import { ErrorModel } from '../models/Error';
 import { WalletRepository } from '../repositories/WalletRepository';
-import { MINIMUM, MIN_FEE } from '../constants';
+import { computePendingCost } from '../lib/walletPricing';
 import { config } from '../config';
 import { log } from '../lib/log';
 import { withHashLock } from '../lib/hashLock';
@@ -101,10 +101,7 @@ export class StampsController extends Controller {
         this.walletRepository.getBalance(),
         this.repository.countPending(),
       ]);
-      const costPerTx = MINIMUM + MIN_FEE;
-      // +1 accounts for the stamp we're about to create
-      const pendingCost = Math.ceil((pendingCount + 1) / 2) * costPerTx;
-      const effectiveBalance = balance - pendingCost;
+      const effectiveBalance = balance - computePendingCost(pendingCount);
       if (effectiveBalance < Number(config.MINIMUM_WALLET_AMOUNT)) {
         this.res.status(HttpStatus.NOT_ACCEPTABLE).send({
           errors: [

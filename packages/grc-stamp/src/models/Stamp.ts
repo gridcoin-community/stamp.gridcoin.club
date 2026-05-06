@@ -4,23 +4,23 @@ import { log } from '../lib/log';
 import { StampsType } from '../lib/database';
 
 export class Stamp {
-  public protocol: string;
+  public protocol!: string;
 
-  public type: StampsType;
+  public type!: StampsType;
 
-  public hash: string;
+  public hash!: string;
 
-  public block: number;
+  public block!: number;
 
-  public tx: TX;
+  public tx!: TX;
 
-  public rawTransaction: string;
+  public rawTransaction!: string;
 
-  public time: number;
+  public time!: number;
 
-  public createdAt: Date;
+  public createdAt!: Date;
 
-  public updatedAt: Date;
+  public updatedAt!: Date;
 
   public async saveOrUpdate(): Promise<void> {
     // Try to find existing one

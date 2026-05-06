@@ -16,6 +16,8 @@ export class WalletPresenter extends Presenter implements PresenterInterface {
       address: instanse.address,
       balance: instanse.balance,
       block: instanse.block,
+      minimumBalance: instanse.minimumBalance,
+      effectiveBalance: instanse.effectiveBalance,
     };
   }
 
