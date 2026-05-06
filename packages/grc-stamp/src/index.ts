@@ -1,6 +1,7 @@
 import { config } from './config';
 import { connect } from './lib/gridcoin';
 import { log } from './lib/log';
+import { migrateToLatest } from './lib/migrate';
 import { Scraper } from './services/Scraper';
 import { StampService } from './services/StampService';
 import './api';
@@ -14,6 +15,17 @@ async function initConnections(): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  // Apply pending DB migrations before anything else touches the schema.
+  // Idempotent — Kysely's kysely_migration_lock makes concurrent runs
+  // safe, and stamp is single-replica anyway.
+  try {
+    await migrateToLatest();
+  } catch (err) {
+    log.error('[boot] migration failed, refusing to start');
+    log.error(err);
+    process.exit(1);
+  }
+
   await initConnections();
 
   const stampService = new StampService();

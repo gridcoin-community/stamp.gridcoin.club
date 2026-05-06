@@ -9,6 +9,7 @@ import { cleanupLegacyThemeCookie, ThemeMode } from '@/lib/mode';
 import sseManager from '@/lib/sseManager';
 import { IS_TESTNET, IS_MAINNET, NETWORK } from '@/lib/network';
 import { SITE_URL } from '@/components/Seo';
+import { BackfillBanner } from '@/components/BackfillBanner';
 import { themeCreator } from '../theme';
 import createEmotionCache from '../createEmotionCache';
 import '../styles/style.css';
@@ -64,6 +65,7 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
+        <BackfillBanner />
         <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>

@@ -2,12 +2,13 @@ import { Scraper } from './Scraper';
 import { log } from '../lib/log';
 import { Stamp } from '../models/Stamp';
 
-jest.mock('.prisma/client');
 jest.mock('../lib/log');
 jest.mock('../models/Stamp');
+jest.mock('../lib/db', () => ({ db: {} }));
 jest.mock('../lib/emitter', () => ({
   getEmitter: () => ({ emit: jest.fn() }),
   emitPendingCount: jest.fn(),
+  emitIndexerStatus: jest.fn(),
 }));
 jest.mock('../config', () => ({
   config: {
@@ -30,7 +31,7 @@ describe('Scraper', () => {
     };
 
     mockRpc = {
-      getMiningInfo: jest.fn(),
+      getStakingInfo: jest.fn(),
       getBlockByNumber: jest.fn(),
     };
 
@@ -40,7 +41,7 @@ describe('Scraper', () => {
   describe('scrape', () => {
     it('should process blocks up to BLOCK_GROUPS limit', async () => {
       mockRedis.get.mockResolvedValue('1000');
-      mockRpc.getMiningInfo.mockResolvedValue({ blocks: 1002 });
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1002 });
       mockRpc.getBlockByNumber.mockResolvedValue({
         tx: [],
         time: 123456789,
@@ -54,7 +55,7 @@ describe('Scraper', () => {
 
     it('should use START_BLOCK when no redis value exists', async () => {
       mockRedis.get.mockResolvedValue(null);
-      mockRpc.getMiningInfo.mockResolvedValue({ blocks: 1005 });
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1005 });
       mockRpc.getBlockByNumber.mockResolvedValue({
         tx: [],
         time: 123456789,
@@ -67,7 +68,7 @@ describe('Scraper', () => {
 
     it('should process remaining blocks when near chain tip', async () => {
       mockRedis.get.mockResolvedValue('1003');
-      mockRpc.getMiningInfo.mockResolvedValue({ blocks: 1004 });
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1004 });
       mockRpc.getBlockByNumber.mockResolvedValue({
         tx: [],
         time: 123456789,
@@ -104,7 +105,7 @@ describe('Scraper', () => {
       // blocks=1001 keeps the loop to a single iteration so saveOrUpdate
       // call counts reflect the fixture and not BLOCK_GROUPS=2.
       mockRedis.get.mockResolvedValue('1000');
-      mockRpc.getMiningInfo.mockResolvedValue({ blocks: 1001 });
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1001 });
       mockRpc.getBlockByNumber.mockResolvedValue({
         tx: [tx],
         time: 123456789,
@@ -171,7 +172,7 @@ describe('Scraper', () => {
 
     it('should handle errors gracefully', async () => {
       mockRedis.get.mockResolvedValue('1000');
-      mockRpc.getMiningInfo.mockResolvedValue({ blocks: 1002 });
+      mockRpc.getStakingInfo.mockResolvedValue({ blocks: 1002 });
       mockRpc.getBlockByNumber.mockRejectedValue(new Error('RPC Error'));
 
       await scraper.scrape();

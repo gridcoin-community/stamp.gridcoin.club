@@ -1,7 +1,9 @@
 import { Response } from 'express';
 import { randomUUID } from 'node:crypto';
 import { emitPendingCount, getEmitter } from '../lib/emitter';
-import { Events, PendingCountEvent, ProcessBlockEvent } from '../types';
+import {
+  Events, IndexerStatusEvent, PendingCountEvent, ProcessBlockEvent,
+} from '../types';
 import { log } from '../lib/log';
 
 // SSE connections are long-lived and consume an FD + heap entry each. These
@@ -31,6 +33,8 @@ export class EventsService {
 
   private lastPendingCountAt = 0;
 
+  private lastIndexerStatus: IndexerStatusEvent | null = null;
+
   private constructor(
     private clients: Client[] = [],
   ) {
@@ -46,6 +50,10 @@ export class EventsService {
     getEmitter().on('pendingCount', (data: PendingCountEvent) => {
       this.lastPendingCount = data.data.count;
       this.lastPendingCountAt = Date.now();
+      this.broadcast(data);
+    });
+    getEmitter().on('indexerStatus', (data: IndexerStatusEvent) => {
+      this.lastIndexerStatus = data;
       this.broadcast(data);
     });
     setInterval(() => {
@@ -84,6 +92,12 @@ export class EventsService {
         data: { count: this.lastPendingCount },
       };
       res.write(`data: ${JSON.stringify(event)}\n\n`);
+    }
+
+    // Same for indexer status: a backfilling instance must surface to
+    // the very first client without waiting for the next scrape tick.
+    if (this.lastIndexerStatus !== null) {
+      res.write(`data: ${JSON.stringify(this.lastIndexerStatus)}\n\n`);
     }
 
     // Refresh if the cache is stale or missing

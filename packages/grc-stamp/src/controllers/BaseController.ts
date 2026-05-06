@@ -1,47 +1,21 @@
 import { Request, Response } from 'express';
 import { PresenterInterface } from '../presenters/types';
-import { GenericInterface } from '../models/Generic';
 import { RepoListResults } from '../repositories/types';
 
 export const DEFAULT_PAGINATION_LIMIT = 25;
 export const MAXIMUM_PAGINATION_LIMIT = 100;
 export const DEFAULT_SORT_FIELD = 'id';
 
-enum FilterTypes {
-  'gt',
-  'lt',
-  'gte',
-  'lte',
-  'ne',
-  'eq',
-  // 'between',
-  // 'notBetween',
-  // 'in',
-  // 'notIn',
-  // 'like',
-  // 'notLike',
-}
-enum MapFilterTypes {
-  'gt' = 'gt',
-  'lt' = 'lt',
-  'gte' = 'gte',
-  'lte' = 'lte',
-  'ne' = 'not',
-  'eq' = 'equals',
-  // 'between',
-  // 'notBetween',
-  // 'in',
-  // 'notIn',
-  // 'like',
-  // 'notLike',
-}
+export type FilterOp = 'gt' | 'lt' | 'gte' | 'lte' | 'ne' | 'eq';
+
+export const FILTER_OPS: ReadonlySet<FilterOp> = new Set(['gt', 'lt', 'gte', 'lte', 'ne', 'eq']);
+
 export enum SortOrder {
   asc = 'asc',
   desc = 'desc',
 }
 
 interface Query {
-  readonly include?: string;
   readonly page: {
     readonly size?: string;
     readonly offset?: string;
@@ -68,10 +42,6 @@ export interface Fields {
   [key: string]: string[];
 }
 
-export interface Includes {
-  include: string[];
-}
-
 export interface Filters {
   [key: string]: unknown;
 }
@@ -85,17 +55,11 @@ export class Controller {
 
   public useFields: Fields;
 
-  public useInclude: Includes;
-
   public usePagination: Pagination;
 
   public useFilters: Filters;
 
-  protected model: GenericInterface;
-
   protected presenter: PresenterInterface;
-
-  protected allFilters?: Record<string, string>;
 
   public constructor(req: Request, res: Response) {
     this.req = req;
@@ -108,25 +72,6 @@ export class Controller {
     this.discoverSorting();
     this.discoverFilters();
     this.discoverFields();
-    this.discoverIncludes();
-  }
-
-  private discoverIncludes(): void {
-    if (!this.req.query) return;
-    const query = this.req.query as unknown as Query;
-    if ('include' in query && query.include) {
-      if (!this.useInclude) {
-        this.useInclude = { include: null };
-      }
-      this.useInclude.include = query.include.split(/,/);
-    }
-  }
-
-  public hasInclude(include: string): boolean {
-    if (this.useInclude && 'include' in this.useInclude) {
-      return this.useInclude.include.includes(include);
-    }
-    return false;
   }
 
   private discoverPagination(): void {
@@ -173,12 +118,6 @@ export class Controller {
     }
   }
 
-  public hasField(entry: string, field: string): boolean {
-    return entry in this.useFields
-        && this.useFields[entry]
-        && this.useFields[entry].includes(field);
-  }
-
   private discoverSorting(): void {
     const query = this.req.query as unknown as Query;
     if (!query) return;
@@ -206,108 +145,51 @@ export class Controller {
     }
   }
 
-  /**
-   * Discover filters
-   * We have a hack here
-   * As sl got a bug when it doesn't map fields in where
-   * It is up to us
-   */
+  // Parse `?filter[<field>][<op>]=…` into the normalized intermediate
+  // shape the repository's filter translator consumes:
+  //   { field: scalar }                     scalar equality
+  //   { field: { in: [a, b, c] } }          comma-separated list
+  //   { field: { eq|ne|gt|lt|gte|lte: x } } operator filter
   private discoverFilters(): void {
     const { query } = this.req;
-    if (!query || !this.model) return;
-    const { attributes } = this.model;
-    if ('filter' in query) {
-      this.allFilters = query.filter as Record<string, string>;
-      // Store fields so we can use it for the search
-      let filters = {};
-      Object.keys(query.filter).forEach((key) => {
-        let dbProperKey = key;
-        if (attributes[key] && attributes[key].field) {
-          dbProperKey = attributes[key].field;
+    if (!query || !('filter' in query)) return;
+    let filters = {};
+    Object.keys(query.filter).forEach((key) => {
+      if (this.isObject(query.filter[key])) {
+        const [op] = Object.keys(query.filter[key]);
+        if (FILTER_OPS.has(op as FilterOp)) {
+          const raw = query.filter[key][op];
+          // Coerce via String() — express's qs parser can deliver arrays or
+          // objects for the same key, and .split() would throw TypeError.
+          // BigInt() throws on non-numeric input; fall through to the raw string.
+          const list = String(raw).split(',').map((value: any) => {
+            try {
+              return BigInt(value);
+            } catch {
+              return value;
+            }
+          });
+
+          filters = {
+            ...filters,
+            [key]: { [op]: list.length > 1 ? list : list[0] },
+          };
         }
-        if (this.isObject(query.filter[key])) {
-          const filterTypeUnresolved = ([Object.keys(query.filter[key])]).toString();
-          if (Object.values(FilterTypes).includes(filterTypeUnresolved)) {
-            const filterType = MapFilterTypes[filterTypeUnresolved];
-            const raw = query.filter[key][filterTypeUnresolved];
-            // Coerce via String() — express's qs parser can deliver arrays or
-            // objects for the same key, and .split() would throw TypeError.
-            let list = String(raw).split(',');
-            // BigInt() throws on non-numeric input; fall through to the raw string.
-            list = list.map((value: any) => {
-              try {
-                return BigInt(value);
-              } catch {
-                return value;
-              }
-            });
-
-            filters = {
-              ...filters,
-              [dbProperKey]: { [filterType]: list.length > 1 ? list : list[0] },
-            };
-          }
-        } else {
-          const list = String(query.filter[key]).split(',');
-          if (list.length > 1) {
-            filters = {
-              ...filters,
-              [dbProperKey]: { in: list },
-            };
-          } else if (list[0]) {
-            filters = {
-              ...filters,
-              [dbProperKey]: list[0],
-            };
-          }
-        }
-      });
-      this.useFilters = filters;
-    }
-  }
-
-  public hasFilter(filter: string): boolean {
-    if ('where' in this.useFilters) {
-      const filtersLength = Object.keys(this.useFilters).length;
-      for (let i = 0; i < filtersLength; i++) {
-        if (Object.keys(this.useFilters.where[i]).includes(filter)) return true;
-      }
-    }
-    if (this.allFilters) {
-      return (filter in this.allFilters);
-    }
-    return false;
-  }
-
-  public getFilter(filter: string): string | null {
-    if ('where' in this.useFilters) {
-      const filtersLength = Object.keys(this.useFilters).length;
-      for (let i = 0; i < filtersLength; i++) {
-        if (Object.keys(this.useFilters.where[i]).includes(filter)) {
-          return this.useFilters.where[i][filter];
+      } else {
+        const list = String(query.filter[key]).split(',');
+        if (list.length > 1) {
+          filters = { ...filters, [key]: { in: list } };
+        } else if (list[0]) {
+          filters = { ...filters, [key]: list[0] };
         }
       }
-    }
-    if (filter in this.allFilters) {
-      return this.allFilters[filter];
-    }
-    return null;
+    });
+    this.useFilters = filters;
   }
 
-  public getAllFilters(): {[key: string]: string} {
-    return this.allFilters;
-  }
-
-  /**
-   * Chek whenever value is object
-   *
-   * @param {*} value
-   * @returns {boolean}
-   * @memberof Controller
-   */
-  public isObject(value: any): value is typeof Object { // eslint-disable-line
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public isObject(value: any): value is typeof Object {
     return value === Object(value);
-    // return value && typeof value === 'object' && value.constructor === Object;
   }
 
   public render<T>(

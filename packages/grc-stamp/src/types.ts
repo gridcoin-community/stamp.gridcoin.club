@@ -2,7 +2,8 @@ export type EventType =
   | 'processBlock'
   | 'stampSubmitted'
   | 'transactionFound'
-  | 'pendingCount';
+  | 'pendingCount'
+  | 'indexerStatus';
 
 export interface BaseEvent {
   type: EventType;
@@ -38,8 +39,19 @@ export interface PendingCountEvent extends BaseEvent {
   }
 }
 
+export interface IndexerStatusEvent extends BaseEvent {
+  type: 'indexerStatus',
+  data: {
+    indexerBlock: number;
+    chainTip: number;
+    lag: number;
+    isBackfilling: boolean;
+  }
+}
+
 export type Events =
   | ProcessBlockEvent
   | StampSubmittedEvent
   | TransactionFoundEvent
-  | PendingCountEvent;
+  | PendingCountEvent
+  | IndexerStatusEvent;

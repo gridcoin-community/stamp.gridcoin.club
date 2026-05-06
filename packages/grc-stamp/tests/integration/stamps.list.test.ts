@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import HttpStatus from 'http-status-codes';
 import request from 'supertest';
 import { app, server } from '../../src/api';
-import { disconnect } from '../../src/lib/prisma';
+import { db } from '../../src/lib/db';
 import { createManyCompletedStamps, cleanUp, initDatabase } from './helpers';
 import { DEFAULT_PAGINATION_LIMIT, MAXIMUM_PAGINATION_LIMIT } from '../../src/controllers/BaseController';
 
@@ -20,7 +20,7 @@ beforeAll(async () => {
 afterAll(async () => {
   server.close();
   await cleanUp();
-  await disconnect();
+  await db.destroy();
 });
 
 describe('GET /stamps', () => {
@@ -158,8 +158,8 @@ describe('GET /stamps', () => {
   // Regression: a non-numeric comparison filter on any field used to throw
   // BigInt('abc') synchronously inside the StampsController constructor,
   // producing an unhandled rejection that crashed the Node process. The fix
-  // makes BigInt() failures fall through to the raw string value, and Prisma
-  // validation errors now map to a clean 400 instead of 404 or a process death.
+  // makes BigInt() failures fall through to the raw string value, and the
+  // repo's filter translator now maps invalid bigint inputs to a clean 400.
   it('should not crash on a non-numeric ne filter (DoS regression)', async () => {
     const res = await request(app)
       .get('/stamps?filter[hash][ne]=abc')
@@ -187,9 +187,10 @@ describe('GET /stamps', () => {
     expect(res.status).to.be.oneOf([HttpStatus.OK, HttpStatus.BAD_REQUEST]);
   });
 
-  it('should return 400 for a filter value that fails Prisma validation', async () => {
+  it('should return 400 for a non-bigint value on a bigint column', async () => {
     // id is a BigInt column — comparing it against a non-numeric string
-    // surfaces a PrismaClientValidationError, which the controller maps to 400.
+    // surfaces a BadFilterError from the repo translator, which the
+    // controller maps to 400.
     const res = await request(app)
       .get('/stamps?filter[id][gt]=not-a-number')
       .send();

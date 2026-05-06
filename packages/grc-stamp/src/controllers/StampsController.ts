@@ -1,13 +1,10 @@
 import HttpStatus from 'http-status-codes';
 import { Request, Response } from 'express';
-import { Prisma, stamps, StampsType } from '@prisma/client';
-// import { ValidationResult } from 'joi';
 import yayson from 'yayson';
 import { StampPresenter } from '../presenters/stamp.presenter';
-// import { PresenterInterface } from '../presenters/types';
-import { StampsRepository } from '../repositories/StampsRepository';
+import { StampsRepository, BadFilterError } from '../repositories/StampsRepository';
+import { Stamp as StampRow, StampsType } from '../lib/database';
 import { Controller } from './BaseController';
-import { Stamp } from '../models/Stamp';
 import { StampData, StampInput, StampSchema } from './schemas/StampSchema';
 import { ErrorModel } from '../models/Error';
 import { WalletRepository } from '../repositories/WalletRepository';
@@ -24,7 +21,6 @@ export class StampsController extends Controller {
     res: Response,
     private repository = StampsRepository,
     private walletRepository = WalletRepository,
-    protected model = new Stamp(),
     protected presenter = StampPresenter,
   ) {
     super(req, res);
@@ -44,7 +40,7 @@ export class StampsController extends Controller {
       }
       this.res
         .status(HttpStatus.OK)
-        .send(this.render<stamps>(result));
+        .send(this.render<StampRow>(result));
     } catch (e) {
       log.error(e);
       this.res.status(HttpStatus.NOT_FOUND).send({
@@ -69,12 +65,13 @@ export class StampsController extends Controller {
       const results = await this.repository.listStamps(opts);
       this.res
         .status(HttpStatus.OK)
-        .send(this.render<stamps>(results));
+        .send(this.render<StampRow>(results));
     } catch (e) {
       log.error(e);
-      // Bad filter/sort/field values produce a Prisma validation error — return
-      // 400 so callers see "your query is malformed" instead of a mystery 404.
-      if (e instanceof Prisma.PrismaClientValidationError) {
+      // Bad filter/sort/field values surface as BadFilterError from the
+      // repository's filter translator — return 400 so callers see "your
+      // query is malformed" instead of a mystery 404.
+      if (e instanceof BadFilterError) {
         this.res.status(HttpStatus.BAD_REQUEST).send({
           errors: [
             new ErrorModel(
@@ -149,9 +146,9 @@ export class StampsController extends Controller {
       return;
     }
 
-    const hashType = data.hashType
+    const hashType: StampsType = data.hashType
       ? data.hashType as StampsType
-      : StampsType.sha256;
+      : 'sha256';
 
     // Serialize check+insert per hash to prevent duplicate stamps from
     // concurrent requests. Different hashes still proceed in parallel.
@@ -160,7 +157,7 @@ export class StampsController extends Controller {
       if (existing) {
         this.res
           .status(HttpStatus.OK)
-          .send(this.render<stamps>(existing));
+          .send(this.render<StampRow>(existing));
         return;
       }
 
@@ -168,7 +165,7 @@ export class StampsController extends Controller {
         const result = await this.repository.createStamp(data.hash, hashType);
         this.res
           .status(HttpStatus.CREATED)
-          .send(this.render<stamps>(result));
+          .send(this.render<StampRow>(result));
 
         emitPendingCount();
       } catch (e) {

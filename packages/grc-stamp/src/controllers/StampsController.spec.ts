@@ -3,15 +3,13 @@ import HttpStatus from 'http-status-codes';
 import { StampsController } from './StampsController';
 import { StampsRepositoryClass } from '../repositories/StampsRepository';
 import { WalletRepositoryClass } from '../repositories/WalletRepository';
-import { Stamp } from '../models/Stamp';
 import { DEFAULT_PAGINATION_LIMIT } from './BaseController';
 import { StampInput } from './schemas/StampSchema';
 
 const validHash = 'abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789';
 
 jest.mock('../repositories/WalletRepository');
-jest.mock('../models/Stamp');
-jest.mock('.prisma/client');
+jest.mock('../lib/db', () => ({ db: {} }));
 jest.mock('../lib/emitter', () => ({
   getEmitter: () => ({ emit: jest.fn() }),
   emitPendingCount: jest.fn(),
@@ -30,7 +28,6 @@ describe('StampsController', () => {
   let walletRepository: {
     getBalance: jest.Mock;
   };
-  const stampMock = jest.fn();
   let controller: StampsController;
 
   beforeEach(() => {
@@ -54,7 +51,6 @@ describe('StampsController', () => {
       res,
       stampsRepository as unknown as StampsRepositoryClass,
       walletRepository as unknown as WalletRepositoryClass,
-      stampMock as unknown as Stamp,
     );
   });
 

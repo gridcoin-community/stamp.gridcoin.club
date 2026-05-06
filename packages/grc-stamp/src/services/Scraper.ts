@@ -1,11 +1,10 @@
-import { StampsType } from '@prisma/client';
 import { config } from '../config';
 import { OP_RETURN, PREFIX, PROTOCOL } from '../constants';
 import { rpc } from '../lib/gridcoin';
 import { log } from '../lib/log';
 import { redis as redisConn } from '../lib/redis';
 import { Stamp } from '../models/Stamp';
-import { emitPendingCount, getEmitter } from '../lib/emitter';
+import { emitIndexerStatus, emitPendingCount, getEmitter } from '../lib/emitter';
 import { ProcessBlockEvent, TransactionFoundEvent } from '../types';
 
 // OP_RETURN + push-data length byte. The spec at /about#protocol-overview
@@ -40,8 +39,9 @@ export class Scraper {
     log.info('[Scraper] Starting the scraper');
 
     // Get current block number
-    const info = await this.grcRpc.getMiningInfo();
+    const info = await this.grcRpc.getStakingInfo();
     const { blocks } = info;
+    emitIndexerStatus(this.currentBlock, blocks);
     let steps = config.BLOCK_GROUPS;
     if (this.currentBlock + steps > blocks) {
       steps = blocks - this.currentBlock;
@@ -49,6 +49,9 @@ export class Scraper {
     for (let i = 0; i < steps; i++) {
       await this.getNextBlock();
     }
+    // Emit again at the end so clients see we've made progress within
+    // the same chain tip without waiting for the next tick.
+    emitIndexerStatus(this.currentBlock, blocks);
   }
 
   private async getNextBlock(): Promise<void> {
@@ -112,7 +115,7 @@ export class Scraper {
             stamp.rawTransaction = hex.toString('utf8');
             stamp.time = block.time;
             stamp.tx = TXID;
-            stamp.type = StampsType.sha256;
+            stamp.type = 'sha256';
 
             const transactionFoundEvent: TransactionFoundEvent = {
               type: 'transactionFound',

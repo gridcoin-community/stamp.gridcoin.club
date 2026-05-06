@@ -1,5 +1,5 @@
-import { stamps } from '@prisma/client';
 import yayson from 'yayson';
+import { Stamp } from '../lib/database';
 import { Attributes, EntityType, PresenterInterface } from './types';
 
 const { Presenter } = yayson();
@@ -7,11 +7,11 @@ const { Presenter } = yayson();
 export class StampPresenter extends Presenter implements PresenterInterface {
   static type = EntityType.STAMPS;
 
-  public selfLinks(instance: stamps): string {
+  public selfLinks(instance: Stamp): string {
     return `/stamps/${this.id(instance)}`;
   }
 
-  public attributes(instanse: stamps): Attributes {
+  public attributes(instanse: Stamp): Attributes {
     return {
       protocol: instanse.protocol,
       type: instanse.type,
@@ -25,7 +25,7 @@ export class StampPresenter extends Presenter implements PresenterInterface {
     };
   }
 
-  public id(instance: stamps): string {
+  public id(instance: Stamp): string {
     return instance.id.toString();
   }
 }

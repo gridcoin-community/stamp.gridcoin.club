@@ -1,16 +1,14 @@
-import { StampsType } from '@prisma/client';
 import { Stamp } from './Stamp';
+import { db } from '../lib/db';
 import { log } from '../lib/log';
+import { chain } from '../../tests/helpers/kyselyChain';
 
-// Mock modules
-jest.mock('../lib/prisma', () => ({
-  getPrisma: () => ({
-    stamps: {
-      findFirst: jest.fn(),
-      update: jest.fn(),
-      create: jest.fn(),
-    },
-  }),
+jest.mock('../lib/db', () => ({
+  db: {
+    selectFrom: jest.fn(),
+    updateTable: jest.fn(),
+    insertInto: jest.fn(),
+  },
 }));
 
 jest.mock('../lib/log', () => ({
@@ -26,72 +24,67 @@ describe('Stamp', () => {
     jest.clearAllMocks();
     stamp = new Stamp();
     stamp.protocol = 'test';
-    stamp.type = StampsType.ipfs;
+    stamp.type = 'ipfs';
     stamp.hash = 'test-hash';
     stamp.block = 123;
-    stamp.tx = 'stamp-tx';
+    stamp.tx = 'stamp-tx' as any;
     stamp.rawTransaction = 'raw-tx';
     stamp.time = 456;
   });
 
   describe('saveOrUpdate', () => {
     it('should create new record when no existing record found', async () => {
-      stamp.model.findFirst = jest.fn().mockResolvedValue(null);
-      stamp.model.create = jest.fn().mockResolvedValue({ id: 1 });
+      const select = chain(undefined, 'executeTakeFirst');
+      const insert = chain([{}], 'execute');
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.insertInto as jest.Mock).mockReturnValue(insert.proxy);
 
       await stamp.saveOrUpdate();
 
-      expect(stamp.model.findFirst).toHaveBeenCalledWith({
-        where: {
-          protocol: 'test',
-          hash: 'test-hash',
-          tx: 'stamp-tx',
-        },
-      });
+      expect(db.selectFrom).toHaveBeenCalledWith('stamps');
       expect(log.info).toHaveBeenCalledWith('Create new record');
-      expect(stamp.model.create).toHaveBeenCalledWith({
-        data: {
-          protocol: 'test',
-          hash: 'test-hash',
-          type: StampsType.ipfs,
-          block: 123,
-          raw_transaction: 'raw-tx',
-          time: 456,
-          tx: 'stamp-tx',
-        },
+      expect(db.insertInto).toHaveBeenCalledWith('stamps');
+      const values = insert.calls.find((c) => c.name === 'values');
+      expect(values?.args[0]).toEqual({
+        protocol: 'test',
+        hash: 'test-hash',
+        type: 'ipfs',
+        block: BigInt(123),
+        raw_transaction: 'raw-tx',
+        time: 456,
+        tx: 'stamp-tx',
       });
     });
 
     it('should update existing record when found with null block', async () => {
-      stamp.model.findFirst = jest.fn().mockResolvedValue({
-        id: 1,
-        block: null,
-      });
-      stamp.model.update = jest.fn().mockResolvedValue({ id: 1 });
+      const existing = { id: BigInt(1), block: null };
+      const select = chain(existing, 'executeTakeFirst');
+      const update = chain([{}], 'execute');
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.updateTable as jest.Mock).mockReturnValue(update.proxy);
 
       await stamp.saveOrUpdate();
 
       expect(log.info).toHaveBeenCalledWith('Update existing record');
-      expect(stamp.model.update).toHaveBeenCalledWith({
-        where: { id: 1 },
-        data: {
-          block: 123,
-          raw_transaction: 'raw-tx',
-          time: 456,
-        },
+      expect(db.updateTable).toHaveBeenCalledWith('stamps');
+      const set = update.calls.find((c) => c.name === 'set');
+      expect(set?.args[0]).toEqual({
+        block: BigInt(123),
+        raw_transaction: 'raw-tx',
+        time: 456,
       });
+      expect(db.insertInto).not.toHaveBeenCalled();
     });
 
     it('should do nothing when record exists with non-null block', async () => {
-      stamp.model.findFirst = jest.fn().mockResolvedValue({
-        id: 1,
-        block: 123,
-      });
+      const existing = { id: BigInt(1), block: BigInt(123) };
+      const select = chain(existing, 'executeTakeFirst');
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
 
       const result = await stamp.saveOrUpdate();
 
-      expect(stamp.model.update).not.toHaveBeenCalled();
-      expect(stamp.model.create).not.toHaveBeenCalled();
+      expect(db.updateTable).not.toHaveBeenCalled();
+      expect(db.insertInto).not.toHaveBeenCalled();
       expect(result).toBeUndefined();
     });
   });

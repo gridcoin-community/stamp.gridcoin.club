@@ -1,187 +1,164 @@
-import { StampsType } from '@prisma/client';
-import { SelectOptions, StampsRepositoryClass } from './StampsRepository';
-import { Stamp } from '../models/Stamp';
+import { db } from '../lib/db';
+import { BadFilterError, SelectOptions, StampsRepositoryClass } from './StampsRepository';
 import { PROTOCOL } from '../constants';
+import { chain } from '../../tests/helpers/kyselyChain';
 
-jest.mock('../models/Stamp');
-jest.mock('.prisma/client');
+jest.mock('../lib/db', () => ({
+  db: {
+    selectFrom: jest.fn(),
+    insertInto: jest.fn(),
+  },
+}));
 
 describe('StampsRepository', () => {
   let repository: StampsRepositoryClass;
-  let mockCreate: jest.Mock;
-  let mockFindFirst: jest.Mock;
-  let mockFindUnique: jest.Mock;
-  let mockFindMany: jest.Mock;
-  let mockCount: jest.Mock;
 
   beforeEach(() => {
-    mockCreate = jest.fn();
-    mockFindFirst = jest.fn();
-    mockFindUnique = jest.fn();
-    mockFindMany = jest.fn();
-    mockCount = jest.fn();
-
-    (Stamp as jest.Mock).mockImplementation(() => ({
-      model: {
-        create: mockCreate,
-        findFirst: mockFindFirst,
-        findUnique: mockFindUnique,
-        findMany: mockFindMany,
-        count: mockCount,
-      },
-    }));
-
-    repository = new StampsRepositoryClass(new Stamp());
+    jest.clearAllMocks();
+    repository = new StampsRepositoryClass();
   });
 
   describe('createStamp', () => {
-    it('should create a stamp with default type', async () => {
-      const hash = 'test-hash';
-      await repository.createStamp(hash);
-
-      expect(mockCreate).toHaveBeenCalledWith({
-        data: {
-          protocol: PROTOCOL,
-          type: StampsType.sha256,
-          hash,
-        },
-      });
-    });
-
-    it('should create a stamp with specified type', async () => {
-      const hash = 'test-hash';
-      const type = StampsType.ipfs;
-      await repository.createStamp(hash, type);
-
-      expect(mockCreate).toHaveBeenCalledWith({
-        data: {
-          protocol: PROTOCOL,
-          type,
-          hash,
-        },
-      });
-    });
-
     it('should throw error if hash is missing', async () => {
       await expect(repository.createStamp('')).rejects.toThrow('Not enough data');
+    });
+
+    it('inserts and re-fetches with default sha256 type', async () => {
+      const insert = chain({ insertId: BigInt(7) }, 'executeTakeFirstOrThrow');
+      const select = chain({ id: BigInt(7), hash: 'h', type: 'sha256' }, 'executeTakeFirstOrThrow');
+      (db.insertInto as jest.Mock).mockReturnValue(insert.proxy);
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+
+      const result = await repository.createStamp('h');
+
+      expect(db.insertInto).toHaveBeenCalledWith('stamps');
+      const values = insert.calls.find((c) => c.name === 'values');
+      expect(values?.args[0]).toEqual({ protocol: PROTOCOL, type: 'sha256', hash: 'h' });
+      expect(result).toEqual({ id: BigInt(7), hash: 'h', type: 'sha256' });
+    });
+
+    it('inserts with the supplied type', async () => {
+      const insert = chain({ insertId: BigInt(7) }, 'executeTakeFirstOrThrow');
+      const select = chain({ id: BigInt(7) }, 'executeTakeFirstOrThrow');
+      (db.insertInto as jest.Mock).mockReturnValue(insert.proxy);
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+
+      await repository.createStamp('h', 'ipfs');
+
+      const values = insert.calls.find((c) => c.name === 'values');
+      expect(values?.args[0]).toEqual({ protocol: PROTOCOL, type: 'ipfs', hash: 'h' });
     });
   });
 
   describe('countPending', () => {
-    it('should count stamps with no block or tx data', async () => {
-      mockCount.mockResolvedValue(42);
+    it('returns the count from the c column', async () => {
+      const select = chain({ c: 42 }, 'executeTakeFirstOrThrow');
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
 
       const result = await repository.countPending();
 
       expect(result).toBe(42);
-      expect(mockCount).toHaveBeenCalledWith({
-        where: {
-          block: null,
-          tx: null,
-          raw_transaction: null,
-          time: null,
-        },
-      });
+      // Ensure the four nullness predicates are wired up.
+      const wheres = select.calls.filter((c) => c.name === 'where');
+      const cols = wheres.map((w) => w.args[0]);
+      expect(cols).toEqual(['block', 'tx', 'raw_transaction', 'time']);
     });
   });
 
   describe('countInProgress', () => {
-    it('should count stamps not yet confirmed on-chain', async () => {
-      mockCount.mockResolvedValue(10);
+    it('returns the count from the c column', async () => {
+      const select = chain({ c: 10 }, 'executeTakeFirstOrThrow');
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
 
       const result = await repository.countInProgress();
 
       expect(result).toBe(10);
-      expect(mockCount).toHaveBeenCalledWith({
-        where: { block: null },
-      });
+      const wheres = select.calls.filter((c) => c.name === 'where');
+      expect(wheres).toHaveLength(1);
+      expect(wheres[0].args[0]).toBe('block');
     });
   });
 
   describe('getByHash', () => {
-    it('should find stamp by hash with default type', async () => {
-      const hash = 'test-hash';
-      await repository.getByHash(hash);
+    it('returns the row when present', async () => {
+      const row = { id: BigInt(1), hash: 'h', type: 'sha256' };
+      const select = chain(row, 'executeTakeFirst');
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
 
-      expect(mockFindFirst).toHaveBeenCalledWith({
-        where: { hash, type: StampsType.sha256 },
-        orderBy: { time: 'asc' },
-      });
+      const result = await repository.getByHash('h');
+
+      expect(result).toEqual(row);
+      const wheres = select.calls.filter((c) => c.name === 'where');
+      expect(wheres[0].args).toEqual(['hash', '=', 'h']);
+      expect(wheres[1].args).toEqual(['type', '=', 'sha256']);
     });
 
-    it('should find stamp by hash with specified type', async () => {
-      const hash = 'test-hash';
-      const type = StampsType.ipfs;
-      await repository.getByHash(hash, type);
+    it('returns null when not found', async () => {
+      const select = chain(undefined, 'executeTakeFirst');
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
 
-      expect(mockFindFirst).toHaveBeenCalledWith({
-        where: { hash, type },
-        orderBy: { time: 'asc' },
-      });
+      const result = await repository.getByHash('nope');
+
+      expect(result).toBeNull();
     });
   });
 
   describe('getById', () => {
-    it('should find stamp by id without fields', async () => {
-      const id = BigInt(1);
-      await repository.getById(id, {});
+    it('selects all columns when no field projection requested', async () => {
+      const row = { id: BigInt(1) };
+      const select = chain(row, 'executeTakeFirst');
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
 
-      expect(mockFindUnique).toHaveBeenCalledWith({
-        where: { id },
-      });
+      const result = await repository.getById(BigInt(1), {});
+
+      expect(result).toEqual(row);
     });
 
-    it('should find stamp by id with selected fields', async () => {
-      const id = BigInt(1);
-      const fields = { stamps: ['hash', 'type'] };
-      await repository.getById(id, { fields });
+    it('respects the fields projection', async () => {
+      const row = { hash: 'h', type: 'sha256' };
+      const select = chain(row, 'executeTakeFirst');
+      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
 
-      expect(mockFindUnique).toHaveBeenCalledWith({
-        where: { id },
-        select: {
-          hash: true,
-          type: true,
-        },
-      });
+      await repository.getById(BigInt(1), { fields: { stamps: ['hash', 'type'] } });
+
+      const selectCall = select.calls.find((c) => c.name === 'select');
+      expect(selectCall?.args[0]).toEqual(['hash', 'type']);
     });
   });
 
   describe('listStamps', () => {
-    it('should list stamps without options', async () => {
-      mockFindMany.mockResolvedValue([]);
-      mockCount.mockResolvedValue(0);
+    it('returns rows + count in the bare case', async () => {
+      const rowsChain = chain([], 'execute');
+      const countChain = chain({ c: 0 }, 'executeTakeFirstOrThrow');
+      (db.selectFrom as jest.Mock)
+        .mockReturnValueOnce(rowsChain.proxy)
+        .mockReturnValueOnce(countChain.proxy);
 
-      await repository.listStamps();
+      const result = await repository.listStamps();
 
-      expect(mockFindMany).toHaveBeenCalledWith({});
-      expect(mockCount).toHaveBeenCalledWith({ where: {} });
+      expect(result).toEqual({ rows: [], count: 0 });
     });
 
-    it('should list stamps with all options', async () => {
-      const options = {
-        fields: { stamps: ['hash', 'type'] },
-        pagination: { offset: 0, limit: 10 },
-        filters: { type: StampsType.ipfs },
-      } as SelectOptions;
+    it('rejects unknown filter operators with BadFilterError', async () => {
+      const rowsChain = chain([], 'execute');
+      const countChain = chain({ c: 0 }, 'executeTakeFirstOrThrow');
+      (db.selectFrom as jest.Mock)
+        .mockReturnValueOnce(rowsChain.proxy)
+        .mockReturnValueOnce(countChain.proxy);
+      const opts: SelectOptions = { filters: { hash: { weird: 'x' } } };
 
-      mockFindMany.mockResolvedValue([]);
-      mockCount.mockResolvedValue(0);
+      // The where lambda is recorded but invoked synchronously by Kysely
+      // at execute time. Our chain doesn't invoke it, so we trigger the
+      // translator manually by inspecting the captured callable.
+      await repository.listStamps(opts);
+      const whereCall = rowsChain.calls.find((c) => c.name === 'where');
+      const whereLambda = whereCall?.args[0] as (eb: any) => unknown;
+      // Build a faux ExpressionBuilder that just returns its args so we
+      // can drive the translator's branches without spinning up Kysely.
+      const fakeEb: any = (...args: unknown[]) => ({ args });
+      fakeEb.and = (xs: unknown[]) => xs;
 
-      await repository.listStamps(options);
-
-      expect(mockFindMany).toHaveBeenCalledWith({
-        select: {
-          hash: true,
-          type: true,
-        },
-        skip: 0,
-        take: 10,
-        where: { type: StampsType.ipfs },
-      });
-
-      expect(mockCount).toHaveBeenCalledWith({
-        where: { type: StampsType.ipfs },
-      });
+      expect(() => whereLambda(fakeEb)).toThrow(BadFilterError);
     });
   });
 });

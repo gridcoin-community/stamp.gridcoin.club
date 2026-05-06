@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import request from 'supertest';
 import { rpc } from '../../src/lib/gridcoin';
 import { app, server } from '../../src/api';
+import { db } from '../../src/lib/db';
 import { WalletRepository } from '../../src/repositories/WalletRepository';
 import { EntityType } from '../../src/presenters/types';
 
@@ -23,9 +24,9 @@ jest.mock('../../src/lib/redis', () => ({
   },
 }));
 
-afterAll((done) => {
+afterAll(async () => {
   server.close();
-  done();
+  await db.destroy();
 });
 
 describe('Wallet endpoints', () => {
