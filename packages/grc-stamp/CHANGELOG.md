@@ -1,3 +1,24 @@
+# [grc-stamp-v1.4.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.3.0...grc-stamp-v1.4.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* prevent double burning fees ([822fd7a](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/822fd7ae3b9b60fe24bcc8d8324c0d4eb291fee4))
+* respect reverse proxy! ([4e37cc6](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/4e37cc6a041d1be6383bdaf235697debc38044d2))
+* scalar operator - array, it shall not crash ([3995a54](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/3995a5469406ca2d141c566d3f069dd0cb274876))
+* truncate does reset autoincrement, delete doesn't ([c21f0f3](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/c21f0f33e4a1f5a91abc86baf06934abcb22d45b))
+
+
+### Features
+
+* add reset script ([9cb7cc9](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/9cb7cc98e8324c5ca284b06a1fad8ca6eb4084f6))
+* backfill, calculate the proper cost, improve sse, a lot of bugfixes ([81818bf](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/81818bfae941894e35db49c7bb61b3ff3679c0c4))
+* introduce naive rate limits ([7fa647c](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/7fa647c3c742ef64c5151bf9b562a4834da360c0))
+* introduce network awareness ([18bb2b0](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/18bb2b07ed58ad7f94053c57d1f6641d0439f4bc))
+* retire cloudflare maintenance pages ([e63e007](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/e63e00740225fa95849599b4c2c88b4ceea96fe8))
+* retire prisma, use boring stack ([1f1894a](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1f1894ac6e46c1da6fb06ba5b3750a29f4b343ea))
+* scraper now fully respects protocol, not letting dirty ones through ([81b7340](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/81b7340bdf9109c7556927a8414b0715d97a7f63))
+
 # [grc-stamp-v1.3.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.2.2...grc-stamp-v1.3.0) (2026-04-17)
 
 
