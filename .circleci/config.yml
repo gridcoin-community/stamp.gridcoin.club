@@ -152,7 +152,8 @@ jobs:
     <<: *defaults
     docker:
       - image: cimg/node:22.16
-      - image: cimg/mysql:5.7
+      - image: mariadb:11.4
+        command: --character-set-server=utf8mb4
         environment:
           MYSQL_RANDOM_ROOT_PASSWORD: true
           MYSQL_USER: test
