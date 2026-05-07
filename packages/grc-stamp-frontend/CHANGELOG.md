@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.7.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.7.0...grc-stamp-frontend-v1.7.1) (2026-05-07)
+
+
+### Bug Fixes
+
+* add proper address for the testnet ([f48c771](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f48c771c5ea18d62fcad84def368fd7be6f77e3f))
+
 # [grc-stamp-frontend-v1.7.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.6.1...grc-stamp-frontend-v1.7.0) (2026-05-06)
 
 
