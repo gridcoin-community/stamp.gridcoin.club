@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { NextMuiLink } from '@/components/NextMuiLink';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
+import { SITE_URL } from '@/components/Seo';
 
 export function Overview() {
   return (
@@ -38,7 +39,7 @@ export function Overview() {
           <ListItem disableGutters>
             <ListItemText
               primary="Base URL"
-              secondary="https://stamp.gridcoin.club/api"
+              secondary={`${SITE_URL}/api`}
               slotProps={{ secondary: { sx: { fontFamily: 'monospace' } } }}
             />
           </ListItem>
@@ -72,7 +73,7 @@ export function Overview() {
         <CodeBlock
           caption="Request"
           language="bash"
-          code="curl https://stamp.gridcoin.club/api/status"
+          code={`curl ${SITE_URL}/api/status`}
         />
         <CodeBlock
           caption="Response — 200 OK"

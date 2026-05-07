@@ -14,6 +14,7 @@ import {
 import { NextMuiLink } from '@/components/NextMuiLink';
 import { Endpoint } from '@/components/Endpoint/Endpoint';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
+import { SITE_URL } from '@/components/Seo';
 
 export function Stamps() {
   return (
@@ -65,7 +66,7 @@ export function Stamps() {
         <CodeBlock
           caption="Request"
           language="bash"
-          code="curl -g 'https://stamp.gridcoin.club/api/stamps?page[size]=2&sort=-id'"
+          code={`curl -g '${SITE_URL}/api/stamps?page[size]=2&sort=-id'`}
         />
         <CodeBlock
           caption="Response — 200 OK"
@@ -130,7 +131,7 @@ export function Stamps() {
         <CodeBlock
           caption="Request"
           language="bash"
-          code="curl https://stamp.gridcoin.club/api/stamps/3"
+          code={`curl ${SITE_URL}/api/stamps/3`}
         />
         <CodeBlock
           caption="Response — 200 OK"
@@ -216,7 +217,7 @@ export function Stamps() {
         <CodeBlock
           caption="Request"
           language="bash"
-          code={`curl -X POST 'https://stamp.gridcoin.club/api/stamps' \\
+          code={`curl -X POST '${SITE_URL}/api/stamps' \\
   -H 'Content-Type: application/vnd.api+json' \\
   -d '{
     "data": {

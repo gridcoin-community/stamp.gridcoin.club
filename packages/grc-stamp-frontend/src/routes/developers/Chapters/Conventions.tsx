@@ -12,6 +12,7 @@ import {
   AlertTitle,
 } from '@mui/material';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
+import { SITE_URL } from '@/components/Seo';
 
 export function Conventions() {
   return (
@@ -160,7 +161,7 @@ export function Conventions() {
         <CodeBlock
           caption="Request"
           language="bash"
-          code={`curl -G 'https://stamp.gridcoin.club/api/stamps' \\
+          code={`curl -G '${SITE_URL}/api/stamps' \\
   --data-urlencode 'page[size]=10' \\
   --data-urlencode 'sort=-block' \\
   --data-urlencode 'fields[stamps]=id,hash,block,time' \\

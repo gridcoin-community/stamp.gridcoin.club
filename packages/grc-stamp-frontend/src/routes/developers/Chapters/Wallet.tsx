@@ -4,6 +4,7 @@ import React from 'react';
 import { Typography, Box } from '@mui/material';
 import { Endpoint } from '@/components/Endpoint/Endpoint';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
+import { SITE_URL } from '@/components/Seo';
 
 export function Wallet() {
   return (
@@ -26,7 +27,7 @@ export function Wallet() {
         <CodeBlock
           caption="Request"
           language="bash"
-          code="curl https://stamp.gridcoin.club/api/wallet"
+          code={`curl ${SITE_URL}/api/wallet`}
         />
         <CodeBlock
           caption="Response — 200 OK"
@@ -98,7 +99,7 @@ export function Wallet() {
         <CodeBlock
           caption="Request"
           language="bash"
-          code="curl https://stamp.gridcoin.club/api/wallet/balance"
+          code={`curl ${SITE_URL}/api/wallet/balance`}
         />
         <CodeBlock
           caption="Response — 200 OK"
