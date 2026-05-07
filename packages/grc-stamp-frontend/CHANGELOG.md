@@ -1,3 +1,11 @@
+# [grc-stamp-frontend-v1.7.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.7.1...grc-stamp-frontend-v1.7.2) (2026-05-07)
+
+
+### Bug Fixes
+
+* re-enable plausible ([15f03e4](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/15f03e4531a0baacfd186b4549bffa059df19c3e))
+* use proper domain for the api documentation ([7d2c32d](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/7d2c32de060311c77889cab4f28213c7d97850d5))
+
 # [grc-stamp-frontend-v1.7.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.7.0...grc-stamp-frontend-v1.7.1) (2026-05-07)
 
 
