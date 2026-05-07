@@ -9,6 +9,7 @@ import {
   ListItemText,
 } from '@mui/material';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
+import { SITE_URL } from '@/components/Seo';
 
 export function Errors() {
   return (
@@ -51,7 +52,7 @@ export function Errors() {
         <CodeBlock
           caption="Reproduce the 400"
           language="bash"
-          code={`curl -X POST 'https://stamp.gridcoin.club/api/stamps' \\
+          code={`curl -X POST '${SITE_URL}/api/stamps' \\
   -H 'Content-Type: application/vnd.api+json' \\
   -d '{"data":{"type":"stamps","attributes":{"hash":"not-a-hash"}}}'`}
         />

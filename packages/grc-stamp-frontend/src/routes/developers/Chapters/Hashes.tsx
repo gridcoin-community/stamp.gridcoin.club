@@ -3,6 +3,7 @@ import React from 'react';
 import { Typography, Box } from '@mui/material';
 import { Endpoint } from '@/components/Endpoint/Endpoint';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
+import { SITE_URL } from '@/components/Seo';
 
 export function Hashes() {
   return (
@@ -20,7 +21,7 @@ export function Hashes() {
         <CodeBlock
           caption="Request"
           language="bash"
-          code="curl https://stamp.gridcoin.club/api/hashes/5f334f14161952476adde3fbd843f93f647d47a0d7e30eb5d1635fb7569a2503"
+          code={`curl ${SITE_URL}/api/hashes/5f334f14161952476adde3fbd843f93f647d47a0d7e30eb5d1635fb7569a2503`}
         />
         <CodeBlock
           caption="Response — 200 OK"

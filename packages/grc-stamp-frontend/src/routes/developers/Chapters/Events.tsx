@@ -11,6 +11,7 @@ import {
 import { NextMuiLink } from '@/components/NextMuiLink';
 import { Endpoint } from '@/components/Endpoint/Endpoint';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
+import { SITE_URL } from '@/components/Seo';
 
 export function Events() {
   return (
@@ -40,7 +41,7 @@ export function Events() {
         <CodeBlock
           caption="Subscribe with curl"
           language="bash"
-          code="curl -N https://stamp.gridcoin.club/api/events"
+          code={`curl -N ${SITE_URL}/api/events`}
         />
         <Typography gutterBottom variant="body1" component="p">
           In the browser, use
@@ -51,7 +52,7 @@ export function Events() {
         <CodeBlock
           caption="Subscribe from JavaScript"
           language="javascript"
-          code={`const es = new EventSource('https://stamp.gridcoin.club/api/events');
+          code={`const es = new EventSource('${SITE_URL}/api/events');
 
 es.onmessage = (event) => {
   const payload = JSON.parse(event.data);
