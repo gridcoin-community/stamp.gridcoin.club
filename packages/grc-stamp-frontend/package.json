@@ -24,7 +24,7 @@
     "date-fns": "^4.1.0",
     "identicon.js": "^2.3.3",
     "js-sha256": "^0.11.1",
-    "next": "16.2.3",
+    "next": "16.2.6",
     "prism-react-renderer": "2.4.1",
     "qrcode": "^1.5.4",
     "react": "19.2.5",
