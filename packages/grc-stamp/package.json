@@ -20,7 +20,7 @@
     "gridcoin-rpc": "^5.0.3",
     "http-status-codes": "^2.3.0",
     "ioredis": "^5.4.1",
-    "joi": "^17.13.0",
+    "joi": "^18.2.1",
     "kysely": "^0.28.17",
     "method-override": "^3.0.0",
     "moment": "^2.30.1",
