@@ -65,7 +65,7 @@ export function Page() {
   return (
     <>
       <Seo
-        title={`${SITE_NAME} :: GitHub Action`}
+        title={`${SITE_NAME} :: GitHub Action for CI/CD`}
         description={DESCRIPTION}
         path="/developers/github-action"
         ogType="article"

@@ -43,9 +43,13 @@ export function Seo({
     ? `${SITE_URL}${ogImagePath}`
     : `${SITE_URL}/og-image.png`;
 
+  // Family-wide convention: every testnet build prepends `[testnet] ` to the
+  // page title so the network is obvious in tab/favicon views.
+  const displayTitle = IS_TESTNET ? `[testnet] ${title}` : title;
+
   return (
     <Head>
-      <title>{title}</title>
+      <title>{displayTitle}</title>
       <meta key="description" name="description" content={description} />
       <link key="canonical" rel="canonical" href={canonicalUrl} />
 
@@ -60,7 +64,7 @@ export function Seo({
         href={iconDataUrl ?? DEFAULT_FAVICON}
       />
 
-      <meta key="og:title" property="og:title" content={title} />
+      <meta key="og:title" property="og:title" content={displayTitle} />
       <meta key="og:description" property="og:description" content={description} />
       <meta key="og:type" property="og:type" content={ogType} />
       <meta key="og:url" property="og:url" content={canonicalUrl} />
@@ -69,7 +73,7 @@ export function Seo({
       <meta key="og:locale" property="og:locale" content="en_US" />
 
       <meta key="twitter:card" name="twitter:card" content="summary_large_image" />
-      <meta key="twitter:title" name="twitter:title" content={title} />
+      <meta key="twitter:title" name="twitter:title" content={displayTitle} />
       <meta key="twitter:description" name="twitter:description" content={description} />
       <meta key="twitter:image" name="twitter:image" content={ogImageUrl} />
 

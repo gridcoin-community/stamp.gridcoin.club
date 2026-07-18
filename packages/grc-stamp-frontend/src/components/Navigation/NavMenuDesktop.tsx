@@ -1,13 +1,8 @@
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
-import {
-  Box,
-  Menu,
-  MenuItem,
-} from '@mui/material';
+import { Box } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { ModeToggle } from './Mode';
 import {
   menuItems,
@@ -23,7 +18,9 @@ const gutter = 2;
 const Nav = styled('ul')(() => ({
   listStyle: 'none',
   display: 'flex',
-  overflow: 'auto',
+  // Must stay visible so the absolutely-positioned group dropdown can overflow
+  // outside the nav instead of being clipped into a scroll box.
+  overflow: 'visible',
   padding: 0,
   margin: 0,
 }));
@@ -78,6 +75,14 @@ const NavItem = styled('li')(({ theme }) => ({
   '&:not(:first-of-type)': {
     marginLeft: theme.spacing(gutter),
   },
+  // The dropdown links stay in the DOM (rendered server-side, crawlable) and
+  // are only shown on hover, keyboard focus, or an explicit click-toggle.
+  '& .groupMenu': {
+    display: 'none',
+  },
+  '&:hover .groupMenu, &:focus-within .groupMenu, &.groupOpen .groupMenu': {
+    display: 'block',
+  },
   '&.itemActive': {
     '& a, & .groupTrigger': {
       color:
@@ -96,6 +101,32 @@ const NavItem = styled('li')(({ theme }) => ({
   },
 }));
 
+const GroupMenu = styled('ul')(({ theme }) => ({
+  listStyle: 'none',
+  margin: 0,
+  padding: theme.spacing(0.5, 0),
+  position: 'absolute',
+  top: '100%',
+  right: 0,
+  left: 'auto',
+  minWidth: 200,
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: 4,
+  boxShadow: theme.shadows[4],
+  zIndex: theme.zIndex.appBar + 1,
+  '& a': {
+    display: 'block',
+    padding: theme.spacing(1, 2),
+    whiteSpace: 'nowrap',
+    color: theme.palette.text.secondary,
+    textDecoration: 'none',
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+      color: theme.palette.primary.main,
+    },
+  },
+}));
+
 interface GroupItemProps {
   group: MenuGroup;
   isActive: boolean;
@@ -103,25 +134,20 @@ interface GroupItemProps {
 }
 
 function GroupItem({ group, isActive, entryKey }: GroupItemProps) {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const open = Boolean(anchorEl);
-
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [open, setOpen] = useState(false);
 
   return (
     <NavItem
       key={entryKey}
-      className={isActive ? 'itemActive' : undefined}
+      className={[isActive ? 'itemActive' : '', open ? 'groupOpen' : '']
+        .filter(Boolean)
+        .join(' ') || undefined}
+      onMouseLeave={() => setOpen(false)}
     >
       <button
         type="button"
         className="groupTrigger"
-        onClick={handleOpen}
+        onClick={() => setOpen((v) => !v)}
         aria-haspopup="true"
         aria-expanded={open || undefined}
       >
@@ -135,30 +161,15 @@ function GroupItem({ group, isActive, entryKey }: GroupItemProps) {
           }}
         />
       </button>
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        slotProps={{
-          paper: {
-            elevation: 4,
-            sx: { mt: 0.5, minWidth: 200 },
-          },
-        }}
-      >
+      <GroupMenu className="groupMenu">
         {group.children.map((child) => (
-          <MenuItem
-            key={child.href}
-            component={Link}
-            href={child.href}
-            onClick={handleClose}
-          >
-            {child.label}
-          </MenuItem>
+          <li key={child.href}>
+            <NextMuiLink href={child.href} onClick={() => setOpen(false)}>
+              {child.label}
+            </NextMuiLink>
+          </li>
         ))}
-      </Menu>
+      </GroupMenu>
     </NavItem>
   );
 }

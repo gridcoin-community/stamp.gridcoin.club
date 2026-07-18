@@ -14,11 +14,15 @@ import { ScrollTopFab } from '@/components/ScrollTopFab/ScrollTopFab';
 import { PageWrapper } from '../../components/PageWrapper';
 import { Contents } from './Contents';
 import {
-  // Credits,
-  About,
-  Costs,
-  ProofOfExistence,
-  Protocol,
+  Acceptance,
+  Service,
+  WhatItProves,
+  AcceptableUse,
+  Privacy,
+  OpenSource,
+  Disclaimer,
+  Liability,
+  General,
 } from './Chapters';
 
 export function Page() {
@@ -28,15 +32,15 @@ export function Page() {
   return (
     <>
       <Seo
-        title={`${SITE_NAME} :: About`}
-        description="How Gridcoin blockchain stamping works, the on-chain protocol it uses, and what it costs to certify a document."
-        path="/about"
+        title={`${SITE_NAME} :: Terms`}
+        description={`Terms of Service for ${SITE_NAME}: what a stamp proves and doesn’t, acceptable use, privacy, disclaimers, and liability.`}
+        path="/terms"
         ogType="article"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'Article',
-          headline: `About ${SITE_NAME}`,
-          description: 'How Proof of Existence works on the Gridcoin blockchain.',
+          headline: `Terms of Service · ${SITE_NAME}`,
+          description: `Terms of Service for ${SITE_NAME}.`,
           author: { '@type': 'Person', name: '@gridcat' },
           publisher: {
             '@type': 'Organization',
@@ -55,16 +59,24 @@ export function Page() {
             </Grid>
             <Grid size={{ sm: 9, xs: 12 }}>
               <Typography component="h1" variant="h4" sx={{ pb: 2 }}>
-                {`About ${SITE_NAME}`}
+                Terms of Service
               </Typography>
               <Typography gutterBottom variant="body1" component="p">
-                {`${SITE_NAME} is a free Proof of Existence service. Drop a file into the app: the browser computes its SHA-256 hash and writes that hash to the Gridcoin blockchain. The document itself never leaves your device. This page walks through the idea behind the service, the on-chain protocol it uses, and what it costs to run.`}
+                The rules of the road for using
+                {' '}
+                {SITE_NAME}
+                . Plain-English where it can be, legalese where it
+                has to be.
               </Typography>
-              <ProofOfExistence />
-              <About />
-              <Protocol />
-              <Costs />
-              {/* <Credits /> */}
+              <Acceptance />
+              <Service />
+              <WhatItProves />
+              <AcceptableUse />
+              <Privacy />
+              <OpenSource />
+              <Disclaimer />
+              <Liability />
+              <General />
             </Grid>
           </Grid>
         </Container>

@@ -36,7 +36,6 @@ class SSEManager {
     this.eventSource = new EventSource(url);
 
     this.eventSource.onopen = () => {
-      // eslint-disable-next-line no-console
       console.info(`[SSE] connected to ${url}`);
       this.loggedError = false;
     };
@@ -49,7 +48,6 @@ class SSEManager {
           this.listeners[type].forEach((cb) => cb(data));
         }
       } catch {
-        // eslint-disable-next-line no-console
         console.error('[SSE] failed to parse message', e.data);
       }
     };
@@ -60,7 +58,6 @@ class SSEManager {
       if (this.loggedError) return;
       this.loggedError = true;
       const state = this.eventSource?.readyState ?? -1;
-      // eslint-disable-next-line no-console
       console.error(
         `[SSE] connection error (url=${this.url}, state=${READY_STATE_LABEL[state] ?? state}).`
         + ' Check that the backend is running and reachable.',
