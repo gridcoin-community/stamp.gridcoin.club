@@ -1,3 +1,10 @@
+# [grc-stamp-v1.4.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.4.0...grc-stamp-v1.4.1) (2026-07-18)
+
+
+### Bug Fixes
+
+* address dangerous dependencies ([9b15032](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/9b150327b74aed785447da799bccd3e1d30bea1d))
+
 # [grc-stamp-v1.4.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.3.0...grc-stamp-v1.4.0) (2026-05-06)
 
 
