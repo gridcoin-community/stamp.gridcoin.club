@@ -74,7 +74,7 @@ export function RecentStamps() {
             mb: 2,
           }}
           >
-            <Typography component="h3" variant="h6">
+            <Typography component="h2" variant="h6">
               Most Recent Stamps
             </Typography>
             <PendingCount />
