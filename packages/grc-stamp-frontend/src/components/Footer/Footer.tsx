@@ -7,6 +7,7 @@ import {
 import GithubIcon from '@mui/icons-material/GitHub';
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import { NextMuiLink } from '@/components/NextMuiLink';
 import { Balance } from '@/components/Footer/Balance';
 import { IS_TESTNET, SISTER_NETWORK_LABEL, SISTER_NETWORK_URL } from '@/lib/network';
 
@@ -66,23 +67,24 @@ export function Footer() {
         {' '}
         by @gridcat
         {' · '}
-        <a
-          href="https://gridcoin.club"
-          style={{ color: 'inherit' }}
-        >
+        <NextMuiLink href="https://gridcoin.club" color="inherit">
           Part of Gridcoin Club ↗
-        </a>
+        </NextMuiLink>
+        {' · '}
+        <NextMuiLink href="/terms" color="inherit">
+          Terms
+        </NextMuiLink>
         {SISTER_NETWORK_URL && (
           <>
             {' · '}
-            <a
+            <NextMuiLink
               href={SISTER_NETWORK_URL}
-              style={{ color: 'inherit' }}
+              color="inherit"
               rel={IS_TESTNET ? undefined : 'nofollow'}
             >
               {SISTER_NETWORK_LABEL}
               {' ↗'}
-            </a>
+            </NextMuiLink>
           </>
         )}
       </SubFooterTypography>

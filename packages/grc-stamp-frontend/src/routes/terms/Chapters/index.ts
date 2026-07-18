@@ -1,0 +1,9 @@
+export { Acceptance } from './Acceptance';
+export { Service } from './Service';
+export { WhatItProves } from './WhatItProves';
+export { AcceptableUse } from './AcceptableUse';
+export { Privacy } from './Privacy';
+export { OpenSource } from './OpenSource';
+export { Disclaimer } from './Disclaimer';
+export { Liability } from './Liability';
+export { General } from './General';
