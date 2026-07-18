@@ -64,6 +64,39 @@ export function Protocol() {
           <NextMuiLink rel="nofollow" href="https://semver.org/">semver.org</NextMuiLink>
           .
         </Typography>
+
+        <Typography variant="h6" component="h3" id="verify-a-stamp" sx={{ pt: 2, pb: 1 }}>
+          Verify a stamp yourself
+        </Typography>
+        <Typography gutterBottom variant="body1" component="p">
+          None of this depends on stamp.gridcoin.club. Anyone can check a stamp
+          against the Gridcoin chain directly:
+        </Typography>
+        <Box component="ol" sx={{ pl: 3 }}>
+          <Typography component="li" variant="body1" gutterBottom>
+            Compute the SHA-256 hash of your file yourself, for example with
+            {' '}
+            <code>sha256sum yourfile.pdf</code>
+            . This is the value that should have been stamped.
+          </Typography>
+          <Typography component="li" variant="body1" gutterBottom>
+            Open the stamping transaction on a block explorer such as
+            {' '}
+            <NextMuiLink rel="nofollow" href="https://gridcoinstats.eu">gridcoinstats.eu</NextMuiLink>
+            . Search by the transaction id shown on your proof page.
+          </Typography>
+          <Typography component="li" variant="body1" gutterBottom>
+            In the transaction&apos;s OP_RETURN output, check that the data reads
+            {' '}
+            <code>5ea1ed</code>
+            {' '}
+            followed by the version and your hash. If your SHA-256 is there, the
+            file existed in that exact form when the block was mined.
+          </Typography>
+          <Typography component="li" variant="body1" gutterBottom>
+            Read the block&apos;s timestamp. That time is what the stamp proves.
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

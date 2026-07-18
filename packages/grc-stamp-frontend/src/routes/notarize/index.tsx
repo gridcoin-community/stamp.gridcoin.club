@@ -18,6 +18,7 @@ import { Steps } from './constants';
 import { stateHasFile } from './actions';
 import { Result } from './Result/Result';
 import { Instructions } from './Instructions/Instructions';
+import { HowItWorks } from './HowItWorks/HowItWorks';
 import { Errors } from './Errors/Errors';
 import { ColorizedSteppers } from './Stepper/ColorizedSteppers';
 
@@ -91,6 +92,7 @@ export function Page() {
             </FilesContext.Provider>
           </ErrorContext.Provider>
           <RecentStamps />
+          <HowItWorks />
         </Container>
         <Footer />
       </PageWrapper>
