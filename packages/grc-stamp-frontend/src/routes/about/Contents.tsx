@@ -6,7 +6,6 @@ const entries: PageContentsEntry[] = [
   { id: 'about-the-service', label: 'About the Service' },
   { id: 'protocol-overview', label: 'Protocol Summary' },
   { id: 'costs', label: 'Costs' },
-  { id: 'disclaimer', label: 'Disclaimer' },
 ];
 
 export function Contents() {
