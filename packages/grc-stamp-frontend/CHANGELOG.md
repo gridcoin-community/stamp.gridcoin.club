@@ -1,3 +1,19 @@
+# [grc-stamp-frontend-v1.8.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.7.2...grc-stamp-frontend-v1.8.0) (2026-07-18)
+
+
+### Bug Fixes
+
+* add testnet to the header for the testnet ([6426c5c](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/6426c5cde2be7f2d33b6666c92509322c1c3c8bb))
+* address dangerous dependencies ([9b15032](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/9b150327b74aed785447da799bccd3e1d30bea1d))
+* fix headers sequence ([2a0b788](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/2a0b78818aca402ab78e0b62b20c7954821b41a6))
+* no ssr rendering ([68ff845](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/68ff8453445d982eae0eebec6dec9821263d8694))
+
+
+### Features
+
+* add short how to and faq to the home page ([61b6471](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/61b64718bbaa9ddcd1149d02cd404f3bbea8204f))
+* add tems and conditions ([32e9df1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/32e9df177ac04724695a917483347614e9fad727))
+
 # [grc-stamp-frontend-v1.7.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.7.1...grc-stamp-frontend-v1.7.2) (2026-05-07)
 
 
