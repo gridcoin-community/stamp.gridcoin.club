@@ -22,6 +22,7 @@ export const menuItems: MenuEntry[] = [
     children: [
       { label: 'API Documentation', href: '/developers' },
       { label: 'GitHub Action', href: '/developers/github-action' },
+      { label: 'MCP Server', href: '/developers/mcp' },
     ],
   },
 ];

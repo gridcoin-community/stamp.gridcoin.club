@@ -1,0 +1,43 @@
+# Build stage
+FROM node:22.16.0 AS builder
+
+WORKDIR /usr/src/app
+
+# Install dependencies with a clean install
+COPY package*.json ./
+RUN npm ci
+
+# Copy source and build (tsc -> dist/, ESM)
+COPY . .
+RUN npm run build
+
+# Production stage
+FROM node:22.16.0
+
+LABEL maintainer="Gridcoin Stamp Project"
+LABEL description="Production environment for the grc-stamp MCP server (remote HTTP transport)"
+
+WORKDIR /usr/src/app
+
+# Only production dependencies + built assets
+COPY package*.json ./
+RUN npm ci --only=production
+COPY --from=builder /usr/src/app/dist ./dist
+
+# Non-root runtime user
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser && \
+    chown -R appuser:appgroup /usr/src/app
+USER appuser
+
+# Hosted deployments run the Streamable-HTTP transport (the npm/npx package
+# defaults to stdio). Compose can still override any of these.
+ENV NODE_ENV=production
+ENV TRANSPORT=http
+ENV PORT=7010
+
+EXPOSE 7010
+
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:7010/health || exit 1
+
+CMD ["npm", "start"]

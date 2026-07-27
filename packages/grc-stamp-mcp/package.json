@@ -1,0 +1,80 @@
+{
+  "name": "grc-stamp-mcp",
+  "description": "MCP server for stamp.gridcoin.club — timestamp documents on the Gridcoin blockchain from any MCP-capable AI agent",
+  "version": "1.0.0",
+  "author": "@gridcat",
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "main": "dist/index.js",
+  "bin": {
+    "grc-stamp-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "port": 7010,
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "axios": "^1.8.0",
+    "express": "^5.2.1",
+    "nconf": "^0.12.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^12.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.0.3",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^13.0.0",
+    "@types/express": "^5.0.6",
+    "@types/nconf": "^0.10.6",
+    "@types/node": "^22.10.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.7.1",
+    "eslint": "8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "rimraf": "^5.0.5",
+    "semantic-release": "^23.0.8",
+    "semantic-release-monorepo": "^8.0.2",
+    "typescript": "^5.6.0",
+    "vitest": "^4.1.10"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
+    "clean": "rimraf ./dist",
+    "start": "node dist/index.js",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
+    "semantic-release": "semantic-release -e semantic-release-monorepo",
+    "test": "npm run test:unit && npm run test:lint && npm run typecheck",
+    "test:unit": "vitest run",
+    "test:lint": "eslint .",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit --pretty false"
+  }
+}
