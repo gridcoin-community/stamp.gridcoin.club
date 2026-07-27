@@ -21,6 +21,7 @@ Sitemap: ${SITE_URL}/sitemap.xml
 
 # LLMs
 llms.txt: ${SITE_URL}/llms.txt
+EntityMap: ${SITE_URL}/entitymap.json
 `;
 
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');

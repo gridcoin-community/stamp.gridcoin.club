@@ -24,14 +24,14 @@
     "date-fns": "^4.1.0",
     "identicon.js": "^2.3.3",
     "js-sha256": "^0.11.1",
-    "next": "16.2.10",
+    "next": "16.2.12",
     "prism-react-renderer": "2.4.1",
     "qrcode": "^1.5.4",
     "react": "19.2.5",
     "react-dom": "19.2.5",
     "react-dropzone": "15.0.0",
     "react-transition-group": "^4.4.5",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.3",
     "yayson": "^3.0.0"
   },
   "devDependencies": {
@@ -77,6 +77,10 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "overrides": {
+    "postcss": "^8.5.18",
+    "sharp": "^0.35.3"
   },
   "private": true,
   "release": {

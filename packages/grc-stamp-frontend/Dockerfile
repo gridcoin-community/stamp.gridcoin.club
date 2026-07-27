@@ -43,6 +43,15 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
+# The OG-image and PDF-certificate routes cache rendered assets under
+# /app/.cache. /app is root-owned (COPY runs as root), so create the cache
+# tree and hand it to the runtime user or the first write fails with EACCES.
+# A bind-mounted volume at /app/.cache/og overrides this ownership with the
+# host directory's — chown that host dir to uid 1001 (or use a named volume)
+# for the mounted case.
+RUN mkdir -p /app/.cache/og /app/.cache/pdf \
+    && chown -R nextjs:nodejs /app/.cache
+
 USER nextjs
 
 EXPOSE 3000
