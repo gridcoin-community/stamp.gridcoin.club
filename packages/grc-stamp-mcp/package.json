@@ -5,7 +5,6 @@
   "author": "@gridcat",
   "license": "ISC",
   "type": "module",
-  "private": true,
   "main": "dist/index.js",
   "bin": {
     "grc-stamp-mcp": "dist/index.js"
@@ -49,6 +48,9 @@
     "semantic-release-monorepo": "^8.0.2",
     "typescript": "^5.6.0",
     "vitest": "^4.1.10"
+  },
+  "overrides": {
+    "@hono/node-server": "^2.0.5"
   },
   "release": {
     "plugins": [

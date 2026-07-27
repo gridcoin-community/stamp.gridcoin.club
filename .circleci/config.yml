@@ -275,6 +275,13 @@ jobs:
             git fetch origin master
             git reset --hard origin/master
       - run:
+          # `dist` is gitignored and the checks job never builds it, so without
+          # this the published tarball would be missing the `main`/`bin` entry
+          # point. A `prepack` hook wouldn't help: the package `.npmrc` sets
+          # `ignore-scripts=true`, so npm would silently skip it.
+          name: Build
+          command: cd ~/app/packages/grc-stamp-mcp && npm run build
+      - run:
           name: Semantic release
           command: cd ~/app/packages/grc-stamp-mcp && npm run semantic-release
 
