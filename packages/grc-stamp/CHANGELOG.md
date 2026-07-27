@@ -1,3 +1,10 @@
+# [grc-stamp-v1.5.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.4.1...grc-stamp-v1.5.0) (2026-07-27)
+
+
+### Features
+
+* release mcp to npm ([dbcfa71](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/dbcfa716bb11d1af2ed3aeed9e854cdb4f7dacba))
+
 # [grc-stamp-v1.4.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.4.0...grc-stamp-v1.4.1) (2026-07-18)
 
 
