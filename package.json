@@ -2,15 +2,22 @@
   "name": "stamp-gridcoin-club",
   "version": "1.0.0",
   "devDependencies": {
-    "@nx/eslint": "^21.5.2",
-    "@nx/jest": "21.5.2",
-    "@nx/next": "21.5.2",
+    "@nx/eslint": "^21.6.11",
+    "@nx/jest": "21.6.11",
+    "@nx/next": "21.6.11",
     "jest": "^30.0.2",
-    "nx": "21.5.2",
+    "nx": "21.6.11",
     "syncpack": "^13.0.4"
   },
   "node": ">=22.0.0",
   "nx": {},
+  "overrides": {
+    "@babel/plugin-transform-modules-systemjs": "^7.29.4",
+    "axios": "^1.19.0",
+    "next": "16.2.12",
+    "serialize-javascript": "^7.0.7",
+    "tmp": "^0.2.7"
+  },
   "packageManager": "npm@10.9.0",
   "private": true,
   "scripts": {
