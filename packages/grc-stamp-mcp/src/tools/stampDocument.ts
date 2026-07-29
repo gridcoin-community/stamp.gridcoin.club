@@ -15,17 +15,20 @@ import {
 import { logger } from '../lib/logger.js';
 
 function makeInputSchema(allowFilePath: boolean) {
+  const textNote = allowFilePath
+    ? 'The text is SHA-256-hashed on this machine and never leaves it. Only the hash is sent.'
+    : 'The text is sent to the hosted server, hashed, and discarded. Only the hash is stored. For sensitive content, precompute the sha256 and send that instead.';
   const base = {
     sha256: z.string().optional()
       .describe('A precomputed SHA-256 hex digest (64 hex chars). Use this when you already have the hash.'),
     text: z.string().optional()
-      .describe('Raw text to hash and stamp. The text is SHA-256-hashed locally; only the hash is sent.'),
+      .describe(`Raw text to hash and stamp. ${textNote}`),
   };
   if (!allowFilePath) return base;
   return {
     ...base,
     filePath: z.string().optional()
-      .describe('Absolute path to a local file to hash and stamp. The file is read and hashed on this machine; its bytes never leave — only the SHA-256 hash is sent.'),
+      .describe('Absolute path to a local file to hash and stamp. The file is read and hashed on this machine and its bytes never leave it. Only the SHA-256 hash is sent.'),
   };
 }
 
@@ -50,11 +53,14 @@ function makeDescription(allowFilePath: boolean): string {
   const inputs = allowFilePath
     ? 'Provide exactly one of: sha256 (a precomputed digest), text, or filePath (a local file).'
     : 'Provide exactly one of: sha256 (a precomputed digest) or text.';
+  const privacy = allowFilePath
+    ? 'Computes a SHA-256 hash and anchors it on-chain. The document never leaves this machine. Only the hash is sent.'
+    : 'Anchors a SHA-256 hash on-chain. The service stores only the hash.';
   return [
     'Timestamp a document on the Gridcoin blockchain (proof-of-existence / notarization).',
-    'Computes a SHA-256 hash and anchors it on-chain; the document itself never leaves the machine — only the hash is stored. Free, no payment required.',
+    `${privacy} Free, no payment required.`,
     inputs,
-    'Returns a public proof-page URL immediately. The downloadable PDF certificate becomes available once the stamp is confirmed on-chain (a few minutes) — poll check_stamp to get it.',
+    'Returns a public proof-page URL immediately. The downloadable PDF certificate becomes available once the stamp is confirmed on-chain, usually within a few minutes. Poll check_stamp to get it.',
   ].join(' ');
 }
 
@@ -75,7 +81,7 @@ async function resolveHash(
     return { error: `Provide one of: ${inputList}.` };
   }
   if (provided.length > 1) {
-    return { error: `Provide exactly one of ${inputList} — not several.` };
+    return { error: `Provide exactly one of ${inputList}, not several.` };
   }
 
   if (args.sha256 !== undefined) {
@@ -146,7 +152,7 @@ export function registerStampDocument(server: McpServer, ctx: ToolContext): void
           `Proof page: ${proof}`,
           confirmed
             ? `Confirmed on-chain. Certificate: ${cert}`
-            : 'Not yet confirmed on-chain — the PDF certificate becomes available in a few minutes. Call check_stamp with this hash to retrieve it.',
+            : 'Not yet confirmed on-chain. The PDF certificate becomes available in a few minutes. Call check_stamp with this hash to retrieve it.',
         ].join('\n');
 
         return ok(summary, {

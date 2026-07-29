@@ -41,6 +41,12 @@ Runs over stdio, so any MCP client can launch it with `npx`:
 }
 ```
 
+In [Claude Code](https://claude.com/claude-code) the same thing is one command:
+
+```bash
+claude mcp add grc-stamp-mcp -- npx -y grc-stamp-mcp
+```
+
 ### Configuration (env vars)
 
 | Var | Default | Purpose |

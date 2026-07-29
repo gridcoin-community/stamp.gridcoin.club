@@ -34,7 +34,7 @@ export function registerGetWalletStatus(server: McpServer, ctx: ToolContext): vo
         const canStamp = wallet.effectiveBalance >= wallet.minimumBalance;
         const summary = canStamp
           ? `The Gridcoin ${ctx.config.network} stamp service is funded and can accept new stamps.`
-          : `The Gridcoin ${ctx.config.network} stamp service wallet is low (effective balance ${wallet.effectiveBalance}, minimum ${wallet.minimumBalance}) — stamping is currently unavailable.`;
+          : `The Gridcoin ${ctx.config.network} stamp service wallet is low (effective balance ${wallet.effectiveBalance}, minimum ${wallet.minimumBalance}). Stamping is currently unavailable.`;
 
         return ok(summary, {
           network: ctx.config.network,
