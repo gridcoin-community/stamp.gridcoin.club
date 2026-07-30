@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.9.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.9.1...grc-stamp-frontend-v1.9.2) (2026-07-30)
+
+
+### Bug Fixes
+
+* proper mcp host for the testnet ([abc1980](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/abc198084929ca67917030794bfc4e61980f5f8f))
+
 # [grc-stamp-frontend-v1.9.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.9.0...grc-stamp-frontend-v1.9.1) (2026-07-30)
 
 
