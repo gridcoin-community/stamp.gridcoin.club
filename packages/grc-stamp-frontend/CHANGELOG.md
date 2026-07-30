@@ -1,3 +1,87 @@
+# [grc-stamp-frontend-v1.9.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.8.0...grc-stamp-frontend-v1.9.0) (2026-07-27)
+
+
+### Features
+
+* mcp, entity maps, fix sitemap ([feeffcd](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/feeffcd7844408ec681b772104a9cc01c757ff0b))
+* release mcp to npm ([dbcfa71](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/dbcfa716bb11d1af2ed3aeed9e854cdb4f7dacba))
+
+# [grc-stamp-frontend-v1.8.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.7.2...grc-stamp-frontend-v1.8.0) (2026-07-18)
+
+
+### Bug Fixes
+
+* add testnet to the header for the testnet ([6426c5c](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/6426c5cde2be7f2d33b6666c92509322c1c3c8bb))
+* address dangerous dependencies ([9b15032](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/9b150327b74aed785447da799bccd3e1d30bea1d))
+* fix headers sequence ([2a0b788](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/2a0b78818aca402ab78e0b62b20c7954821b41a6))
+* no ssr rendering ([68ff845](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/68ff8453445d982eae0eebec6dec9821263d8694))
+
+
+### Features
+
+* add short how to and faq to the home page ([61b6471](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/61b64718bbaa9ddcd1149d02cd404f3bbea8204f))
+* add tems and conditions ([32e9df1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/32e9df177ac04724695a917483347614e9fad727))
+
+# [grc-stamp-frontend-v1.7.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.7.1...grc-stamp-frontend-v1.7.2) (2026-05-07)
+
+
+### Bug Fixes
+
+* re-enable plausible ([15f03e4](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/15f03e4531a0baacfd186b4549bffa059df19c3e))
+* use proper domain for the api documentation ([7d2c32d](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/7d2c32de060311c77889cab4f28213c7d97850d5))
+
+# [grc-stamp-frontend-v1.7.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.7.0...grc-stamp-frontend-v1.7.1) (2026-05-07)
+
+
+### Bug Fixes
+
+* add proper address for the testnet ([f48c771](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f48c771c5ea18d62fcad84def368fd7be6f77e3f))
+
+# [grc-stamp-frontend-v1.7.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.6.1...grc-stamp-frontend-v1.7.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* do not leak server side error to the frontend ([25f3218](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/25f3218b028b9c549e6622edb1369747e2cf4aab))
+* get rid of nasty javascript voids for empty links ([86482c1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/86482c1e9023860863bc01f33831631d7d61f32e))
+* prevent query url and hash injections to the server side (mostly annoying than dangerous) ([71b29f1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/71b29f10c2adf0eaaac1ce9e53ee5e4837134734))
+
+
+### Features
+
+* backfill banner, out of funds banner, network awareness design ([8910ba3](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/8910ba338ca37ed02b30992c9ef368a191ae6a87))
+* introduce network awareness ([18bb2b0](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/18bb2b07ed58ad7f94053c57d1f6641d0439f4bc))
+* retire prisma, use boring stack ([1f1894a](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1f1894ac6e46c1da6fb06ba5b3750a29f4b343ea))
+* update the api documentation ([1a18e68](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1a18e68ba8e00775e4ecba2c8099ce90b35f4dfb))
+
+# [grc-stamp-frontend-v1.6.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.6.0...grc-stamp-frontend-v1.6.1) (2026-05-01)
+
+
+### Bug Fixes
+
+* clean up legacy theme cookie ([0510ed3](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/0510ed3a0d6878bca3ed53bd153cd526b931d3be))
+
+# [grc-stamp-frontend-v1.6.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.5.0...grc-stamp-frontend-v1.6.0) (2026-05-01)
+
+
+### Bug Fixes
+
+* fix the title ([966ce00](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/966ce006bd1b55e2884709e544f535565513df52))
+* improve content ([97f8c26](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/97f8c26ef004590392ba7d488f19b4a3dc6d6540))
+
+
+### Features
+
+* add link to the hub ([f05a5bc](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f05a5bca63b285680a5d8ec99e695082454a63de))
+* align dark mode with the hub website ([2043023](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/2043023e4f97ff596dc8c39e455de824a5402549))
+
+# [grc-stamp-frontend-v1.5.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.4.0...grc-stamp-frontend-v1.5.0) (2026-04-27)
+
+
+### Features
+
+* add downloadable PDF with a proof of existance ([9e4652c](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/9e4652c751da4e537f84f48b655d7d5058113d28))
+
 # [grc-stamp-frontend-v1.4.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.3.1...grc-stamp-frontend-v1.4.0) (2026-04-17)
 
 
