@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.9.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.9.0...grc-stamp-frontend-v1.9.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* update texting ([4f892d4](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/4f892d4a480446589e0410cc8983f87c0fc27c0c))
+
 # [grc-stamp-frontend-v1.9.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.8.0...grc-stamp-frontend-v1.9.0) (2026-07-27)
 
 
