@@ -1,3 +1,11 @@
+# [grc-stamp-mcp-v1.0.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-mcp-v1.0.0...grc-stamp-mcp-v1.0.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* mcp imports resolution to ts files! ([ca362d6](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/ca362d6d6f914e9e542128b3321eccfb223a355d))
+* update texting ([4f892d4](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/4f892d4a480446589e0410cc8983f87c0fc27c0c))
+
 # grc-stamp-mcp-v1.0.0 (2026-07-27)
 
 
