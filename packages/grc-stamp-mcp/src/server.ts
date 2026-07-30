@@ -1,13 +1,13 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import type { Config } from './config.js';
-import { StampClient } from './lib/stampClient.js';
-import { RateLimiter } from './lib/rateLimiter.js';
-import type { ToolContext } from './tools/context.js';
-import { registerStampDocument } from './tools/stampDocument.js';
-import { registerCheckStamp } from './tools/checkStamp.js';
-import { registerGetWalletStatus } from './tools/getWalletStatus.js';
+import type { Config } from './config.ts';
+import { StampClient } from './lib/stampClient.ts';
+import { RateLimiter } from './lib/rateLimiter.ts';
+import type { ToolContext } from './tools/context.ts';
+import { registerStampDocument } from './tools/stampDocument.ts';
+import { registerCheckStamp } from './tools/checkStamp.ts';
+import { registerGetWalletStatus } from './tools/getWalletStatus.ts';
 
 function packageVersion(): string {
   try {
@@ -43,7 +43,9 @@ export function createServerFromContext(ctx: ToolContext): McpServer {
     {
       instructions: [
         'Tools to timestamp documents on the Gridcoin blockchain (proof-of-existence).',
-        'Documents are hashed locally with SHA-256 and only the hash is anchored on-chain — file contents never leave the machine. The service is free.',
+        ctx.allowFilePath
+          ? 'Documents are hashed locally with SHA-256 and only the hash is anchored on-chain. File contents never leave the machine. The service is free.'
+          : 'Only SHA-256 hashes are anchored on-chain and stored. Document contents are never kept. The service is free.',
         `This server is anchored to the Gridcoin ${ctx.config.network} network.`,
       ].join(' '),
     },

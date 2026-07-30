@@ -34,7 +34,7 @@ interface Tool {
 const tools: Tool[] = [
   {
     name: 'stamp_document',
-    body: 'Hash a document and anchor it on-chain. Give it a precomputed sha256, some text, or (running locally) the path to a file. It returns a public proof-page URL right away; the downloadable certificate follows once the stamp confirms.',
+    body: 'Hash a document and anchor it on-chain. Give it a precomputed sha256, raw text to hash (the text itself is never stored), or (running locally) the path to a file. It returns a public proof-page URL right away. The downloadable certificate follows once the stamp confirms.',
   },
   {
     name: 'check_stamp',
@@ -197,6 +197,25 @@ export function Page() {
 }`}
                   />
                   <Typography gutterBottom variant="body1" component="p">
+                    In
+                    {' '}
+                    <NextMuiLink
+                      href="https://claude.com/claude-code"
+                      rel="noreferrer nofollow"
+                      target="_blank"
+                      color="primary"
+                    >
+                      Claude Code
+                    </NextMuiLink>
+                    {' '}
+                    the same thing is one command:
+                  </Typography>
+                  <CodeBlock
+                    caption="shell · claude code"
+                    language="bash"
+                    code="claude mcp add grc-stamp-mcp -- npx -y grc-stamp-mcp"
+                  />
+                  <Typography gutterBottom variant="body1" component="p">
                     Running locally, the server can also hash a file straight off your
                     disk: point
                     {' '}
@@ -242,8 +261,8 @@ export function Page() {
                     or inline
                     {' '}
                     <code>text</code>
-                    ; the local-file path is a local-only convenience. Everything else
-                    behaves the same.
+                    . The local-file path only works with the local server. Text is
+                    hashed on arrival and discarded. The service keeps only the hash.
                   </Typography>
                 </Box>
               </Box>
@@ -254,17 +273,15 @@ export function Page() {
                 </Typography>
                 <Box component="article">
                   <Typography gutterBottom variant="body1" component="p">
-                    The service is free. Stamping burns a trivial amount of GRC from a
-                    shared service wallet, not from you, which is deliberate: the point
-                    is to put the Gridcoin chain to work notarizing things. To keep that
-                    subsidy sane the hosted endpoint caps how many stamps it accepts per
-                    minute and pauses if the wallet ever runs low. Reads
-                    (checking a stamp, checking wallet status) are never limited.
+                    Stamping is free for you. It burns a trivial amount of GRC from a
+                    shared service wallet, not from yours. To keep that subsidy sane the
+                    hosted endpoint caps how many stamps it accepts per minute and pauses
+                    if the wallet runs low. Reads are never limited.
                   </Typography>
                   <Typography gutterBottom variant="body1" component="p">
-                    Privacy is the whole design. Your document is hashed where it lives,
-                    on your machine or in your CI, and only the SHA-256 travels. There is
-                    nothing to upload and nothing on-chain but a 64-character fingerprint.
+                    Privacy is the whole design. Your document is hashed where it lives
+                    and only the SHA-256 travels. Nothing is stored on-chain or in the
+                    service but that 64-character fingerprint.
                   </Typography>
                 </Box>
               </Box>

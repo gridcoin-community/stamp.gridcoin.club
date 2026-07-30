@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import type { Config } from '../config.js';
-import { proofUrl, certificateUrl, txUrl } from './urls.js';
+import type { Config } from '../config.ts';
+import { proofUrl, certificateUrl, txUrl } from './urls.ts';
 
 const config: Config = {
   network: 'testnet',

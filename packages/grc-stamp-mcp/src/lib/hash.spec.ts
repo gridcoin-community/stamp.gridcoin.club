@@ -4,7 +4,7 @@ import {
 import { writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { hashText, hashFile, isSha256Hex } from './hash.js';
+import { hashText, hashFile, isSha256Hex } from './hash.ts';
 
 // SHA-256("abc"), a NIST test vector.
 const ABC = 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';

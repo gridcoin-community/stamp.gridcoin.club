@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { isConfirmed, formatUtc } from './present.js';
-import type { Stamp } from './stampClient.js';
+import { isConfirmed, formatUtc } from './present.ts';
+import type { Stamp } from './stampClient.ts';
 
 const base: Stamp = {
   id: '1', protocol: '0.0.1', type: 'sha256', hash: 'a'.repeat(64),

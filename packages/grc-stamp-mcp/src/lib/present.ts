@@ -1,4 +1,4 @@
-import type { Stamp } from './stampClient.js';
+import type { Stamp } from './stampClient.ts';
 
 /**
  * A stamp is "confirmed" once it has been burned into a transaction and mined:

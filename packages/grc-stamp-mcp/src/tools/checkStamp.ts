@@ -1,12 +1,12 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import type { ToolContext } from './context.js';
-import { ok, fail } from './result.js';
-import { isSha256Hex } from '../lib/hash.js';
-import { formatUtc, isConfirmed } from '../lib/present.js';
-import { certificateUrl, proofUrl, txUrl } from '../lib/urls.js';
-import type { Stamp } from '../lib/stampClient.js';
-import { logger } from '../lib/logger.js';
+import type { ToolContext } from './context.ts';
+import { ok, fail } from './result.ts';
+import { isSha256Hex } from '../lib/hash.ts';
+import { formatUtc, isConfirmed } from '../lib/present.ts';
+import { certificateUrl, proofUrl, txUrl } from '../lib/urls.ts';
+import type { Stamp } from '../lib/stampClient.ts';
+import { logger } from '../lib/logger.ts';
 
 const inputSchema = {
   hash: z.string().optional()

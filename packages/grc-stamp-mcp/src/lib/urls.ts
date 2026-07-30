@@ -1,4 +1,4 @@
-import type { Config } from '../config.js';
+import type { Config } from '../config.ts';
 
 // Builders for the human-facing URLs that make this server distinct from every
 // competing timestamping MCP: a public proof page and a downloadable notary PDF

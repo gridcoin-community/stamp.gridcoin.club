@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { RateLimiter } from './rateLimiter.js';
+import { RateLimiter } from './rateLimiter.ts';
 
 describe('RateLimiter', () => {
   it('allows up to max hits within the window, then denies', () => {

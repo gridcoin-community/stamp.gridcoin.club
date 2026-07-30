@@ -1,8 +1,8 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import type { ToolContext } from './context.js';
-import { ok, fail } from './result.js';
-import { logger } from '../lib/logger.js';
+import type { ToolContext } from './context.ts';
+import { ok, fail } from './result.ts';
+import { logger } from '../lib/logger.ts';
 
 const outputSchema = {
   network: z.enum(['mainnet', 'testnet']),
@@ -34,7 +34,7 @@ export function registerGetWalletStatus(server: McpServer, ctx: ToolContext): vo
         const canStamp = wallet.effectiveBalance >= wallet.minimumBalance;
         const summary = canStamp
           ? `The Gridcoin ${ctx.config.network} stamp service is funded and can accept new stamps.`
-          : `The Gridcoin ${ctx.config.network} stamp service wallet is low (effective balance ${wallet.effectiveBalance}, minimum ${wallet.minimumBalance}) — stamping is currently unavailable.`;
+          : `The Gridcoin ${ctx.config.network} stamp service wallet is low (effective balance ${wallet.effectiveBalance}, minimum ${wallet.minimumBalance}). Stamping is currently unavailable.`;
 
         return ok(summary, {
           network: ctx.config.network,
