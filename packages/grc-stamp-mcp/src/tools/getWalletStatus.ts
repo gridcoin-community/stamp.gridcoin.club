@@ -1,8 +1,8 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import type { ToolContext } from './context.js';
-import { ok, fail } from './result.js';
-import { logger } from '../lib/logger.js';
+import type { ToolContext } from './context.ts';
+import { ok, fail } from './result.ts';
+import { logger } from '../lib/logger.ts';
 
 const outputSchema = {
   network: z.enum(['mainnet', 'testnet']),

@@ -2,17 +2,17 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import path from 'node:path';
 import { stat } from 'node:fs/promises';
-import type { ToolContext } from './context.js';
-import { ok, fail } from './result.js';
+import type { ToolContext } from './context.ts';
+import { ok, fail } from './result.ts';
 import {
   hashText, hashFile, isSha256Hex,
-} from '../lib/hash.js';
-import { isConfirmed } from '../lib/present.js';
-import { certificateUrl, proofUrl, txUrl } from '../lib/urls.js';
+} from '../lib/hash.ts';
+import { isConfirmed } from '../lib/present.ts';
+import { certificateUrl, proofUrl, txUrl } from '../lib/urls.ts';
 import {
   InsufficientFundsError, RateLimitError, StampValidationError,
-} from '../lib/stampClient.js';
-import { logger } from '../lib/logger.js';
+} from '../lib/stampClient.ts';
+import { logger } from '../lib/logger.ts';
 
 function makeInputSchema(allowFilePath: boolean) {
   const textNote = allowFilePath

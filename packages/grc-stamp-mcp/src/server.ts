@@ -1,13 +1,13 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import type { Config } from './config.js';
-import { StampClient } from './lib/stampClient.js';
-import { RateLimiter } from './lib/rateLimiter.js';
-import type { ToolContext } from './tools/context.js';
-import { registerStampDocument } from './tools/stampDocument.js';
-import { registerCheckStamp } from './tools/checkStamp.js';
-import { registerGetWalletStatus } from './tools/getWalletStatus.js';
+import type { Config } from './config.ts';
+import { StampClient } from './lib/stampClient.ts';
+import { RateLimiter } from './lib/rateLimiter.ts';
+import type { ToolContext } from './tools/context.ts';
+import { registerStampDocument } from './tools/stampDocument.ts';
+import { registerCheckStamp } from './tools/checkStamp.ts';
+import { registerGetWalletStatus } from './tools/getWalletStatus.ts';
 
 function packageVersion(): string {
   try {

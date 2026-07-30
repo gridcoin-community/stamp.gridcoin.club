@@ -2,7 +2,7 @@ import {
   describe, it, expect, vi,
 } from 'vitest';
 import { AxiosError, type AxiosInstance } from 'axios';
-import { StampClient, InsufficientFundsError } from './stampClient.js';
+import { StampClient, InsufficientFundsError } from './stampClient.ts';
 
 const HASH = 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';
 

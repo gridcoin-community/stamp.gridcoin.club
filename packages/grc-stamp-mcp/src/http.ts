@@ -2,9 +2,9 @@ import express, {
   type Request, type Response, type NextFunction, type ErrorRequestHandler,
 } from 'express';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import type { Config } from './config.js';
-import { buildContext, createServerFromContext } from './server.js';
-import { logger } from './lib/logger.js';
+import type { Config } from './config.ts';
+import { buildContext, createServerFromContext } from './server.ts';
+import { logger } from './lib/logger.ts';
 
 // The hosted remote transport (Phase 2). Serves MCP over Streamable HTTP at
 // POST /mcp in stateless mode: a fresh McpServer + transport per request, all

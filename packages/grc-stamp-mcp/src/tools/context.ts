@@ -1,6 +1,6 @@
-import type { Config } from '../config.js';
-import type { StampClient } from '../lib/stampClient.js';
-import type { RateLimiter } from '../lib/rateLimiter.js';
+import type { Config } from '../config.ts';
+import type { StampClient } from '../lib/stampClient.ts';
+import type { RateLimiter } from '../lib/rateLimiter.ts';
 
 /** Shared dependencies handed to every tool registrar. */
 export interface ToolContext {

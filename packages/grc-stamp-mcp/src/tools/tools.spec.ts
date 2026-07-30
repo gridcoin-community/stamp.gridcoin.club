@@ -4,12 +4,12 @@ import {
 import { tmpdir } from 'node:os';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { createServer } from '../server.js';
-import type { Config } from '../config.js';
+import { createServer } from '../server.ts';
+import type { Config } from '../config.ts';
 import {
   StampClient, InsufficientFundsError, type Stamp, type Wallet,
-} from '../lib/stampClient.js';
-import { hashText } from '../lib/hash.js';
+} from '../lib/stampClient.ts';
+import { hashText } from '../lib/hash.ts';
 
 const config: Config = {
   network: 'testnet',
