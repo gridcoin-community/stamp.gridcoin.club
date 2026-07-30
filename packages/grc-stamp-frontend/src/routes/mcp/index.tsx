@@ -23,7 +23,7 @@ import { Contents } from './Contents';
 
 const NPM_URL = 'https://www.npmjs.com/package/grc-stamp-mcp';
 const REPO_URL = 'https://github.com/gridcoin-community/stamp.gridcoin.club/tree/master/packages/grc-stamp-mcp';
-const HOSTED_URL = 'https://stamp.gridcoin.club/mcp';
+const HOSTED_URL = `${SITE_URL}/mcp`;
 const DESCRIPTION = 'An MCP server that lets AI agents timestamp documents on the Gridcoin blockchain. The file is hashed locally; only the SHA-256 leaves the machine.';
 
 interface Tool {

@@ -4,6 +4,11 @@
   "version": "1.0.0",
   "author": "@gridcat",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gridcoin-community/stamp.gridcoin.club.git",
+    "directory": "packages/grc-stamp-mcp"
+  },
   "type": "module",
   "main": "dist/index.js",
   "bin": {
