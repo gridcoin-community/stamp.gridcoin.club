@@ -19,6 +19,10 @@ function makeReqRes(ip: string) {
 }
 
 describe('rateLimit', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('allows requests under the limit', () => {
     const limiter = rateLimit({ windowMs: 1000, max: 3 });
     const ip = '1.2.3.4';
@@ -65,7 +69,12 @@ describe('rateLimit', () => {
     expect(a2.get().statusCode).toBe(429);
   });
 
-  it('resets the bucket once the window has elapsed', async () => {
+  it('resets the bucket once the window has elapsed', () => {
+    // Fake timers, not a real sleep: with a 25ms window a loaded CI box can
+    // stall long enough between the first two calls for the bucket to reset
+    // on its own, and the "second call is blocked" assertion then fails.
+    jest.useFakeTimers();
+
     const limiter = rateLimit({ windowMs: 25, max: 1 });
     const ip = '1.2.3.4';
 
@@ -77,7 +86,7 @@ describe('rateLimit', () => {
     limiter(second.req, second.res, second.next);
     expect(second.get().statusCode).toBe(429);
 
-    await new Promise((r) => { setTimeout(r, 40); });
+    jest.advanceTimersByTime(40);
 
     const third = makeReqRes(ip);
     limiter(third.req, third.res, third.next);
