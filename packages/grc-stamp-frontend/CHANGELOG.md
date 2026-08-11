@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.10.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.0...grc-stamp-frontend-v1.10.1) (2026-08-11)
+
+
+### Bug Fixes
+
+* proper rickroll ([a4a5429](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/a4a5429742834ac0916155bc107b7873cd07c6f0))
+
 # [grc-stamp-frontend-v1.10.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.9.2...grc-stamp-frontend-v1.10.0) (2026-08-11)
 
 
