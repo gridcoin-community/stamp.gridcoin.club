@@ -1,3 +1,10 @@
+# [grc-stamp-mcp-v1.0.3](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-mcp-v1.0.2...grc-stamp-mcp-v1.0.3) (2026-08-11)
+
+
+### Bug Fixes
+
+* dependencies ([dc06b77](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/dc06b779bc9dfe67d3d92fff09cec3177f549b2f))
+
 # [grc-stamp-mcp-v1.0.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-mcp-v1.0.1...grc-stamp-mcp-v1.0.2) (2026-07-30)
 
 

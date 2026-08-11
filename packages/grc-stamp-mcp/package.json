@@ -1,7 +1,7 @@
 {
   "name": "grc-stamp-mcp",
   "description": "MCP server for stamp.gridcoin.club — timestamp documents on the Gridcoin blockchain from any MCP-capable AI agent",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "@gridcat",
   "license": "MIT",
   "repository": {
