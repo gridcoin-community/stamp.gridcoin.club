@@ -1,10 +1,19 @@
-import { expect } from 'chai';
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  afterAll,
+  afterEach,
+  vi,
+} from 'vitest';
 import request from 'supertest';
 import HttpStatus from 'http-status-codes';
 import { app, server } from '../../src/api';
 import { PROTOCOL } from '../../src/constants';
 import { rpc } from '../../src/lib/gridcoin';
 import { db } from '../../src/lib/db';
+import { redis } from '../../src/lib/redis';
 import { WalletRepository } from '../../src/repositories/WalletRepository';
 import { cleanUp, initDatabase } from './helpers';
 import { EntityType } from '../../src/presenters/types';
@@ -12,10 +21,10 @@ import { EntityType } from '../../src/presenters/types';
 const AMOUNT = '10.221';
 const HASH = '87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7';
 
-jest.mock('../../src/lib/gridcoin', () => ({
+vi.mock('../../src/lib/gridcoin', () => ({
   connect: () => Promise.resolve(true),
   rpc: {
-    getBalance: jest.fn(() => Promise.resolve(AMOUNT)),
+    getBalance: vi.fn(() => Promise.resolve(AMOUNT)),
   },
 }));
 
@@ -24,9 +33,10 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  server.close();
+  await new Promise<void>((resolve) => { server.close(() => resolve()); });
   await cleanUp();
   await db.destroy();
+  redis.disconnect();
 });
 
 afterEach(async () => {
@@ -104,7 +114,7 @@ describe('POST /stamps', () => {
   });
 
   it('should fail if there is no enough funds', async () => {
-    rpc.getBalance = jest.fn(() => Promise.resolve(0));
+    rpc.getBalance = vi.fn(() => Promise.resolve(0));
     WalletRepository.resetCache();
     const res = await request(app)
       .post('/stamps')

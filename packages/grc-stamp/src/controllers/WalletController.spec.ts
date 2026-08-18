@@ -1,3 +1,11 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+  type Mock,
+} from 'vitest';
 import { Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
 import { WalletController } from './WalletController';
@@ -7,20 +15,20 @@ describe('WalletController', () => {
   let req: Request;
   let res: Response;
   let walletService: {
-    getWalletInfo: jest.Mock;
-    getBalance: jest.Mock;
+    getWalletInfo: Mock;
+    getBalance: Mock;
   };
   let controller: WalletController;
 
   beforeEach(() => {
     req = {} as Request;
     res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
+      status: vi.fn().mockReturnThis(),
+      send: vi.fn(),
     } as unknown as Response;
     walletService = {
-      getWalletInfo: jest.fn(),
-      getBalance: jest.fn(),
+      getWalletInfo: vi.fn(),
+      getBalance: vi.fn(),
     };
     controller = new WalletController(
       req,

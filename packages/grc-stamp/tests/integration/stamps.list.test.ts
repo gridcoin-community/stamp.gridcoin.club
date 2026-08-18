@@ -1,13 +1,24 @@
-import { expect } from 'chai';
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  afterAll,
+  vi,
+} from 'vitest';
 import HttpStatus from 'http-status-codes';
 import request from 'supertest';
 import { app, server } from '../../src/api';
 import { db } from '../../src/lib/db';
+import { redis } from '../../src/lib/redis';
 import { createManyCompletedStamps, cleanUp, initDatabase } from './helpers';
 import { DEFAULT_PAGINATION_LIMIT, MAXIMUM_PAGINATION_LIMIT } from '../../src/controllers/BaseController';
 
-jest.mock('../../src/lib/gridcoin', () => ({
+vi.mock('../../src/lib/gridcoin', () => ({
   connect: () => Promise.resolve(true),
+  // Unused by these tests, but WalletRepository reads it at module load and
+  // Vitest throws on an export the factory omits.
+  rpc: {},
 }));
 
 const MANY_RECORDS = 111;
@@ -18,9 +29,10 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  server.close();
+  await new Promise<void>((resolve) => { server.close(() => resolve()); });
   await cleanUp();
   await db.destroy();
+  redis.disconnect();
 });
 
 describe('GET /stamps', () => {

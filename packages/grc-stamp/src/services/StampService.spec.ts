@@ -1,27 +1,35 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+  type Mock,
+} from 'vitest';
 import { StampService } from './StampService';
 import { rpc } from '../lib/gridcoin';
 import { log } from '../lib/log';
 import { MINIMUM, MIN_FEE } from '../constants';
 import { chain, ChainResult } from '../../tests/helpers/kyselyChain';
 
-jest.mock('../lib/gridcoin');
-jest.mock('../lib/log');
-jest.mock('../lib/emitter', () => ({
-  getEmitter: () => ({ emit: jest.fn() }),
-  emitPendingCount: jest.fn(),
+vi.mock('../lib/gridcoin');
+vi.mock('../lib/log');
+vi.mock('../lib/emitter', () => ({
+  getEmitter: () => ({ emit: vi.fn() }),
+  emitPendingCount: vi.fn(),
 }));
 
 describe('StampService', () => {
   let service: StampService;
-  let mockDb: { selectFrom: jest.Mock; updateTable: jest.Mock };
+  let mockDb: { selectFrom: Mock; updateTable: Mock };
   let updateChains: Array<ChainResult>;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     updateChains = [];
     mockDb = {
-      selectFrom: jest.fn(),
-      updateTable: jest.fn().mockImplementation(() => {
+      selectFrom: vi.fn(),
+      updateTable: vi.fn().mockImplementation(() => {
         const c = chain([{}], 'execute');
         updateChains.push(c);
         return c.proxy;
@@ -55,7 +63,7 @@ describe('StampService', () => {
 
       queueSelect(mockStamps);
       queueSelect([]);
-      (rpc.burn as jest.Mock).mockResolvedValue(mockTxId);
+      (rpc.burn as Mock).mockResolvedValue(mockTxId);
 
       await service.publishStamp();
 
@@ -78,7 +86,7 @@ describe('StampService', () => {
 
       queueSelect(mockStamps);
       queueSelect([]);
-      (rpc.burn as jest.Mock).mockReturnValueOnce(burnPromise);
+      (rpc.burn as Mock).mockReturnValueOnce(burnPromise);
 
       // First call enters the critical section and parks on rpc.burn.
       const first = service.publishStamp();
@@ -105,7 +113,7 @@ describe('StampService', () => {
       queueSelect(batch1);
       queueSelect(batch2);
       queueSelect([]);
-      (rpc.burn as jest.Mock)
+      (rpc.burn as Mock)
         .mockResolvedValueOnce('tx1')
         .mockResolvedValueOnce('tx2');
 

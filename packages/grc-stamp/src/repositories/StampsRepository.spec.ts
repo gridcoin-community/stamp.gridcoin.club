@@ -1,12 +1,20 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+  type Mock,
+} from 'vitest';
 import { db } from '../lib/db';
 import { BadFilterError, SelectOptions, StampsRepositoryClass } from './StampsRepository';
 import { PROTOCOL } from '../constants';
 import { chain } from '../../tests/helpers/kyselyChain';
 
-jest.mock('../lib/db', () => ({
+vi.mock('../lib/db', () => ({
   db: {
-    selectFrom: jest.fn(),
-    insertInto: jest.fn(),
+    selectFrom: vi.fn(),
+    insertInto: vi.fn(),
   },
 }));
 
@@ -14,7 +22,7 @@ describe('StampsRepository', () => {
   let repository: StampsRepositoryClass;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     repository = new StampsRepositoryClass();
   });
 
@@ -26,8 +34,8 @@ describe('StampsRepository', () => {
     it('inserts and re-fetches with default sha256 type', async () => {
       const insert = chain({ insertId: BigInt(7) }, 'executeTakeFirstOrThrow');
       const select = chain({ id: BigInt(7), hash: 'h', type: 'sha256' }, 'executeTakeFirstOrThrow');
-      (db.insertInto as jest.Mock).mockReturnValue(insert.proxy);
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.insertInto as Mock).mockReturnValue(insert.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
 
       const result = await repository.createStamp('h');
 
@@ -40,8 +48,8 @@ describe('StampsRepository', () => {
     it('inserts with the supplied type', async () => {
       const insert = chain({ insertId: BigInt(7) }, 'executeTakeFirstOrThrow');
       const select = chain({ id: BigInt(7) }, 'executeTakeFirstOrThrow');
-      (db.insertInto as jest.Mock).mockReturnValue(insert.proxy);
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.insertInto as Mock).mockReturnValue(insert.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
 
       await repository.createStamp('h', 'ipfs');
 
@@ -53,7 +61,7 @@ describe('StampsRepository', () => {
   describe('countPending', () => {
     it('returns the count from the c column', async () => {
       const select = chain({ c: 42 }, 'executeTakeFirstOrThrow');
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
 
       const result = await repository.countPending();
 
@@ -68,7 +76,7 @@ describe('StampsRepository', () => {
   describe('countInProgress', () => {
     it('returns the count from the c column', async () => {
       const select = chain({ c: 10 }, 'executeTakeFirstOrThrow');
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
 
       const result = await repository.countInProgress();
 
@@ -83,7 +91,7 @@ describe('StampsRepository', () => {
     it('returns the row when present', async () => {
       const row = { id: BigInt(1), hash: 'h', type: 'sha256' };
       const select = chain(row, 'executeTakeFirst');
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
 
       const result = await repository.getByHash('h');
 
@@ -95,7 +103,7 @@ describe('StampsRepository', () => {
 
     it('returns null when not found', async () => {
       const select = chain(undefined, 'executeTakeFirst');
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
 
       const result = await repository.getByHash('nope');
 
@@ -107,7 +115,7 @@ describe('StampsRepository', () => {
     it('selects all columns when no field projection requested', async () => {
       const row = { id: BigInt(1) };
       const select = chain(row, 'executeTakeFirst');
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
 
       const result = await repository.getById(BigInt(1), {});
 
@@ -117,7 +125,7 @@ describe('StampsRepository', () => {
     it('respects the fields projection', async () => {
       const row = { hash: 'h', type: 'sha256' };
       const select = chain(row, 'executeTakeFirst');
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
 
       await repository.getById(BigInt(1), { fields: { stamps: ['hash', 'type'] } });
 
@@ -130,7 +138,7 @@ describe('StampsRepository', () => {
     it('returns rows + count in the bare case', async () => {
       const rowsChain = chain([], 'execute');
       const countChain = chain({ c: 0 }, 'executeTakeFirstOrThrow');
-      (db.selectFrom as jest.Mock)
+      (db.selectFrom as Mock)
         .mockReturnValueOnce(rowsChain.proxy)
         .mockReturnValueOnce(countChain.proxy);
 
@@ -142,7 +150,7 @@ describe('StampsRepository', () => {
     it('rejects unknown filter operators with BadFilterError', async () => {
       const rowsChain = chain([], 'execute');
       const countChain = chain({ c: 0 }, 'executeTakeFirstOrThrow');
-      (db.selectFrom as jest.Mock)
+      (db.selectFrom as Mock)
         .mockReturnValueOnce(rowsChain.proxy)
         .mockReturnValueOnce(countChain.proxy);
       const opts: SelectOptions = { filters: { hash: { weird: 'x' } } };

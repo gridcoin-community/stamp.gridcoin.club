@@ -1,4 +1,5 @@
 /* eslint-disable no-promise-executor-return */
+import { describe, it, expect } from 'vitest';
 import { withHashLock } from './hashLock';
 
 describe('withHashLock', () => {

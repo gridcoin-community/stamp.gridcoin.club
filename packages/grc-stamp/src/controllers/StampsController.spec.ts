@@ -1,3 +1,11 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+  type Mock,
+} from 'vitest';
 import { Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
 import { StampsController } from './StampsController';
@@ -8,43 +16,43 @@ import { StampInput } from './schemas/StampSchema';
 
 const validHash = 'abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789';
 
-jest.mock('../repositories/WalletRepository');
-jest.mock('../lib/db', () => ({ db: {} }));
-jest.mock('../lib/emitter', () => ({
-  getEmitter: () => ({ emit: jest.fn() }),
-  emitPendingCount: jest.fn(),
+vi.mock('../repositories/WalletRepository');
+vi.mock('../lib/db', () => ({ db: {} }));
+vi.mock('../lib/emitter', () => ({
+  getEmitter: () => ({ emit: vi.fn() }),
+  emitPendingCount: vi.fn(),
 }));
 
 describe('StampsController', () => {
   let req: Request;
   let res: Response;
   let stampsRepository: {
-    getById: jest.Mock;
-    listStamps: jest.Mock;
-    getByHash: jest.Mock;
-    createStamp: jest.Mock;
-    countPending: jest.Mock;
+    getById: Mock;
+    listStamps: Mock;
+    getByHash: Mock;
+    createStamp: Mock;
+    countPending: Mock;
   };
   let walletRepository: {
-    getBalance: jest.Mock;
+    getBalance: Mock;
   };
   let controller: StampsController;
 
   beforeEach(() => {
     req = {} as Request;
     res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
+      status: vi.fn().mockReturnThis(),
+      send: vi.fn(),
     } as unknown as Response;
     stampsRepository = {
-      getById: jest.fn(),
-      listStamps: jest.fn(),
-      getByHash: jest.fn(),
-      createStamp: jest.fn(),
-      countPending: jest.fn().mockResolvedValue(0),
+      getById: vi.fn(),
+      listStamps: vi.fn(),
+      getByHash: vi.fn(),
+      createStamp: vi.fn(),
+      countPending: vi.fn().mockResolvedValue(0),
     };
     walletRepository = {
-      getBalance: jest.fn(),
+      getBalance: vi.fn(),
     };
     controller = new StampsController(
       req,

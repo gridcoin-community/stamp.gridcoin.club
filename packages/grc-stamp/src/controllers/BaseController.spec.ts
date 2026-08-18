@@ -1,3 +1,10 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+} from 'vitest';
 import { Request, Response } from 'express';
 import {
   Controller,
@@ -142,7 +149,7 @@ describe('BaseController', () => {
     it('should render data with presenter', () => {
       const data = { rows: [{ id: 1 }] };
       const presenter = {
-        render: jest.fn().mockReturnValue({ data: 'rendered' }),
+        render: vi.fn().mockReturnValue({ data: 'rendered' }),
       };
       const controller = createInstance(req, res);
       controller.setPresenter(presenter);
@@ -155,7 +162,7 @@ describe('BaseController', () => {
     it('should render data with custom presenter', () => {
       const data = { rows: [{ id: 1 }] };
       const customPresenter = {
-        render: jest.fn().mockReturnValue({ data: 'custom rendered' }),
+        render: vi.fn().mockReturnValue({ data: 'custom rendered' }),
       };
       const controller = createInstance(req, res);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

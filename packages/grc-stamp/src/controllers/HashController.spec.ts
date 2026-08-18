@@ -1,24 +1,32 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+  type Mock,
+} from 'vitest';
 import { Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
 import { HashController } from './HashController';
 import { StampsRepositoryClass } from '../repositories/StampsRepository';
 
-jest.mock('../lib/db', () => ({ db: {} }));
+vi.mock('../lib/db', () => ({ db: {} }));
 
 describe('HashController', () => {
   let req: Request;
   let res: Response;
   let stampsRepository: {
-    getByHash: jest.Mock;
+    getByHash: Mock;
   };
   beforeEach(() => {
     req = {} as Request;
     res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
+      status: vi.fn().mockReturnThis(),
+      send: vi.fn(),
     } as unknown as Response;
     stampsRepository = {
-      getByHash: jest.fn(),
+      getByHash: vi.fn(),
     };
   });
 
