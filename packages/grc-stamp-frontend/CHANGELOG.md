@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.10.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.1...grc-stamp-frontend-v1.10.2) (2026-08-22)
+
+
+### Bug Fixes
+
+* do not hardcode the explorer paths ([3fbf7c9](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/3fbf7c9ec0471ebe2fb91fb1c3c51613855103ee))
+
 # [grc-stamp-frontend-v1.10.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.0...grc-stamp-frontend-v1.10.1) (2026-08-11)
 
 
