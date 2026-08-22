@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.10.3](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.2...grc-stamp-frontend-v1.10.3) (2026-08-22)
+
+
+### Bug Fixes
+
+* back to hardcoded values due to the build issues ([a77a9d1](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/a77a9d11d2fa898aa6f64d145d4ca27aa4c473bb))
+
 # [grc-stamp-frontend-v1.10.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.1...grc-stamp-frontend-v1.10.2) (2026-08-22)
 
 
