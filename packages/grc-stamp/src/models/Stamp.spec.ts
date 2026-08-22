@@ -1,19 +1,27 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+  type Mock,
+} from 'vitest';
 import { Stamp } from './Stamp';
 import { db } from '../lib/db';
 import { log } from '../lib/log';
 import { chain } from '../../tests/helpers/kyselyChain';
 
-jest.mock('../lib/db', () => ({
+vi.mock('../lib/db', () => ({
   db: {
-    selectFrom: jest.fn(),
-    updateTable: jest.fn(),
-    insertInto: jest.fn(),
+    selectFrom: vi.fn(),
+    updateTable: vi.fn(),
+    insertInto: vi.fn(),
   },
 }));
 
-jest.mock('../lib/log', () => ({
+vi.mock('../lib/log', () => ({
   log: {
-    info: jest.fn(),
+    info: vi.fn(),
   },
 }));
 
@@ -21,7 +29,7 @@ describe('Stamp', () => {
   let stamp: Stamp;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     stamp = new Stamp();
     stamp.protocol = 'test';
     stamp.type = 'ipfs';
@@ -36,8 +44,8 @@ describe('Stamp', () => {
     it('should create new record when no existing record found', async () => {
       const select = chain(undefined, 'executeTakeFirst');
       const insert = chain([{}], 'execute');
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
-      (db.insertInto as jest.Mock).mockReturnValue(insert.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
+      (db.insertInto as Mock).mockReturnValue(insert.proxy);
 
       await stamp.saveOrUpdate();
 
@@ -60,8 +68,8 @@ describe('Stamp', () => {
       const existing = { id: BigInt(1), block: null };
       const select = chain(existing, 'executeTakeFirst');
       const update = chain([{}], 'execute');
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
-      (db.updateTable as jest.Mock).mockReturnValue(update.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
+      (db.updateTable as Mock).mockReturnValue(update.proxy);
 
       await stamp.saveOrUpdate();
 
@@ -79,7 +87,7 @@ describe('Stamp', () => {
     it('should do nothing when record exists with non-null block', async () => {
       const existing = { id: BigInt(1), block: BigInt(123) };
       const select = chain(existing, 'executeTakeFirst');
-      (db.selectFrom as jest.Mock).mockReturnValue(select.proxy);
+      (db.selectFrom as Mock).mockReturnValue(select.proxy);
 
       const result = await stamp.saveOrUpdate();
 

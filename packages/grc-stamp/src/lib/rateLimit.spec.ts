@@ -1,3 +1,10 @@
+import {
+  describe,
+  it,
+  expect,
+  afterEach,
+  vi,
+} from 'vitest';
 import { rateLimit } from './rateLimit';
 
 function makeReqRes(ip: string) {
@@ -13,14 +20,14 @@ function makeReqRes(ip: string) {
   return {
     req,
     res,
-    next: jest.fn(),
+    next: vi.fn(),
     get: () => ({ statusCode, headers, body }),
   };
 }
 
 describe('rateLimit', () => {
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it('allows requests under the limit', () => {
@@ -73,7 +80,7 @@ describe('rateLimit', () => {
     // Fake timers, not a real sleep: with a 25ms window a loaded CI box can
     // stall long enough between the first two calls for the bucket to reset
     // on its own, and the "second call is blocked" assertion then fails.
-    jest.useFakeTimers();
+    vi.useFakeTimers();
 
     const limiter = rateLimit({ windowMs: 25, max: 1 });
     const ip = '1.2.3.4';
@@ -86,7 +93,7 @@ describe('rateLimit', () => {
     limiter(second.req, second.res, second.next);
     expect(second.get().statusCode).toBe(429);
 
-    jest.advanceTimersByTime(40);
+    vi.advanceTimersByTime(40);
 
     const third = makeReqRes(ip);
     limiter(third.req, third.res, third.next);

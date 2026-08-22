@@ -1,10 +1,18 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+  type Mock,
+} from 'vitest';
 import { Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
 import { StatusController } from './StatusController';
 import { StatusPresenter } from '../presenters/status.presenter';
 
-jest.mock('../models/Error');
-jest.mock('../presenters/status.presenter');
+vi.mock('../models/Error');
+vi.mock('../presenters/status.presenter');
 
 describe('StatusController', () => {
   let req: Request;
@@ -14,8 +22,8 @@ describe('StatusController', () => {
   beforeEach(() => {
     req = {} as Request;
     res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
+      status: vi.fn().mockReturnThis(),
+      send: vi.fn(),
     } as unknown as Response;
     controller = new StatusController(req, res);
   });
@@ -28,8 +36,8 @@ describe('StatusController', () => {
     };
 
     it('should return 200 and the service info if no errors', () => {
-      const renderMock = jest.fn().mockReturnValue(serviceInfo);
-      (StatusPresenter.render as jest.Mock) = renderMock;
+      const renderMock = vi.fn().mockReturnValue(serviceInfo);
+      (StatusPresenter.render as Mock) = renderMock;
 
       controller.getStatus(serviceInfo);
 

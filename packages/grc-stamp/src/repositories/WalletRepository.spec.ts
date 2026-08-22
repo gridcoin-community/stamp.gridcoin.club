@@ -1,3 +1,10 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+} from 'vitest';
 import { WalletRepositoryClass } from './WalletRepository';
 
 describe('WalletRepository', () => {
@@ -5,12 +12,12 @@ describe('WalletRepository', () => {
   const mockAddress = 'S6pr4GJKqvwPSh9hQCvTGfSfwsxvqDxVQy';
   const mockBalance = 100.50;
   const mockRpc = {
-    getAccountAddress: jest.fn(),
-    getBalance: jest.fn(),
+    getAccountAddress: vi.fn(),
+    getBalance: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     repository = new WalletRepositoryClass(mockRpc as any);
   });
 

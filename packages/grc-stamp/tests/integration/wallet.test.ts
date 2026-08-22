@@ -1,5 +1,11 @@
+import {
+  describe,
+  it,
+  expect,
+  afterAll,
+  vi,
+} from 'vitest';
 import HttpStatus from 'http-status-codes';
-import { expect } from 'chai';
 import request from 'supertest';
 import { rpc } from '../../src/lib/gridcoin';
 import { app, server } from '../../src/api';
@@ -13,30 +19,30 @@ const AMOUNT = '10.221';
 const BLOCK = 123456;
 const PENDING_COUNT = 0;
 
-jest.mock('../../src/lib/gridcoin', () => ({
+vi.mock('../../src/lib/gridcoin', () => ({
   connect: () => Promise.resolve(true),
   rpc: {
-    getAccountAddress: jest.fn(() => Promise.resolve(ADDRESS)),
-    getBalance: jest.fn(() => Promise.resolve(AMOUNT)),
+    getAccountAddress: vi.fn(() => Promise.resolve(ADDRESS)),
+    getBalance: vi.fn(() => Promise.resolve(AMOUNT)),
   },
 }));
-jest.mock('../../src/lib/redis', () => ({
+vi.mock('../../src/lib/redis', () => ({
   redis: {
-    get: jest.fn(() => Promise.resolve(BLOCK)),
+    get: vi.fn(() => Promise.resolve(BLOCK)),
   },
 }));
 // WalletService now hits StampsRepository.countPending to derive
 // effectiveBalance for the low-funds banner. The other endpoints in
 // these integration tests have their own DB plumbing — for the wallet
 // endpoint we just stub the count so the suite stays DB-free.
-jest.mock('../../src/repositories/StampsRepository', () => ({
+vi.mock('../../src/repositories/StampsRepository', () => ({
   StampsRepository: {
-    countPending: jest.fn(() => Promise.resolve(PENDING_COUNT)),
+    countPending: vi.fn(() => Promise.resolve(PENDING_COUNT)),
   },
 }));
 
 afterAll(async () => {
-  server.close();
+  await new Promise<void>((resolve) => { server.close(() => resolve()); });
   await db.destroy();
 });
 
@@ -62,7 +68,7 @@ describe('Wallet endpoints', () => {
     );
   });
   it('GET /wallet failure', async () => {
-    rpc.getBalance = jest.fn(() => Promise.reject(new Error('a')));
+    rpc.getBalance = vi.fn(() => Promise.reject(new Error('a')));
     WalletRepository.resetCache();
     const res = await request(app)
       .get('/wallet')

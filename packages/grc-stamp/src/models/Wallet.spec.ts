@@ -1,3 +1,6 @@
+import {
+  describe, it, expect, beforeEach,
+} from 'vitest';
 import { Address } from 'gridcoin-rpc/dist/types';
 import { Wallet } from './Wallet';
 

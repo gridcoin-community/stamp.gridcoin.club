@@ -1,13 +1,25 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  afterAll,
+  afterEach,
+  vi,
+} from 'vitest';
 import HttpStatus from 'http-status-codes';
-import { expect } from 'chai';
 import request from 'supertest';
 import { app, server } from '../../src/api';
 import { PROTOCOL } from '../../src/constants';
 import { db } from '../../src/lib/db';
+import { redis } from '../../src/lib/redis';
 import { cleanUp, createManyWithSameHash, initDatabase } from './helpers';
 
-jest.mock('../../src/lib/gridcoin', () => ({
+vi.mock('../../src/lib/gridcoin', () => ({
   connect: () => Promise.resolve(true),
+  // Unused by these tests, but WalletRepository reads it at module load and
+  // Vitest throws on an export the factory omits.
+  rpc: {},
 }));
 
 beforeAll(async () => {
@@ -15,9 +27,10 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  server.close();
+  await new Promise<void>((resolve) => { server.close(() => resolve()); });
   await cleanUp();
   await db.destroy();
+  redis.disconnect();
 });
 
 afterEach(async () => {

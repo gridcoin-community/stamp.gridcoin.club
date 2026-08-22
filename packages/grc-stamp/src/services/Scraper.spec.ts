@@ -1,16 +1,26 @@
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  vi,
+  type Mock,
+} from 'vitest';
 import { Scraper } from './Scraper';
 import { log } from '../lib/log';
 import { Stamp } from '../models/Stamp';
 
-jest.mock('../lib/log');
-jest.mock('../models/Stamp');
-jest.mock('../lib/db', () => ({ db: {} }));
-jest.mock('../lib/emitter', () => ({
-  getEmitter: () => ({ emit: jest.fn() }),
-  emitPendingCount: jest.fn(),
-  emitIndexerStatus: jest.fn(),
+vi.mock('../lib/log');
+// Explicit factory rather than a bare automock: the tests below drive the
+// constructor itself with mockImplementation, which needs a plain mock fn.
+vi.mock('../models/Stamp', () => ({ Stamp: vi.fn() }));
+vi.mock('../lib/db', () => ({ db: {} }));
+vi.mock('../lib/emitter', () => ({
+  getEmitter: () => ({ emit: vi.fn() }),
+  emitPendingCount: vi.fn(),
+  emitIndexerStatus: vi.fn(),
 }));
-jest.mock('../config', () => ({
+vi.mock('../config', () => ({
   config: {
     START_BLOCK: 1000,
     BLOCK_GROUPS: 2,
@@ -31,14 +41,14 @@ describe('Scraper', () => {
 
   beforeEach(() => {
     mockRedis = {
-      get: jest.fn(),
-      set: jest.fn(),
+      get: vi.fn(),
+      set: vi.fn(),
     };
 
     mockRpc = {
-      getStakingInfo: jest.fn(),
-      getBlockByNumber: jest.fn(),
-      getBlocksBatch: jest.fn(),
+      getStakingInfo: vi.fn(),
+      getBlockByNumber: vi.fn(),
+      getBlocksBatch: vi.fn(),
     };
 
     scraper = new Scraper(mockRedis, mockRpc, blockPrefix);
@@ -207,13 +217,15 @@ describe('Scraper', () => {
       });
     }
 
-    let mockSaveOrUpdate: jest.Mock;
+    let mockSaveOrUpdate: Mock;
 
     beforeEach(() => {
-      mockSaveOrUpdate = jest.fn().mockResolvedValue(undefined);
-      (Stamp as jest.Mock).mockImplementation(() => ({
-        saveOrUpdate: mockSaveOrUpdate,
-      }));
+      mockSaveOrUpdate = vi.fn().mockResolvedValue(undefined);
+      // Must be a `function`, not an arrow: vitest constructs the mock via
+      // Reflect.construct, and an arrow is not a constructor.
+      (Stamp as Mock).mockImplementation(function stampMock(this: Record<string, unknown>) {
+        this.saveOrUpdate = mockSaveOrUpdate;
+      });
     });
 
     it('indexes both hashes from a two-hash transaction', async () => {
