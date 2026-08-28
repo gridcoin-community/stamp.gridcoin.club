@@ -1,3 +1,10 @@
+# [grc-stamp-frontend-v1.10.4](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.3...grc-stamp-frontend-v1.10.4) (2026-08-28)
+
+
+### Bug Fixes
+
+* update logo to make it more distinctive ([02f25a5](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/02f25a54daee118eeeea4864b710ea3b719bcda5))
+
 # [grc-stamp-frontend-v1.10.3](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.2...grc-stamp-frontend-v1.10.3) (2026-08-22)
 
 
