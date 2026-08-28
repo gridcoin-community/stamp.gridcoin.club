@@ -13,7 +13,8 @@ import { useRouteNavigating } from '@/hooks';
 import { IS_TESTNET } from '@/lib/network';
 import { BackfillBanner } from '@/components/BackfillBanner';
 import { LowFundsBanner } from '@/components/LowFundsBanner';
-import { LogoDesktop, LogoMobile } from '@/components/Logo';
+import Typography from '@mui/material/Typography';
+import { LogoMark } from '@/components/Logo';
 import { NavMenuDesktop } from '../Navigation/NavMenuDesktop';
 
 interface Props {
@@ -67,8 +68,30 @@ export function Header({ showLinks = true }: HeaderProps) {
           )}
           <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
-              <Link href="/" style={{ display: 'inline-flex', alignItems: 'center' }}>
-                {isMobile && mounted ? <LogoMobile /> : <LogoDesktop />}
+              <Link
+                href="/"
+                style={{
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 12,
+                }}
+              >
+                <LogoMark size={isMobile && mounted ? 32 : 40} />
+                <Typography
+                  component="span"
+                  sx={{
+                    fontWeight: 800,
+                    letterSpacing: '0.02em',
+                    fontSize: isMobile && mounted ? '1.25rem' : '1.5rem',
+                    background: (t) => `linear-gradient(90deg, ${t.palette.primary.dark}, ${t.palette.primary.light})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Gridcoin Stamp
+                </Typography>
               </Link>
               {IS_TESTNET && (
                 <Box

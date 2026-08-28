@@ -1,1 +1,1 @@
-export { LogoDesktop, LogoMobile } from './Logo';
+export { LogoMark } from './Logo';

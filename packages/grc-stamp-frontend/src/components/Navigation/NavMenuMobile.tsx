@@ -17,7 +17,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
 import { useRouteNavigating } from '@/hooks';
-import { LogoMobile } from '@/components/Logo';
+import { LogoMark } from '@/components/Logo';
 import {
   menuItems,
   isMenuGroup,
@@ -127,7 +127,23 @@ export function NavMenuMobile() {
           />
         )}
         <SubMenuContainer>
-          <LogoMobile />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <LogoMark size={32} />
+            <Typography
+              component="span"
+              sx={{
+                fontWeight: 800,
+                letterSpacing: '0.02em',
+                fontSize: '1.25rem',
+                background: (t) => `linear-gradient(90deg, ${t.palette.primary.dark}, ${t.palette.primary.light})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Gridcoin Stamp
+            </Typography>
+          </Box>
           <Toolbar
             sx={{
               justifyContent: 'flex-end',
