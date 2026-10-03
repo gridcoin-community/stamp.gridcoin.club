@@ -10,7 +10,7 @@ export class BalancePresenter extends Presenter implements PresenterInterface {
     return '/wallet/balance';
   }
 
-  public attributes(instance: number): Attributes {
+  public attributes(instance: unknown): Attributes {
     return {
       balance: instance,
     };

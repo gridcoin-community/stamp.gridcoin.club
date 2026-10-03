@@ -222,11 +222,7 @@ export function Page() {
                     <code>stamp_document</code>
                     {' '}
                     at an absolute path and it reads and hashes the file on your machine,
-                    sending only the digest. To stamp against the test network instead,
-                    add
-                    {' '}
-                    <code>{'"env": { "NETWORK": "testnet" }'}</code>
-                    .
+                    sending only the digest.
                   </Typography>
                 </Box>
               </Box>

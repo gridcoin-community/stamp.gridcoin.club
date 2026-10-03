@@ -68,9 +68,9 @@ export const walletMock = {
   },
 };
 
+// Matches the live /status shape: a singleton with no id.
 export const statusMock = {
   data: {
-    id: '1',
     type: 'status',
     attributes: {
       name: 'grc-stamp',

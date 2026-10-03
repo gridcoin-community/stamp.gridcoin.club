@@ -1,6 +1,5 @@
 import HttpStatus from 'http-status-codes';
 import { Request, Response } from 'express';
-import yayson from 'yayson';
 import { StampPresenter } from '../presenters/stamp.presenter';
 import { StampsRepository, BadFilterError } from '../repositories/StampsRepository';
 import { Stamp as StampRow, StampsType } from '../lib/database';
@@ -14,7 +13,6 @@ import { log } from '../lib/log';
 import { withHashLock } from '../lib/hashLock';
 import { emitPendingCount } from '../lib/emitter';
 
-const { Store } = yayson();
 export class StampsController extends Controller {
   constructor(
     req: Request,
@@ -94,7 +92,6 @@ export class StampsController extends Controller {
   }
 
   public async createStamp(input: StampInput): Promise<void> {
-    const store = new Store();
     let data: StampData;
     try {
       const [balance, pendingCount] = await Promise.all([
@@ -126,7 +123,9 @@ export class StampsController extends Controller {
       return;
     }
     try {
-      data = store.sync(input);
+      // Flattened by hand: yayson 4's Store rejects id-less resources,
+      // and a JSON:API create carries no id.
+      data = { type: input?.data?.type, ...input?.data?.attributes } as StampData;
       const result = StampSchema.validate(data);
       if (result.error && result.error.details) {
         throw new Error(result.error.details[0].message);
