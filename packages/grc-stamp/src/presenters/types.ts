@@ -1,4 +1,4 @@
-import { JsonOptions } from 'yayson';
+import { JsonApiDocument, JsonApiLink, PresenterOptions } from 'yayson';
 
 export type Attributes = { [key: string]: unknown };
 
@@ -13,9 +13,9 @@ export enum EntityType {
 }
 
 export interface PresenterInterface {
-  render(data: any, options?: JsonOptions): Record<string, unknown>;
-  selfLinks?(instance: Record<string, unknown>): string;
-  attributes?(instance: Record<string, unknown> | number | unknown): Attributes;
-  id?(instance: Record<string, unknown> | unknown): string;
+  render(data: unknown, options?: PresenterOptions): JsonApiDocument;
+  selfLinks?(instance: object): JsonApiLink | string | undefined;
+  attributes?(instance: object | null): Attributes;
+  id?(instance: object): string | undefined;
   // type?: EntityType;
 }

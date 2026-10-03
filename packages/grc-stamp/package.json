@@ -29,7 +29,7 @@
     "nconf": "^0.12.1",
     "validator": "^13.11.0",
     "winston": "^3.13.0",
-    "yayson": "^3.0.0"
+    "yayson": "^4.4.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

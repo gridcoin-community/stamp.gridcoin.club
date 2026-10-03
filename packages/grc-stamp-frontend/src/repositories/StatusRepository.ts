@@ -1,11 +1,8 @@
 import axios from 'axios';
-import yayson from 'yayson';
 import {
   StatusEntity,
   StatusRawData,
 } from '@/entities/StatusEntity';
-
-const { Store } = yayson();
 
 export class StatusRepository {
   public constructor(
@@ -13,12 +10,13 @@ export class StatusRepository {
   ) {}
 
   public async getStatusData(): Promise<StatusEntity | null> {
-    const store = new Store();
     const { data: result } = await this.httpClient.get(
       `${process.env.NEXT_PUBLIC_API_URL}/status`,
     );
     if (result) {
-      const data: StatusRawData = store.sync(result);
+      // Read directly: /status is an id-less singleton, which yayson 4's
+      // Store refuses to sync.
+      const data: StatusRawData | undefined = result.data?.attributes;
       if (data) {
         return new StatusEntity(data);
       }
