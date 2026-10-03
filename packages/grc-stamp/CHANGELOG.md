@@ -1,3 +1,10 @@
+# [grc-stamp-v1.5.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.5.0...grc-stamp-v1.5.1) (2026-10-03)
+
+
+### Bug Fixes
+
+* drop testnet links from mainnet stamp + bump next, axios, yayson 4 ([7eae9bf](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/7eae9bf3a8e77735ca2e339c187f01e463f31bbf))
+
 # [grc-stamp-v1.5.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.4.1...grc-stamp-v1.5.0) (2026-07-27)
 
 
