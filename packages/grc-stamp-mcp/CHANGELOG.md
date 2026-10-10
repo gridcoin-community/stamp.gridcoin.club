@@ -1,3 +1,10 @@
+# [grc-stamp-mcp-v1.0.5](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-mcp-v1.0.4...grc-stamp-mcp-v1.0.5) (2026-10-10)
+
+
+### Bug Fixes
+
+* bump proxy-addr, source-map-js and the MCP SDK for audit advisories ([5dc0410](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/5dc041095f6f825b90ebb5ec33fc7a69e8c7ec84))
+
 # [grc-stamp-mcp-v1.0.4](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-mcp-v1.0.3...grc-stamp-mcp-v1.0.4) (2026-10-03)
 
 
