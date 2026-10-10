@@ -1,3 +1,12 @@
+# [grc-stamp-v1.5.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.5.1...grc-stamp-v1.5.2) (2026-10-10)
+
+
+### Bug Fixes
+
+* bump proxy-addr, source-map-js and the MCP SDK for audit advisories ([5dc0410](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/5dc041095f6f825b90ebb5ec33fc7a69e8c7ec84))
+* fix the broken healthcheck ([073dfac](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/073dfac734e2c8e28f31505128c0315aac10a33f))
+* look up the stamp wallet address by label ([fdb4e41](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/fdb4e41f43f75a15d372ea2e1339b8b00f19f050))
+
 # [grc-stamp-v1.5.1](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.5.0...grc-stamp-v1.5.1) (2026-10-03)
 
 
