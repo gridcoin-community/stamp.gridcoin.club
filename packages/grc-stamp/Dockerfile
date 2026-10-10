@@ -18,11 +18,11 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 
 # Expose default port
-EXPOSE 3000
+EXPOSE 7000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:${PORT:-7000}/status || exit 1
 
 # Set development environment
 ENV NODE_ENV=development
