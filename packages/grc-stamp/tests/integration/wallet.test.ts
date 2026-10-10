@@ -22,7 +22,7 @@ const PENDING_COUNT = 0;
 vi.mock('../../src/lib/gridcoin', () => ({
   connect: () => Promise.resolve(true),
   rpc: {
-    getAccountAddress: vi.fn(() => Promise.resolve(ADDRESS)),
+    getAddressesByLabel: vi.fn(() => Promise.resolve({ [ADDRESS]: { purpose: 'receive' } })),
     getBalance: vi.fn(() => Promise.resolve(AMOUNT)),
   },
 }));

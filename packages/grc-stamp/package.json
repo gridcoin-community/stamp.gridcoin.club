@@ -17,7 +17,7 @@
     "axios": "^1.6.8",
     "colors": "^1.4.0",
     "express": "^5.2.1",
-    "gridcoin-rpc": "^5.0.3",
+    "gridcoin-rpc": "^5.1.0",
     "http-status-codes": "^2.3.0",
     "ioredis": "^5.4.1",
     "joi": "^18.2.3",
