@@ -12,9 +12,13 @@ describe('WalletRepository', () => {
   const mockAddress = 'S6pr4GJKqvwPSh9hQCvTGfSfwsxvqDxVQy';
   const mockBalance = 100.50;
   const mockRpc = {
+    getAddressesByLabel: vi.fn(),
+    setLabel: vi.fn(),
+    getNewAddress: vi.fn(),
     getAccountAddress: vi.fn(),
     getBalance: vi.fn(),
   };
+  const rpcError = (code: number) => Object.assign(new Error(`RPC ${code}`), { code });
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -22,20 +26,72 @@ describe('WalletRepository', () => {
   });
 
   describe('getAddress', () => {
-    it('should return wallet address', async () => {
+    it('should return the address under the grc-stamp label', async () => {
+      mockRpc.getAddressesByLabel.mockResolvedValue({ [mockAddress]: { purpose: 'receive' } });
+
+      const result = await repository.getAddress();
+
+      expect(result).toBe(mockAddress);
+      expect(mockRpc.getAddressesByLabel).toHaveBeenCalledWith('grc-stamp');
+      expect(mockRpc.getAccountAddress).not.toHaveBeenCalled();
+    });
+
+    it('should pick the same address every time when the label has several', async () => {
+      mockRpc.getAddressesByLabel.mockResolvedValue({
+        SzzzAddress: { purpose: 'receive' },
+        SaaaAddress: { purpose: 'receive' },
+      });
+
+      expect(await repository.getAddress()).toBe('SaaaAddress');
+    });
+
+    it('should fall back to the accounts RPC on wallets without labels', async () => {
+      // Error case
+      mockRpc.getAddressesByLabel.mockRejectedValue(rpcError(-32601));
       mockRpc.getAccountAddress.mockResolvedValue(mockAddress);
 
       const result = await repository.getAddress();
 
       expect(result).toBe(mockAddress);
       expect(mockRpc.getAccountAddress).toHaveBeenCalledWith('');
+      expect(mockRpc.getNewAddress).not.toHaveBeenCalled();
     });
 
-    it('should throw error when RPC fails', async () => {
-      const error = new Error('RPC Error');
-      mockRpc.getAccountAddress.mockRejectedValue(error);
+    it('should mint and label an address when the label is empty', async () => {
+      // Error case
+      mockRpc.getAddressesByLabel.mockRejectedValue(rpcError(-11));
+      mockRpc.getNewAddress.mockResolvedValue(mockAddress);
+      mockRpc.setLabel.mockResolvedValue(null);
+
+      const result = await repository.getAddress();
+
+      expect(result).toBe(mockAddress);
+      expect(mockRpc.setLabel).toHaveBeenCalledWith(mockAddress, 'grc-stamp');
+      expect(mockRpc.getAccountAddress).not.toHaveBeenCalled();
+    });
+
+    it('should resolve once for concurrent and repeated callers', async () => {
+      // Error case
+      mockRpc.getAddressesByLabel.mockRejectedValue(rpcError(-11));
+      mockRpc.getNewAddress.mockResolvedValue(mockAddress);
+
+      await Promise.all([repository.getAddress(), repository.getAddress()]);
+      await repository.getAddress();
+
+      expect(mockRpc.getNewAddress).toHaveBeenCalledTimes(1);
+      expect(mockRpc.getAddressesByLabel).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw other RPC errors and retry on the next call', async () => {
+      // Error case
+      mockRpc.getAddressesByLabel
+        .mockRejectedValueOnce(new Error('RPC Error'))
+        .mockResolvedValueOnce({ [mockAddress]: { purpose: 'receive' } });
 
       await expect(repository.getAddress()).rejects.toThrow('RPC Error');
+      expect(mockRpc.getNewAddress).not.toHaveBeenCalled();
+
+      expect(await repository.getAddress()).toBe(mockAddress);
     });
   });
 
@@ -124,20 +180,19 @@ describe('WalletRepository', () => {
 
   describe('getWalletInfo', () => {
     it('should return wallet info with address and balance', async () => {
-      mockRpc.getAccountAddress.mockResolvedValue(mockAddress);
+      mockRpc.getAddressesByLabel.mockResolvedValue({ [mockAddress]: { purpose: 'receive' } });
       mockRpc.getBalance.mockResolvedValue(mockBalance);
 
       const result = await repository.getWalletInfo();
 
       expect(result.address).toBe(mockAddress);
       expect(result.balance).toBe(mockBalance);
-      expect(mockRpc.getAccountAddress).toHaveBeenCalledWith('');
       expect(mockRpc.getBalance).toHaveBeenCalled();
     });
 
     it('should throw error when any RPC call fails', async () => {
       const error = new Error('RPC Error');
-      mockRpc.getAccountAddress.mockResolvedValue(mockAddress);
+      mockRpc.getAddressesByLabel.mockResolvedValue({ [mockAddress]: { purpose: 'receive' } });
       mockRpc.getBalance.mockRejectedValue(error);
 
       await expect(repository.getWalletInfo()).rejects.toThrow('RPC Error');
