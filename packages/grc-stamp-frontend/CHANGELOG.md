@@ -1,3 +1,11 @@
+# [grc-stamp-frontend-v1.10.6](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.5...grc-stamp-frontend-v1.10.6) (2026-10-10)
+
+
+### Bug Fixes
+
+* bump proxy-addr, source-map-js and the MCP SDK for audit advisories ([5dc0410](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/5dc041095f6f825b90ebb5ec33fc7a69e8c7ec84))
+* fix the broken healthcheck ([073dfac](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/073dfac734e2c8e28f31505128c0315aac10a33f))
+
 # [grc-stamp-frontend-v1.10.5](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.4...grc-stamp-frontend-v1.10.5) (2026-10-03)
 
 
