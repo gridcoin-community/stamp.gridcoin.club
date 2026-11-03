@@ -1,3 +1,11 @@
+# [grc-stamp-mcp-v1.0.6](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-mcp-v1.0.5...grc-stamp-mcp-v1.0.6) (2026-11-03)
+
+
+### Bug Fixes
+
+* bump @semantic-release/npm to 13.2.0 for CircleCI trusted publishing ([5c176d0](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/5c176d0fa9bebc6555b78d50427cbe4ffb31d8ab))
+* bump next to 16.4.4, move the MCP server to zod 4, patch audit advisories ([5f0bbd3](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/5f0bbd30800301e0d00d199173bc726b3068749c))
+
 # [grc-stamp-mcp-v1.0.5](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-mcp-v1.0.4...grc-stamp-mcp-v1.0.5) (2026-10-10)
 
 
