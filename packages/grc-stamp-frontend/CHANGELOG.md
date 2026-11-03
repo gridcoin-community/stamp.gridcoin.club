@@ -1,3 +1,12 @@
+# [grc-stamp-frontend-v1.10.7](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.6...grc-stamp-frontend-v1.10.7) (2026-11-03)
+
+
+### Bug Fixes
+
+* bump next to 16.4.4, move the MCP server to zod 4, patch audit advisories ([5f0bbd3](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/5f0bbd30800301e0d00d199173bc726b3068749c))
+* drop the unused gridcoinstats.eu dns-prefetch ([010c801](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/010c80195528d95f8fa6c61262487aafc7758402))
+* load Plausible first-party ([a278ecf](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/a278ecf1b4740ad890052a5c9442368d5a1cacf3))
+
 # [grc-stamp-frontend-v1.10.6](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.5...grc-stamp-frontend-v1.10.6) (2026-10-10)
 
 
