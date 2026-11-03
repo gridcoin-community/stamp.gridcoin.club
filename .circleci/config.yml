@@ -282,8 +282,14 @@ jobs:
           name: Build
           command: cd ~/app/packages/grc-stamp-mcp && npm run build
       - run:
+          # npm trusted publishing (OIDC): no NPM_TOKEN to rotate. npm swaps
+          # NPM_ID_TOKEN for a short-lived publish token. NPM_TOKEN is unset
+          # so a stale one can't take precedence.
           name: Semantic release
-          command: cd ~/app/packages/grc-stamp-mcp && npm run semantic-release
+          command: |
+            unset NPM_TOKEN
+            export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
+            cd ~/app/packages/grc-stamp-mcp && npm run semantic-release
 
   grc-stamp-frontend-release:
     <<: *defaults
