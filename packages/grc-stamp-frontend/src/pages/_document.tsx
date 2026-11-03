@@ -21,7 +21,6 @@ export default class MyDocument extends Document {
         data-scroll-behavior="smooth"
       >
         <Head>
-          <link rel="dns-prefetch" href="https://gridcoinstats.eu" />
         </Head>
         <body>
           <Main />
