@@ -12,15 +12,14 @@ const isTestnet = process.env.NEXT_PUBLIC_NETWORK === 'testnet';
 //  - 'unsafe-inline' on style-src: emotion injects runtime <style> tags
 //    server- and client-side; it doesn't expose a nonce hook on the v11
 //    cache used here.
-//  - https://daj.pw: the Plausible analytics script.
 //  - data:, blob: on img-src: identicon data URLs and Next's image runtime.
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://daj.pw",
+  "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
-  "connect-src 'self' https://daj.pw",
+  "connect-src 'self'",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

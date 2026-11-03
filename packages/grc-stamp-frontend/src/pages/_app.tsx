@@ -4,7 +4,6 @@ import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import Script from 'next/script';
 import { cleanupLegacyThemeCookie, ThemeMode } from '@/lib/mode';
 import sseManager from '@/lib/sseManager';
 import { IS_TESTNET, IS_MAINNET, NETWORK } from '@/lib/network';
@@ -16,6 +15,7 @@ import { SITE_URL } from '@/components/Seo';
 import { themeCreator } from '../theme';
 import createEmotionCache from '../createEmotionCache';
 import '../styles/style.css';
+import { Analytics } from '../components/Analytics/Analytics';
 
 // Plausible's data-domain is just the analytics bucket label. Derive it
 // from the deployment's canonical URL so each environment's traffic
@@ -69,12 +69,7 @@ export default function MyApp(props: MyAppProps) {
         {IS_MAINNET && <meta httpEquiv="onion-location" content="http://u4embjw2uzwpdubgm72ywbmixte4kqgwurc4r4rp6elhlokutdfsy4id.onion" />}
         {IS_TESTNET && <meta name="robots" content="noindex,nofollow" />}
       </Head>
-      {process.env.NEXT_PUBLIC_TRACK === 'true' && PLAUSIBLE_DOMAIN && (
-        <Script
-          src="https://daj.pw/js/plausible.js"
-          data-domain={PLAUSIBLE_DOMAIN}
-        />
-      )}
+      <Analytics domain={PLAUSIBLE_DOMAIN} />
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
