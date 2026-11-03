@@ -1,3 +1,10 @@
+# [grc-stamp-v1.5.3](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.5.2...grc-stamp-v1.5.3) (2026-11-03)
+
+
+### Bug Fixes
+
+* bump next to 16.4.4, move the MCP server to zod 4, patch audit advisories ([5f0bbd3](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/5f0bbd30800301e0d00d199173bc726b3068749c))
+
 # [grc-stamp-v1.5.2](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-v1.5.1...grc-stamp-v1.5.2) (2026-10-10)
 
 
