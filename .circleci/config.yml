@@ -336,7 +336,7 @@ jobs:
           command: |
             mkdir -p /caches
             cd ~/app/packages/grc-stamp && docker save -o /caches/grc-stamp.tar app
-      - deploy:
+      - run:
           name: Push application Docker image
           command: |
             cd ~/app/packages/grc-stamp
@@ -379,7 +379,7 @@ jobs:
           command: |
             mkdir -p /caches
             cd ~/app/packages/grc-stamp-mcp && docker save -o /caches/grc-stamp-mcp.tar app
-      - deploy:
+      - run:
           name: Push application Docker image
           command: |
             cd ~/app/packages/grc-stamp-mcp
@@ -422,7 +422,7 @@ jobs:
           command: |
             mkdir -p /caches
             cd ~/app/packages/grc-stamp-frontend && docker save -o /caches/grc-stamp-frontend.tar app
-      - deploy:
+      - run:
           name: Push application Docker image
           command: |
             cd ~/app/packages/grc-stamp-frontend
@@ -472,7 +472,7 @@ jobs:
           command: |
             mkdir -p /caches
             cd ~/app/packages/grc-stamp-frontend && docker save -o /caches/grc-stamp-frontend-testnet.tar app-testnet
-      - deploy:
+      - run:
           name: Push testnet application Docker image
           command: |
             cd ~/app/packages/grc-stamp-frontend
