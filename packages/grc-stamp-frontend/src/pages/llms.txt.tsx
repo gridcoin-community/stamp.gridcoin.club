@@ -16,6 +16,8 @@ Gridcoin Blockchain Stamping is a free Proof of Existence service. Users drop a 
 - [About](${SITE_URL}/llms-full.txt): Full explanation of Proof of Existence, the protocol, and costs
 - [API Reference](${SITE_URL}/developers): Public JSON:API — endpoints to create stamps, look up hashes, and query the service wallet
 - [GitHub Action](${SITE_URL}/developers/github-action): Gridcoin Stamp Action for GitHub — automatically timestamps release assets on the Gridcoin blockchain and appends a verification table to the release notes
+- [MCP Server](${SITE_URL}/developers/mcp): Model Context Protocol server that lets AI agents stamp documents and check proofs, hosted or run locally via npx
+- [Comparison](${SITE_URL}/compare): Gridcoin Stamp compared with OpenTimestamps, OriginStamp, FreeTSA and Proof of Existence (price, anchor, time to final, what to keep, independent verification)
 
 ## Optional
 - [Stamps endpoint (live JSON:API)](${SITE_URL}/api/stamps): Paginated JSON:API listing of all stamps with filter/sort/sparse-fieldset support
