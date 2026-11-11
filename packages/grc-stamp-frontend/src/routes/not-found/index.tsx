@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Seo } from '@/components/Seo';
 import { PageWrapper } from '@/components/PageWrapper';
+import { plausibleClass, track } from '@/lib/track';
 
 const PageBody = styled(Box)(() => ({
   backgroundImage: 'url(/il-background-error-page.svg)',
@@ -27,6 +28,11 @@ const ErrorContainer = styled(Container)(() => ({
 }));
 
 export function NotFound() {
+  // A bad /proof/<hash> link lands here too; mask the hash out of the prop.
+  React.useEffect(() => {
+    track('404', { path: document.location.pathname.replace(/[0-9a-f]{64}/gi, ':hash') });
+  }, []);
+
   return (
     <PageBody>
       <Seo
@@ -46,7 +52,7 @@ export function NotFound() {
           <NotFoundError variant="h4" color="inherit">
             This page has been eaten by Major Tom!
           </NotFoundError>
-          <Link href="/" passHref>
+          <Link href="/" passHref className={plausibleClass('CTA Click', { cta: '404 Home' })}>
             <Button variant="contained">Ground control, bring me home.</Button>
           </Link>
         </ErrorContainer>

@@ -3,6 +3,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import { StampEntity } from '@/entities/StampEntity';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { trackLinkPrivately } from '@/lib/track';
 import { FileData } from '../reducer';
 
 interface Props {
@@ -32,7 +33,12 @@ export function Progress({ fileData, isUploading }: Props) {
       <span>
         All Done.
         {' '}
-        <NextMuiLink passHref href={`/proof/${stamp.hash}`}>
+        <NextMuiLink
+          passHref
+          href={`/proof/${stamp.hash}`}
+          // The href holds the hash, so keep it out of Plausible.
+          {...trackLinkPrivately('Notarize Click', { button: 'Permalink' })}
+        >
           Permalink to the proof.
         </NextMuiLink>
       </span>

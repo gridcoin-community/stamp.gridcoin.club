@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { plausibleClass } from '@/lib/track';
 
 export function HowItWorks() {
   return (
@@ -37,6 +38,22 @@ export function HowItWorks() {
       </Typography>
 
       <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, pt: 2, pb: 0.5 }}>
+        Is it free?
+      </Typography>
+      <Typography gutterBottom variant="body1" component="p">
+        Yes. You don&apos;t need an account or an API key, and nothing is charged.
+        The service pays the Gridcoin network fee itself.
+      </Typography>
+
+      <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, pt: 2, pb: 0.5 }}>
+        How long does it take?
+      </Typography>
+      <Typography gutterBottom variant="body1" component="p">
+        Usually a few minutes. Gridcoin makes a block about every 90 seconds, and
+        the proof page updates on its own once the stamp is confirmed.
+      </Typography>
+
+      <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, pt: 2, pb: 0.5 }}>
         Does my file get uploaded?
       </Typography>
       <Typography gutterBottom variant="body1" component="p">
@@ -60,7 +77,9 @@ export function HowItWorks() {
         Re-hash your file and look the stamp up on a block explorer. The hash
         sits inside the transaction and the block&apos;s time is the proof.
         {' '}
-        <NextMuiLink href="/about#verify-a-stamp">Step-by-step guide</NextMuiLink>
+        <NextMuiLink href="/about#verify-a-stamp" className={plausibleClass('CTA Click', { cta: 'FAQ Verify Guide' })}>
+          Step-by-step guide
+        </NextMuiLink>
         .
       </Typography>
     </Box>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { trackLinkPrivately } from '@/lib/track';
 
 interface ObfuscatedEmailProps {
   user: string;
@@ -33,7 +34,7 @@ export function ObfuscatedEmail({ user, domain, color = 'primary' }: ObfuscatedE
   }
 
   return (
-    <NextMuiLink href={`mailto:${address}`} color={color}>
+    <NextMuiLink href={`mailto:${address}`} color={color} {...trackLinkPrivately('Email Click')}>
       {address}
     </NextMuiLink>
   );

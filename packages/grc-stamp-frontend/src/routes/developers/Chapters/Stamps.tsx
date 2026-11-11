@@ -12,6 +12,7 @@ import {
   AlertTitle,
 } from '@mui/material';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { plausibleClass } from '@/lib/track';
 import { Endpoint } from '@/components/Endpoint/Endpoint';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 import { SITE_URL } from '@/components/Seo';
@@ -45,7 +46,7 @@ export function Stamps() {
           server only. The durable, universal identifier for any stamp is its
           SHA-256 <code>hash</code>. Use
           {' '}
-          <NextMuiLink href="#hashes" color="primary">
+          <NextMuiLink href="#hashes" color="primary" className={plausibleClass('Internal Link', { to: '#hashes' })}>
             GET /api/hashes/:hash
           </NextMuiLink>
           {' '}
@@ -59,7 +60,7 @@ export function Stamps() {
         <Typography gutterBottom variant="body1" component="p">
           Returns a JSON:API collection. Supports all conventions described in the
           {' '}
-          <NextMuiLink href="#conventions" color="primary">JSON:API Conventions</NextMuiLink>
+          <NextMuiLink href="#conventions" color="primary" className={plausibleClass('Internal Link', { to: '#conventions' })}>JSON:API Conventions</NextMuiLink>
           {' '}
           section.
         </Typography>
@@ -125,7 +126,7 @@ export function Stamps() {
           <code>POST /api/stamps</code>
           . To look up by hash instead, use
           {' '}
-          <NextMuiLink href="#hashes" color="primary">/api/hashes/:hash</NextMuiLink>
+          <NextMuiLink href="#hashes" color="primary" className={plausibleClass('Internal Link', { to: '#hashes' })}>/api/hashes/:hash</NextMuiLink>
           .
         </Typography>
         <CodeBlock

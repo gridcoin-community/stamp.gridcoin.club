@@ -13,9 +13,7 @@ import { Highlight, themes } from 'prism-react-renderer';
 
 interface CodeBlockProps {
   code: string;
-   
   language?: string;
-   
   caption?: string;
 }
 
@@ -77,6 +75,9 @@ function CopyButton({ code }: { code: string }) {
         size="small"
         onClick={handleCopy}
         aria-label="Copy code to clipboard"
+        // Literal Plausible class, not plausibleClass(), so this file stays
+        // copyable verbatim into frontends without that helper.
+        className="plausible-event-name=Copy plausible-event-what=code"
         sx={{
           color: copied ? 'success.main' : 'text.secondary',
           '&:hover': { color: 'primary.main' },
@@ -130,11 +131,9 @@ function CodeBlockInner({
             {tokens.map((line, i) => {
               const lineProps = getLineProps({ line });
               return (
-                 
                 <div key={i} {...lineProps}>
                   {line.map((token, j) => {
                     const tokenProps = getTokenProps({ token });
-                     
                     return <span key={j} {...tokenProps} />;
                   })}
                 </div>

@@ -1,6 +1,7 @@
 import { Typography, Box } from '@mui/material';
 import React from 'react';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { plausibleClass } from '@/lib/track';
 
 export function OpenSource() {
   return (
@@ -17,7 +18,7 @@ export function OpenSource() {
           . The MIT licence governs your rights in the source. These
           Terms govern your use of <i>this hosted instance</i> at
           {' '}
-          <NextMuiLink href="https://stamp.gridcoin.club" color="primary">stamp.gridcoin.club</NextMuiLink>
+          <NextMuiLink href="https://stamp.gridcoin.club" color="primary" className={plausibleClass('Internal Link', { to: '/' })}>stamp.gridcoin.club</NextMuiLink>
           .
         </Typography>
         <Typography gutterBottom variant="body1" component="p">
