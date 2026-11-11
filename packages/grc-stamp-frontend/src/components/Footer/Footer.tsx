@@ -10,6 +10,7 @@ import { styled } from '@mui/material/styles';
 import { NextMuiLink } from '@/components/NextMuiLink';
 import { Balance } from '@/components/Footer/Balance';
 import { IS_TESTNET, SISTER_NETWORK_LABEL, SISTER_NETWORK_URL } from '@/lib/network';
+import { plausibleClass } from '@/lib/track';
 
 const SubFooterTypography = styled(Typography)(({ theme }) => ({
   textAlign: 'left',
@@ -71,8 +72,12 @@ export function Footer() {
           Part of Gridcoin Club ↗
         </NextMuiLink>
         {' · '}
-        <NextMuiLink href="/terms" color="inherit">
+        <NextMuiLink href="/terms" color="inherit" className={plausibleClass('Footer Click', { item: 'Terms' })}>
           Terms
+        </NextMuiLink>
+        {' · '}
+        <NextMuiLink href="/compare" color="inherit" className={plausibleClass('Footer Click', { item: 'Compare' })}>
+          Compare
         </NextMuiLink>
         {SISTER_NETWORK_URL && (
           <>

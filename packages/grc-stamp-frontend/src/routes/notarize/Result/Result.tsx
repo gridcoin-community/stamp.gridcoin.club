@@ -14,6 +14,7 @@ import {
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import { useWallet } from '@/lib/walletContext';
+import { plausibleClass, track } from '@/lib/track';
 import { getFirstFromTheStore, storeToBlockchain } from '../actions';
 import { FilesContext, ErrorContext } from '../context';
 import { FilePreview } from './FilePreview';
@@ -66,13 +67,17 @@ export function Result({ back, next, activeStep }: Props) {
 
   React.useEffect(() => {
     if (finished && activeStep < Steps.Upload) {
+      // isUploading: confirmed after a stamp sent in this visit.
+      if (isUploading) track('Notarize Step', { step: 'Stamp Confirmed' });
       next();
     }
-  }, [finished, activeStep, next]);
+  }, [finished, activeStep, next, isUploading]);
 
   const onUpload = async () => {
     try {
       const id = await storeToBlockchain(fileData.hash as string);
+      track('Stamp');
+      track('Notarize Step', { step: 'Stamp Submitted' });
       dispatch({
         type: ActionType.setId,
         payload: { id: fileData.file.name, dataId: id },
@@ -80,14 +85,20 @@ export function Result({ back, next, activeStep }: Props) {
       setUploading(true);
     } catch (error: any) {
       if (error.response?.status === 406) {
+        track('Notarize Step', { step: 'Low Funds' });
         setFundError(true);
       } else {
-        // console.log(error.response);
-        const res = error.response?.data?.errors;
-        if (res && res[110]) {
-          setError(res[0].title);
+        // Fixed wording per status; server error text is never shown.
+        const status = error.response?.status;
+        if (status === 429) {
+          track('Notarize Step', { step: 'Error', kind: 'rate-limit' });
+          setError('Too many stamps in a short time. Please wait a minute and try again.');
+        } else if (status === 400) {
+          track('Notarize Step', { step: 'Error', kind: 'rejected' });
+          setError('This hash was rejected. Please reload the page and try again.');
         } else {
-          setError(`Unknown error ${error.response?.status}`);
+          track('Notarize Step', { step: 'Error', kind: 'server' });
+          setError('Something went wrong while stamping. Please try again later.');
         }
         back();
       }
@@ -141,6 +152,7 @@ export function Result({ back, next, activeStep }: Props) {
                     onClick={onCancel}
                     variant="outlined"
                     color="primary"
+                    className={plausibleClass('Notarize Click', { button: 'Stamp Another' })}
                   >
                     Stamp another file
                   </Button>
@@ -151,6 +163,7 @@ export function Result({ back, next, activeStep }: Props) {
                       color="primary"
                       onClick={onCancel}
                       disabled={cancelButtonDisabled}
+                      className={plausibleClass('Notarize Click', { button: 'Cancel' })}
                     >
                       Cancel
                     </Button>
@@ -159,6 +172,7 @@ export function Result({ back, next, activeStep }: Props) {
                       color="primary"
                       onClick={onUpload}
                       disabled={saveButtonDisabled}
+                      className={plausibleClass('Notarize Click', { button: 'Store' })}
                     >
                       Store to the blockchain
                     </Button>

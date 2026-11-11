@@ -20,6 +20,7 @@ import { GradientLine } from '@/components/GradientLine';
 import { PageWrapper } from '@/components/PageWrapper';
 import { ScrollTopFab } from '@/components/ScrollTopFab/ScrollTopFab';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { plausibleClass } from '@/lib/track';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 import { Contents } from './Contents';
 
@@ -118,7 +119,7 @@ export function Page() {
                     artifacts attached to it, hashes each one locally on the runner,
                     submits the hashes to
                     {' '}
-                    <NextMuiLink href="/" color="primary">stamp.gridcoin.club</NextMuiLink>
+                    <NextMuiLink href="/" color="primary" className={plausibleClass('Internal Link', { to: '/' })}>stamp.gridcoin.club</NextMuiLink>
                     , and writes a &ldquo;Blockchain Timestamps&rdquo; table into the
                     release body with a verification link per file. The file contents
                     never leave your CI environment. Only the 64-character hash does.
@@ -133,6 +134,7 @@ export function Page() {
                       href={ACTION_REPO_URL}
                       target="_blank"
                       rel="noreferrer nofollow"
+                      className={plausibleClass('CTA Click', { cta: 'Action GitHub' })}
                     >
                       View on GitHub
                     </Button>
@@ -242,7 +244,7 @@ jobs:
                 <Box component="article">
                   <Typography gutterBottom variant="body1" component="p">
                     By default the action submits the hashes and returns immediately.
-                    The blockchain typically confirms within 2–5 minutes, and the
+                    The blockchain usually confirms within a few minutes, and the
                     verification URLs start resolving some time after the workflow
                     completes. If you&apos;d rather have the workflow block until
                     every stamp is confirmed on-chain, flip
@@ -279,7 +281,7 @@ jobs:
                     {' '}
                     asset from the release page and drop it onto
                     {' '}
-                    <NextMuiLink href="/" color="primary">stamp.gridcoin.club</NextMuiLink>
+                    <NextMuiLink href="/" color="primary" className={plausibleClass('Internal Link', { to: '/' })}>stamp.gridcoin.club</NextMuiLink>
                     . The hash is computed in the browser, looked up against the
                     blockchain, and rendered as a proof page. The file itself never
                     leaves the verifier&apos;s machine.

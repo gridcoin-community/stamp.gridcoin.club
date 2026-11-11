@@ -9,6 +9,7 @@ import {
   CardActions,
   Button,
 } from '@mui/material';
+import { plausibleClass } from '@/lib/track';
 
 interface Props {
   // open: boolean;
@@ -68,7 +69,13 @@ export function ErrorInsufficientFunds({ back }: Props) {
               sx={{ width: '100%', justifyContent: 'flex-end' }}
               spacing={2}
             >
-              <Button variant="outlined" onClick={back}>Back to the main page</Button>
+              <Button
+                variant="outlined"
+                onClick={back}
+                className={plausibleClass('Notarize Click', { button: 'Back' })}
+              >
+                Back to the main page
+              </Button>
             </Stack>
           </CardActions>
         </Card>

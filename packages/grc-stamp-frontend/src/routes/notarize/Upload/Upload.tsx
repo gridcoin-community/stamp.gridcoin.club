@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
-import { useDropzone, FileRejection } from 'react-dropzone';
+import { useDropzone, FileRejection, DropEvent } from 'react-dropzone';
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import router from 'next/router';
 import { useWallet } from '@/lib/walletContext';
+import { track } from '@/lib/track';
 import { FilesContext, ErrorContext } from '../context';
 import { ActionType } from '../reducer';
 import { hashFiles, checkForExistence } from '../actions';
@@ -32,13 +33,18 @@ export function Upload({ next }: Props) {
   const { wallet } = useWallet();
   const isLowFunds = wallet?.isLowFunds ?? false;
 
-  const onDrop = (acceptedFiles: File[]) => {
+  const onDrop = (acceptedFiles: File[], _rejections: FileRejection[], event: DropEvent) => {
     setError(undefined);
     const file = acceptedFiles[0];
     if (file) {
+      // A drop arrives as a 'drop' event, the file picker as the input's 'change'.
+      const method = 'type' in event && event.type === 'drop' ? 'drag' : 'click';
+      track('Notarize Step', { step: 'File Selected', method });
+      if (isLowFunds) track('Notarize Step', { step: 'Low Funds' });
       dispatch({ type: ActionType.add, payload: { file } });
       hashFiles(file)
         .then((hash) => {
+          track('Notarize Step', { step: 'Hash Computed' });
           dispatch({
             type: ActionType.hash,
             payload: {
@@ -50,8 +56,13 @@ export function Upload({ next }: Props) {
         })
         .then((blockchainData) => {
           if (blockchainData) {
+            track('Notarize Step', { step: 'Already Stamped' });
             router.push(`/proof/${blockchainData.hash}`);
           }
+        })
+        .catch((err) => {
+          track('Notarize Step', { step: 'Error', kind: 'lookup' });
+          throw err;
         });
       next();
     }
@@ -63,6 +74,7 @@ export function Upload({ next }: Props) {
     if (errors) {
       const err = errors.errors[0];
       if (err) {
+        track('Notarize Step', { step: 'Error', kind: err.code });
         setError(err.code);
       }
     }

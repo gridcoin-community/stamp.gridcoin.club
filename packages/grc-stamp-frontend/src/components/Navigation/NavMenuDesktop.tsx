@@ -11,6 +11,7 @@ import {
   MenuGroup,
 } from './constants';
 import { NextMuiLink } from '../NextMuiLink';
+import { plausibleClass } from '@/lib/track';
 
 const itemHorzPadding = 1;
 const gutter = 2;
@@ -146,7 +147,7 @@ function GroupItem({ group, isActive, entryKey }: GroupItemProps) {
     >
       <button
         type="button"
-        className="groupTrigger"
+        className={`groupTrigger ${plausibleClass('Nav Click', { item: group.label })}`}
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="true"
         aria-expanded={open || undefined}
@@ -164,7 +165,11 @@ function GroupItem({ group, isActive, entryKey }: GroupItemProps) {
       <GroupMenu className="groupMenu">
         {group.children.map((child) => (
           <li key={child.href}>
-            <NextMuiLink href={child.href} onClick={() => setOpen(false)}>
+            <NextMuiLink
+              href={child.href}
+              onClick={() => setOpen(false)}
+              className={plausibleClass('Nav Click', { item: child.label })}
+            >
               {child.label}
             </NextMuiLink>
           </li>
@@ -209,7 +214,12 @@ export function NavMenuDesktop() {
                 key={key}
                 className={isActive ? 'itemActive' : undefined}
               >
-                <NextMuiLink href={entry.href}>{entry.label}</NextMuiLink>
+                <NextMuiLink
+                  href={entry.href}
+                  className={plausibleClass('Nav Click', { item: entry.label })}
+                >
+                  {entry.label}
+                </NextMuiLink>
               </NavItem>
             );
           })}

@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
+import { trackLinkPrivately } from '@/lib/track';
 import { NextMuiLink } from '../NextMuiLink';
 
 const ListItemTextResponsive = styled(ListItemText)(({ theme }) => ({
@@ -46,7 +47,7 @@ interface Props {
   value: string | number | undefined;
 }
 
-function SecondaryText({ value, link }: Omit<Props, 'title'>) {
+function SecondaryText({ title, value, link }: Props) {
   if (!value) {
     return (
       <LinearProgress color="secondary" />
@@ -58,6 +59,7 @@ function SecondaryText({ value, link }: Omit<Props, 'title'>) {
         href={link}
         target="_blank"
         rel="nofollow"
+        {...trackLinkPrivately('Explorer Click', { item: title })}
       >
         {value}
       </NextMuiLink>
@@ -74,7 +76,7 @@ export function Info({ title, value, link }: Props) {
         slotProps={{
           primary: { fontWeight: '600' },
         }}
-        secondary={<SecondaryText value={value} link={link} />}
+        secondary={<SecondaryText title={title} value={value} link={link} />}
       />
     </ListItem>
   );

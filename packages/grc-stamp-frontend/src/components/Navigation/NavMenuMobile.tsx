@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
 import { useRouteNavigating } from '@/hooks';
 import { LogoMark } from '@/components/Logo';
+import { plausibleClass } from '@/lib/track';
 import {
   menuItems,
   isMenuGroup,
@@ -63,7 +64,11 @@ function LeafLink({
 }: LeafLinkProps) {
   const isCurrent = currentPath === leaf.href;
   return (
-    <Link href={leaf.href} style={{ textDecoration: 'none' }}>
+    <Link
+      href={leaf.href}
+      className={plausibleClass('Nav Click', { item: leaf.label })}
+      style={{ textDecoration: 'none' }}
+    >
       <ButtonComponent
         variant={isCurrent ? 'contained' : 'text'}
         disableElevation
@@ -106,6 +111,7 @@ export function NavMenuMobile() {
         color="inherit"
         aria-label="menu"
         onClick={handleClickOpen}
+        className={plausibleClass('Nav Click', { item: 'Menu Open' })}
       >
         <MenuIcon />
       </IconButton>
@@ -156,6 +162,7 @@ export function NavMenuMobile() {
               color="inherit"
               onClick={handleClose}
               aria-label="close"
+              className={plausibleClass('Nav Click', { item: 'Menu Close' })}
             >
               <CloseIcon />
             </IconButton>

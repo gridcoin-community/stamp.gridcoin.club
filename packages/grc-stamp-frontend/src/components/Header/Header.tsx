@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { NavMenuMobile } from '@/components/Navigation/NavMenuMobile';
 import { useRouteNavigating } from '@/hooks';
 import { IS_TESTNET } from '@/lib/network';
+import { plausibleClass } from '@/lib/track';
 import { BackfillBanner } from '@/components/BackfillBanner';
 import { LowFundsBanner } from '@/components/LowFundsBanner';
 import Typography from '@mui/material/Typography';
@@ -70,6 +71,7 @@ export function Header({ showLinks = true }: HeaderProps) {
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
               <Link
                 href="/"
+                className={plausibleClass('Nav Click', { item: 'Logo' })}
                 style={{
                   textDecoration: 'none',
                   display: 'inline-flex',

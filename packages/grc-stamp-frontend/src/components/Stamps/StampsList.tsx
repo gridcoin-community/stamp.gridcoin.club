@@ -15,6 +15,7 @@ import { format } from 'date-fns';
 import { blockUrl, txUrl } from '@/lib/explorerLinks';
 import { identiconDataUrl } from '@/lib/identicon';
 import { StampEntity } from '@/entities/StampEntity';
+import { trackLinkPrivately } from '@/lib/track';
 import { NextMuiLink } from '../NextMuiLink';
 
 interface Props {
@@ -126,7 +127,10 @@ export function StampsList({ stamps }: Props) {
                           <span>
                             Hash:
                             {' '}
-                            <NextMuiLink href={`/proof/${stamp.hash}`}>
+                            <NextMuiLink
+                              href={`/proof/${stamp.hash}`}
+                              {...trackLinkPrivately('Recent Stamp Click', { item: 'Proof' })}
+                            >
                               {stamp.hash}
                             </NextMuiLink>
                           </span>
@@ -138,6 +142,7 @@ export function StampsList({ stamps }: Props) {
                               href={txUrl(stamp.tx) || ''}
                               target="_blank"
                               rel="nofollow"
+                              {...trackLinkPrivately('Recent Stamp Click', { item: 'TX' })}
                             >
                               {stamp.tx}
                             </NextMuiLink>
@@ -158,6 +163,7 @@ export function StampsList({ stamps }: Props) {
                               href={blockUrl(stamp.block) || ''}
                               target="_blank"
                               rel="nofollow"
+                              {...trackLinkPrivately('Recent Stamp Click', { item: 'Block' })}
                             >
                               {stamp.block}
                             </NextMuiLink>

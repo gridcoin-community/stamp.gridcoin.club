@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import { StampIcon } from '@/icons/StampIcon';
 import { GradientLine } from '@/components/GradientLine';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { plausibleClass } from '@/lib/track';
 
 const Wrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -44,7 +45,9 @@ export function Instructions() {
           even a single bit, produces a different hash, so tampering shows up
           immediately.
           {' '}
-          <NextMuiLink href="/about" passHref>More about how it works</NextMuiLink>
+          <NextMuiLink href="/about" passHref className={plausibleClass('CTA Click', { cta: 'Intro About' })}>
+            More about how it works
+          </NextMuiLink>
           .
         </Typography>
         <Typography gutterBottom variant="body1" component="p">

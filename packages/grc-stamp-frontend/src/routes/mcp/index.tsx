@@ -18,6 +18,7 @@ import { GradientLine } from '@/components/GradientLine';
 import { PageWrapper } from '@/components/PageWrapper';
 import { ScrollTopFab } from '@/components/ScrollTopFab/ScrollTopFab';
 import { NextMuiLink } from '@/components/NextMuiLink';
+import { plausibleClass } from '@/lib/track';
 import { CodeBlock } from '@/components/CodeBlock/CodeBlock';
 import { Contents } from './Contents';
 
@@ -114,7 +115,7 @@ export function Page() {
                   <Typography gutterBottom variant="body1" component="p">
                     The server is a thin wrapper over the same public API that powers
                     {' '}
-                    <NextMuiLink href="/" color="primary">stamp.gridcoin.club</NextMuiLink>
+                    <NextMuiLink href="/" color="primary" className={plausibleClass('Internal Link', { to: '/' })}>stamp.gridcoin.club</NextMuiLink>
                     . It exposes three tools an agent can call: one to stamp a document,
                     one to check a stamp and fetch its proof, and one to see whether the
                     service is funded. No account, no API key, no payment. A SHA-256 is
@@ -135,6 +136,7 @@ export function Page() {
                       href={REPO_URL}
                       target="_blank"
                       rel="noreferrer nofollow"
+                      className={plausibleClass('CTA Click', { cta: 'MCP Source' })}
                     >
                       Source
                     </Button>
@@ -146,6 +148,7 @@ export function Page() {
                       href={NPM_URL}
                       target="_blank"
                       rel="noreferrer nofollow"
+                      className={plausibleClass('CTA Click', { cta: 'MCP npm' })}
                     >
                       npm
                     </Button>

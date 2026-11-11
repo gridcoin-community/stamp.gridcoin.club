@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { toggleTheme, type ThemeMode } from '@/lib/mode';
+import { plausibleClass } from '@/lib/track';
 
 export function ModeToggle() {
   const theme = useTheme();
@@ -29,6 +30,7 @@ export function ModeToggle() {
         sx={{ ml: 1 }}
         onClick={toggleMode}
         color="inherit"
+        className={plausibleClass('Mode Toggle', { to: colorMode === 'dark' ? 'light' : 'dark' })}
       >
         {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
       </IconButton>

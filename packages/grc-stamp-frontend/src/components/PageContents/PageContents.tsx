@@ -10,6 +10,7 @@ import {
 import { styled } from '@mui/material/styles';
 import { NextMuiLink } from '@/components/NextMuiLink';
 import { useScrollSpy } from '@/lib/useScrollSpy';
+import { plausibleClass } from '@/lib/track';
 
 export interface PageContentsEntry {
   id: string;
@@ -59,8 +60,10 @@ export function PageContents({ entries }: PageContentsProps) {
           return (
             <NextMuiLink key={id} href={`#${id}`} passHref underline="none">
               <ListItem disablePadding>
+                {/* Tagged here, not on the link: Plausible only looks 3 levels up from the click. */}
                 <ListItemButton
                   selected={isActive}
+                  className={plausibleClass('TOC Click', { item: id })}
                   sx={{
                     pl: indent ? 4 : 2,
                     borderLeft: '2px solid',

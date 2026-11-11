@@ -27,6 +27,7 @@ import { Footer } from '@/components/Footer/Footer';
 import { Header } from '@/components/Header/Header';
 import { StampRepository } from '@/repositories/StampsRepository';
 import { useInterval, useSSEEvent } from '@/hooks';
+import { trackLinkPrivately } from '@/lib/track';
 
 const Message = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
@@ -116,9 +117,10 @@ export function Page({ stamp: initialStamp }: Props) {
   });
   useInterval(refresh, isPending ? 30_000 : null);
 
+  const shortHash = `${hash.slice(0, 12)}…`;
   const title = isPending
-    ? `${SITE_NAME} :: Pending proof of ${hash}`
-    : `${SITE_NAME} :: Proof of ${hash}`;
+    ? `Pending proof of ${shortHash} :: ${SITE_NAME}`
+    : `Proof of ${shortHash} :: ${SITE_NAME}`;
   const description = isPending
     ? `This hash is queued for stamping on the Gridcoin blockchain (${hash}). This page will update automatically when the transaction is confirmed.`
     : `This document's digest has been permanently certified in the Gridcoin blockchain with hash ${hash}.`;
@@ -214,7 +216,7 @@ export function Page({ stamp: initialStamp }: Props) {
                   variant="contained"
                   color="primary"
                   startIcon={<PictureAsPdfIcon />}
-                  className="plausible-event-name=Download+Certificate+PDF"
+                  {...trackLinkPrivately('Download Certificate PDF')}
                 >
                   Download certificate
                 </Button>
