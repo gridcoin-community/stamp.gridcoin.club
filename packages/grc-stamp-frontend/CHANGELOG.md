@@ -1,3 +1,16 @@
+# [grc-stamp-frontend-v1.11.0](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.7...grc-stamp-frontend-v1.11.0) (2026-11-11)
+
+
+### Bug Fixes
+
+* drop the legacy host-only theme cookie cleanup ([1bd3486](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/1bd348672f6576224a2d158bcc4713e00c7c2eaf))
+* track navigation, stamping steps, docs copies and outbound clicks in Plausible ([7a9f120](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/7a9f1204811a3655832c48e247b4451e33e9bc86))
+
+
+### Features
+
+* compare page against other timestamping services ([f0f2a5a](https://github.com/gridcoin-community/stamp.gridcoin.club/commit/f0f2a5adcd81024f87e570743133dc6f1ed5dde9))
+
 # [grc-stamp-frontend-v1.10.7](https://github.com/gridcoin-community/stamp.gridcoin.club/compare/grc-stamp-frontend-v1.10.6...grc-stamp-frontend-v1.10.7) (2026-11-03)
 
 
